@@ -1,0 +1,16 @@
+package com.SchoolManagementSystem.System.controller.school;
+
+import com.SchoolManagementSystem.System.controller.BaseCrudController;
+import com.SchoolManagementSystem.System.dto.library.StudentBookDto;
+import com.SchoolManagementSystem.System.service.library.StudentBookService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/student-book")
+public class StudentBookController extends BaseCrudController<StudentBookDto> {
+    public StudentBookController(StudentBookService studentBookService) {
+        super(studentBookService);
+    }
+
+}

@@ -1,0 +1,944 @@
+{
+  "info": {
+    "_postman_id": "72340a11-4fb3-4b0d-be48-4e26730a1914",
+    "name": "School",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42475676",
+    "_collection_link": "https://go.postman.co/collection/42475676-72340a11-4fb3-4b0d-be48-4e26730a1914?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "student",
+      "item": [
+        {
+          "name": "student-guardian",
+          "item": [
+            {
+              "name": "connentGuardainToUser",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nationalId\": \"123437489\",\r\n  \"firstName\": \"Ahmad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"09999599999\",\r\n  \"email\": \"teacher@test.com\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"hireDate\": \"2026-06-14\",\r\n  \"specialization\": \"Mathematics\",\r\n  \"occupation\": \"Worker\"\r\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/connect/10/4?primaryGuardian=true",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "connect",
+                    "10",
+                    "4"
+                  ],
+                  "query": [
+                    {
+                      "key": "primaryGuardian",
+                      "value": "true"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getRelation",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"primaryGuardian\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "findGuardianOfStudent",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/guardian/4",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "guardian",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "findStudentsConnectToGuardian",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/student/10",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "student",
+                    "10"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "student",
+          "item": [
+            {
+              "name": "getAll",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/students",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getById",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/students/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "save",
+              "request": {
+                "auth": {
+                  "type": "jwt",
+                  "jwt": [
+                    {
+                      "key": "algorithm",
+                      "value": "HS256",
+                      "type": "string"
+                    },
+                    {
+                      "key": "isSecretBase64Encoded",
+                      "value": false,
+                      "type": "boolean"
+                    },
+                    {
+                      "key": "payload",
+                      "value": "{}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "addTokenTo",
+                      "value": "header",
+                      "type": "string"
+                    },
+                    {
+                      "key": "headerPrefix",
+                      "value": "Bearer",
+                      "type": "string"
+                    },
+                    {
+                      "key": "queryParamKey",
+                      "value": "token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "header",
+                      "value": "{}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"registrationNumber\": \"ST001\",\r\n  \"firstName\": \"Ahmad\",\r\n  \"lastName\": \"Ali\",\r\n  \"gender\": \"Male\",\r\n  \"dateOfBirth\": \"2010-05-15\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2024-09-01\",\r\n  \"phone\": \"0999999999\",\r\n  \"notes\": \"Excellent student\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/students",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"registrationNumber\": \"ST001\",\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"gender\": \"Male\",\r\n  \"dateOfBirth\": \"2010-05-15\",\r\n  \"address\": \"Aleppo\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2024-09-01\",\r\n  \"phone\": \"0988888888\",\r\n  \"notes\": \"Updated\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/students/4",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/students/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "assignClass",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/students/10/assign-class/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students",
+                    "10",
+                    "assign-class",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "teacher",
+          "item": [
+            {
+              "name": "getAll",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/teachers",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teachers"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getById",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/teachers/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teachers",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "save",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nationalId\": \"123457489\",\r\n  \"firstName\": \"Ahmad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"09999599999\",\r\n  \"email\": \"teacher@test.com\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"hireDate\": \"2026-06-14\",\r\n  \"specialization\": \"Mathematics\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/teachers",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teachers"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/teachers/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teachers",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nationalId\": \"123407489\",\r\n  \"firstName\": \"Ahmddsad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"09999599999\",\r\n  \"email\": \"teacher@test.com\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"hireDate\": \"2026-06-14\",\r\n  \"specialization\": \"Mathematics\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/teachers/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teachers",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "connectTeacherToSubject",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/teacher-subjects/connect/7/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teacher-subjects",
+                    "connect",
+                    "7",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "guardian",
+          "item": [
+            {
+              "name": "getAll",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "getById",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "save",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nationalId\": \"123487489\",\r\n  \"firstName\": \"Ahmad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"09999599999\",\r\n  \"email\": \"teacher@test.com\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"hireDate\": \"2026-06-14\",\r\n  \"specialization\": \"Mathematics\",\r\n  \"occupation\": \"Worker\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nationalId\": \"123437489\",\r\n  \"firstName\": \"Ahmad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"09999599999\",\r\n  \"email\": \"teacher@test.com\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"hireDate\": \"2026-06-14\",\r\n  \"specialization\": \"Mathematics\",\r\n  \"occupation\": \"Worker\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "academic",
+      "item": [
+        {
+          "name": "academic",
+          "item": [
+            {
+              "name": "Subject",
+              "item": [
+                {
+                  "name": "update",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Advanced Mathematics\",\r\n  \"description\": \"Updated description\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:8081/api/subjects/1",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "subjects",
+                        "1"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "save",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Advanced Mathematics\",\r\n  \"description\": \"Updated description\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:8081/api/subjects",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "subjects"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "delete",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/subjects/1",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "subjects",
+                        "1"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "getId",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/subjects/1",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "subjects",
+                        "1"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "getAll",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/subjects",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "subjects"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "class",
+          "item": [
+            {
+              "name": "get",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/classes",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "classes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "save",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"level\": 1,\r\n  \"section\": \"123\",\r\n  \"location\": \"12\",\r\n  \"capacity\": 30\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/classes",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "classes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"level\": 1,\r\n  \"section\": \"Raw-one\",\r\n  \"location\": \"first-Bailding\",\r\n  \"capacity\": 30\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/classes/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "classes",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/classes/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "classes",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "New Request",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/classes/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "classes",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  mysql-db:
+    image: mysql:8.4
+    container_name: school_mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  app:
+    build: .
+
+    depends_on:
+      - mysql-db
+
+    ports:
+      - "8081:8081"
+
+    env_file:
+      - .env
+
+    environment:
+      DB_HOST: mysql-db
+
+    volumes:
+      - ./src/main/resources/keys:/app/keys:ro
+
+volumes:
+  mysql-data:
