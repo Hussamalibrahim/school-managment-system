@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.communication.impl;
 
 import com.SchoolManagementSystem.System.dto.communication.AnnouncementDto;
-import com.SchoolManagementSystem.System.dtoMapper.communication.AnnouncementMapper;
+import com.SchoolManagementSystem.System.mapper.communication.AnnouncementMapper;
 import com.SchoolManagementSystem.System.entity.communication.Announcement;
 import com.SchoolManagementSystem.System.repository.communication.AnnouncementRepository;
 import com.SchoolManagementSystem.System.service.communication.AnnouncementService;

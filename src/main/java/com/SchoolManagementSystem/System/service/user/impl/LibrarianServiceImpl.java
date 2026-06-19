@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.user.impl;
 
 import com.SchoolManagementSystem.System.dto.user.LibrarianDto;
-import com.SchoolManagementSystem.System.dtoMapper.user.LibrarianMapper;
+import com.SchoolManagementSystem.System.mapper.user.LibrarianMapper;
 import com.SchoolManagementSystem.System.entity.user.Librarian;
 import com.SchoolManagementSystem.System.repository.user.LibrarianRepository;
 import com.SchoolManagementSystem.System.service.user.LibrarianService;

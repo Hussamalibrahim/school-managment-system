@@ -4,10 +4,12 @@ import com.SchoolManagementSystem.System.controller.BaseCrudController;
 import com.SchoolManagementSystem.System.dto.academic.TeacherSubjectDto;
 import com.SchoolManagementSystem.System.service.academic.TeacherSubjectService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/teacher-subjects")
+@PreAuthorize("hasRole('PRINCIPAL')")
 public class TeacherSubjectController
         extends BaseCrudController<TeacherSubjectDto> {
 

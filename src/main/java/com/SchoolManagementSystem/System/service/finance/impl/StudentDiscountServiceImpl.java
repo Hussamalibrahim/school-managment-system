@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.finance.impl;
 
 import com.SchoolManagementSystem.System.dto.finance.StudentDiscountDto;
-import com.SchoolManagementSystem.System.dtoMapper.finance.StudentDiscountMapper;
+import com.SchoolManagementSystem.System.mapper.finance.StudentDiscountMapper;
 import com.SchoolManagementSystem.System.entity.finance.StudentDiscount;
 import com.SchoolManagementSystem.System.repository.finance.StudentDiscountRepository;
 import com.SchoolManagementSystem.System.service.finance.StudentDiscountService;

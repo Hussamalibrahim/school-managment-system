@@ -1,8 +1,9 @@
 package com.SchoolManagementSystem.System.entity.student;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
-import com.SchoolManagementSystem.System.entity.academic.Class;
+import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.System.entity.enumeration.Gender;
+import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.System.entity.school.School;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,8 @@ public class Student extends BaseEntity
     private School school;
 
     @ManyToOne
-    @JoinColumn(name = "class_id")
-    private Class studentClass;
+    @JoinColumn(name = "school_class_id")
+    private SchoolClass studentSchoolClass;
 
     @Column(name = "registration_number", nullable = false)
     private String registrationNumber;
@@ -40,6 +41,10 @@ public class Student extends BaseEntity
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade_level")
+    private GradeLevel gradeLevel;
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;

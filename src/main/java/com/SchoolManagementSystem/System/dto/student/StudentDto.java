@@ -1,20 +1,32 @@
 package com.SchoolManagementSystem.System.dto.student;
 
 import com.SchoolManagementSystem.System.entity.enumeration.Gender;
-import com.SchoolManagementSystem.System.entity.student.Student;
+import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link Student}
- */
-public record StudentDto(Long id, String registrationNumber,
-                         String firstName, String lastName,
-                         LocalDateTime createdAt, LocalDateTime updatedAt,
-                         LocalDateTime deletedAt, Gender gender,
-                         LocalDate dateOfBirth, String address, String status,
-                         LocalDate enrollmentDate, String phone,
-                         String notes) implements Serializable {
+public record StudentDto(
+        Long id,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        LocalDateTime deletedAt,
+
+        Long schoolId,
+        Long schoolClassId,
+
+        String registrationNumber,
+        String firstName,
+        String lastName,
+
+        Gender gender,
+        GradeLevel gradeLevel,
+
+        LocalDate dateOfBirth,
+        String address,
+        String status,
+        LocalDate enrollmentDate,
+        String phone,
+        String notes
+) {
 }

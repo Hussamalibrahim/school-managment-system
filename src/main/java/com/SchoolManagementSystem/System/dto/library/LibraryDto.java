@@ -8,6 +8,5 @@ import java.time.LocalDateTime;
 /**
  * DTO for {@link Library}
  */
-public record LibraryDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-                         String name) implements Serializable {
+public record LibraryDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt) implements Serializable {
 }

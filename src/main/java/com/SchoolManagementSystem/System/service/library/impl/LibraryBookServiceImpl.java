@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.library.impl;
 
 import com.SchoolManagementSystem.System.dto.library.LibraryBookDto;
-import com.SchoolManagementSystem.System.dtoMapper.library.LibraryBookMapper;
+import com.SchoolManagementSystem.System.mapper.library.LibraryBookMapper;
 import com.SchoolManagementSystem.System.entity.library.LibraryBook;
 import com.SchoolManagementSystem.System.repository.library.LibraryBookRepository;
 import com.SchoolManagementSystem.System.service.library.LibraryBookService;

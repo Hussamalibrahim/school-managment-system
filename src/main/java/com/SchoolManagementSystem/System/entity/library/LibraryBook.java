@@ -2,35 +2,31 @@ package com.SchoolManagementSystem.System.entity.library;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Table(name = "library_books")
+@Table(name = "library_book")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LibraryBook extends BaseEntity
-{
-    @ManyToOne
-    @JoinColumn(name = "library_id")
+public class LibraryBook extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "library_id", nullable = false)
     private Library library;
 
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "author")
     private String author;
 
-    @Column(name = "isbn", unique = true)
+    @Column(unique = true)
     private String isbn;
 
-    @Column(name = "category")
     private String category;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
+
 }

@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.student.impl;
 
 import com.SchoolManagementSystem.System.dto.student.WarningDto;
-import com.SchoolManagementSystem.System.dtoMapper.student.WarningMapper;
+import com.SchoolManagementSystem.System.mapper.student.WarningMapper;
 import com.SchoolManagementSystem.System.entity.student.Warning;
 import com.SchoolManagementSystem.System.repository.student.WarningRepository;
 import com.SchoolManagementSystem.System.service.student.WarningService;

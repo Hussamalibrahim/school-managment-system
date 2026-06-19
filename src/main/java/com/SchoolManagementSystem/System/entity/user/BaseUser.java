@@ -20,7 +20,7 @@ public abstract class BaseUser extends BaseEntity {
     @JoinColumn(name = "school_id")
     private School school;
 
-    @Column(name = "national_id", unique = true, nullable = false)
+    @Column(name = "national_id", unique = true)
     private String nationalId;
 
     @Column(name = "first_name")

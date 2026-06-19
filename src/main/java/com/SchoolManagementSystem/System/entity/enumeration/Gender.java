@@ -8,7 +8,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public enum Gender {
-    Male("Male"),
-    Female("Female");
+    MALE("MALE"),
+    FEMALE("FEMALE");
     private final String value;
 }

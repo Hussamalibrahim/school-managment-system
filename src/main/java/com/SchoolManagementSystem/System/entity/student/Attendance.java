@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.student;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.enumeration.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class Attendance extends BaseEntity
     @Column(name = "attendance_date")
     private LocalDate attendanceDate;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "attendance_Status")
+    private AttendanceStatus attendanceStatus;
 
 }

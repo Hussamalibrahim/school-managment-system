@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.EducationRecordDto;
-import com.SchoolManagementSystem.System.dtoMapper.academic.EducationRecordMapper;
+import com.SchoolManagementSystem.System.mapper.academic.EducationRecordMapper;
 import com.SchoolManagementSystem.System.entity.academic.EducationRecord;
 import com.SchoolManagementSystem.System.repository.academic.EducationRecordRepository;
 import com.SchoolManagementSystem.System.service.academic.EducationRecordService;
@@ -30,8 +30,9 @@ public class EducationRecordServiceImpl implements EducationRecordService {
         EducationRecord record = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("EducationRecord not found"));
 
-        record.setSchoolName(dto.schoolName());
-        record.setOverallResult(dto.overallResult());
+        record.setFinalAverage(dto.finalAverage());
+        record.setPassed(dto.passed());
+        record.setAbsenceDays(dto.absenceDays());
         record.setNotes(dto.notes());
 
         record = repository.save(record);

@@ -1,26 +1,20 @@
 package com.SchoolManagementSystem.System.dto.academic;
 
-import java.io.Serializable;
 import java.time.DayOfWeek;
-import java.time.LocalTime;
+import com.SchoolManagementSystem.System.entity.enumeration.PeriodNumber;
+import java.time.LocalDateTime;
 
 public record ClassScheduleDto(
-
         Long id,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        LocalDateTime deletedAt,
 
-        Long classId,
-
+        Long schoolClassId,
         Long subjectId,
-
         Long teacherId,
 
         DayOfWeek dayOfWeek,
-
-        Integer periodNumber,
-
-        LocalTime startTime,
-
-        LocalTime endTime
-
-) implements Serializable {
+        PeriodNumber periodNumber
+) {
 }

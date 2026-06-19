@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.AssessmentDto;
-import com.SchoolManagementSystem.System.dtoMapper.academic.AssessmentMapper;
+import com.SchoolManagementSystem.System.mapper.academic.AssessmentMapper;
 import com.SchoolManagementSystem.System.entity.academic.Assessment;
 import com.SchoolManagementSystem.System.repository.academic.AssessmentRepository;
 import com.SchoolManagementSystem.System.service.academic.AssessmentService;

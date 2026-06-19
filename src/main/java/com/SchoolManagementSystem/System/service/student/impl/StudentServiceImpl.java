@@ -1,9 +1,9 @@
 package com.SchoolManagementSystem.System.service.student.impl;
 
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
-import com.SchoolManagementSystem.System.dtoMapper.student.StudentMapper;
+import com.SchoolManagementSystem.System.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.System.entity.student.Student;
-import com.SchoolManagementSystem.System.repository.academic.ClassRepository;
+import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import com.SchoolManagementSystem.System.entity.academic.Class;
+import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +19,7 @@ import com.SchoolManagementSystem.System.entity.academic.Class;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
-    private final ClassRepository classRepository;
+    private final SchoolClassRepository schoolClassRepository;
 
     @Override
     public StudentDto assignClass(Long studentId, Long classId)
@@ -27,10 +27,10 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        Class studentClass = classRepository.findById(classId)
+        SchoolClass studentSchoolClass = schoolClassRepository.findById(classId)
                 .orElseThrow(() -> new RuntimeException("Class not found"));
 
-        student.setStudentClass(studentClass);
+        student.setStudentSchoolClass(studentSchoolClass);
 
         student = studentRepository.save(student);
 

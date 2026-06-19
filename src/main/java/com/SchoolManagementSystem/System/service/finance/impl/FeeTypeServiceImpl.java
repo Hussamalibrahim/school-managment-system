@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.finance.impl;
 
 import com.SchoolManagementSystem.System.dto.finance.FeeTypeDto;
-import com.SchoolManagementSystem.System.dtoMapper.finance.FeeTypeMapper;
+import com.SchoolManagementSystem.System.mapper.finance.FeeTypeMapper;
 import com.SchoolManagementSystem.System.entity.finance.FeeType;
 import com.SchoolManagementSystem.System.repository.finance.FeeTypeRepository;
 import com.SchoolManagementSystem.System.service.finance.FeeTypeService;

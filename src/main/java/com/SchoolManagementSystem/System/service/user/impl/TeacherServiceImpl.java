@@ -1,21 +1,24 @@
 package com.SchoolManagementSystem.System.service.user.impl;
 
-import com.SchoolManagementSystem.System.dto.academic.TeacherSubjectDto;
+import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.dto.user.TeacherDto;
-import com.SchoolManagementSystem.System.dtoMapper.academic.TeacherSubjectMapper;
-import com.SchoolManagementSystem.System.dtoMapper.user.TeacherMapper;
-import com.SchoolManagementSystem.System.entity.academic.Subject;
-import com.SchoolManagementSystem.System.entity.academic.TeacherSubject;
+import com.SchoolManagementSystem.System.mapper.student.StudentMapper;
+import com.SchoolManagementSystem.System.mapper.user.TeacherMapper;
+import com.SchoolManagementSystem.System.entity.academic.ClassSchedule;
+import com.SchoolManagementSystem.System.entity.student.Student;
 import com.SchoolManagementSystem.System.entity.user.Teacher;
-import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
-import com.SchoolManagementSystem.System.repository.academic.TeacherSubjectRepository;
+import com.SchoolManagementSystem.System.repository.academic.ClassScheduleRepository;
+import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.user.TeacherRepository;
 import com.SchoolManagementSystem.System.service.user.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +26,8 @@ import java.util.List;
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
-    private final SubjectRepository subjectRepository;
-    private final TeacherSubjectRepository teacherSubjectRepository;
+    private final ClassScheduleRepository classScheduleRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public TeacherDto save(TeacherDto dto) {
@@ -81,5 +84,23 @@ public class TeacherServiceImpl implements TeacherService {
     public boolean existsByNationalId(String nationalId) {
         return teacherRepository.existsByNationalId(nationalId);
     }
+    @Override
+    public List<StudentDto> getMyStudents(Long teacherId) {
 
+        List<ClassSchedule> schedules =
+                classScheduleRepository.findByTeacherId(teacherId);
+
+        Set<Long> classIds = schedules.stream()
+                .map(s -> s.getSchoolClass().getId())
+                .collect(Collectors.toSet());
+
+        List<Student> students =
+                studentRepository.findByStudentSchoolClassIdIn(
+                        new ArrayList<>(classIds)
+                );
+
+        return students.stream()
+                .map(StudentMapper::toDto)
+                .toList();
+    }
 }

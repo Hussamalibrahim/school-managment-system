@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.finance.impl;
 
 import com.SchoolManagementSystem.System.dto.finance.PaymentDto;
-import com.SchoolManagementSystem.System.dtoMapper.finance.PaymentMapper;
+import com.SchoolManagementSystem.System.mapper.finance.PaymentMapper;
 import com.SchoolManagementSystem.System.entity.finance.Payment;
 import com.SchoolManagementSystem.System.repository.finance.PaymentRepository;
 import com.SchoolManagementSystem.System.service.finance.PaymentService;

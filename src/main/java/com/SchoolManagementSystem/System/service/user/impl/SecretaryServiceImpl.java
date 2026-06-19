@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.user.impl;
 
 import com.SchoolManagementSystem.System.dto.user.SecretaryDto;
-import com.SchoolManagementSystem.System.dtoMapper.user.SecretaryMapper;
+import com.SchoolManagementSystem.System.mapper.user.SecretaryMapper;
 import com.SchoolManagementSystem.System.entity.user.Secretary;
 import com.SchoolManagementSystem.System.repository.user.SecretaryRepository;
 import com.SchoolManagementSystem.System.service.user.SecretaryService;

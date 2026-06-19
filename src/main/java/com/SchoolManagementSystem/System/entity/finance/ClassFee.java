@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.entity.finance;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
-import com.SchoolManagementSystem.System.entity.academic.Class;
+import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.System.entity.school.AcademicYear;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class ClassFee extends BaseEntity
 {
     @ManyToOne
     @JoinColumn(name = "class_id")
-    private Class schoolClass;
+    private SchoolClass schoolClass;
 
     @ManyToOne
     @JoinColumn(name = "academic_year_id")

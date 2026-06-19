@@ -27,11 +27,14 @@ public class EducationRecord extends BaseEntity
     @JoinColumn(name = "academic_year_id")
     private AcademicYear academicYear;
 
-    @Column(name = "school_name")
-    private String schoolName;
+    @Column(name = "final_average")
+    private Double finalAverage;
 
-    @Column(name = "overall_result")
-    private String overallResult;
+    @Column(name = "absence_days")
+    private Integer absenceDays;
+
+    @Column(name = "passed")
+    private Boolean passed;
 
     @Column(name = "notes")
     private String notes;

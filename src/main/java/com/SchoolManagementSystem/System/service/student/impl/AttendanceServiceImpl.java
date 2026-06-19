@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.student.impl;
 
 import com.SchoolManagementSystem.System.dto.student.AttendanceDto;
-import com.SchoolManagementSystem.System.dtoMapper.student.AttendanceMapper;
+import com.SchoolManagementSystem.System.mapper.student.AttendanceMapper;
 import com.SchoolManagementSystem.System.entity.student.Attendance;
 import com.SchoolManagementSystem.System.repository.student.AttendanceRepository;
 import com.SchoolManagementSystem.System.service.student.AttendanceService;
@@ -32,7 +32,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .orElseThrow(() -> new RuntimeException("Attendance not found"));
 
         attendance.setAttendanceDate(dto.attendanceDate());
-        attendance.setStatus(dto.status());
+        attendance.setAttendanceStatus(dto.attendanceStatus());
 
         attendance = repository.save(attendance);
         return AttendanceMapper.toDto(attendance);

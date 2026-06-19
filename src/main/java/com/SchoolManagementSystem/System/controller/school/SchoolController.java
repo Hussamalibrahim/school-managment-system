@@ -13,4 +13,6 @@ public class SchoolController extends BaseCrudController<SchoolDto> {
         super(schoolService);
     }
 
+
+
 }

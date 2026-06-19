@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.library.impl;
 
 import com.SchoolManagementSystem.System.dto.library.BorrowDto;
-import com.SchoolManagementSystem.System.dtoMapper.library.BorrowMapper;
+import com.SchoolManagementSystem.System.mapper.library.BorrowMapper;
 import com.SchoolManagementSystem.System.entity.library.Borrow;
 import com.SchoolManagementSystem.System.repository.library.BorrowRepository;
 import com.SchoolManagementSystem.System.service.library.BorrowService;

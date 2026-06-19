@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.user.impl;
 
 import com.SchoolManagementSystem.System.dto.user.GuardianDto;
-import com.SchoolManagementSystem.System.dtoMapper.user.GuardianMapper;
+import com.SchoolManagementSystem.System.mapper.user.GuardianMapper;
 import com.SchoolManagementSystem.System.entity.user.Guardian;
 import com.SchoolManagementSystem.System.repository.user.GuardianRepository;
 import com.SchoolManagementSystem.System.service.user.GuardianService;

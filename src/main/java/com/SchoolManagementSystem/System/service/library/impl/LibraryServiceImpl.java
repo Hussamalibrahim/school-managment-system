@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.library.impl;
 
 import com.SchoolManagementSystem.System.dto.library.LibraryDto;
-import com.SchoolManagementSystem.System.dtoMapper.library.LibraryMapper;
+import com.SchoolManagementSystem.System.mapper.library.LibraryMapper;
 import com.SchoolManagementSystem.System.entity.library.Library;
 import com.SchoolManagementSystem.System.repository.library.LibraryRepository;
 import com.SchoolManagementSystem.System.service.library.LibraryService;
@@ -29,8 +29,6 @@ public class LibraryServiceImpl implements LibraryService {
     public LibraryDto update(Long id, LibraryDto dto) {
         Library library = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Library not found"));
-
-        library.setName(dto.name());
 
         library = repository.save(library);
         return LibraryMapper.toDto(library);

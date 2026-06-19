@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.TeacherSubjectDto;
-import com.SchoolManagementSystem.System.dtoMapper.academic.TeacherSubjectMapper;
+import com.SchoolManagementSystem.System.mapper.academic.TeacherSubjectMapper;
 import com.SchoolManagementSystem.System.entity.academic.Subject;
 import com.SchoolManagementSystem.System.entity.academic.TeacherSubject;
 import com.SchoolManagementSystem.System.entity.user.Teacher;

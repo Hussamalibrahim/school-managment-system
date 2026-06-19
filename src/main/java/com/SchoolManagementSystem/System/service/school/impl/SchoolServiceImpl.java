@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.school.impl;
 
 import com.SchoolManagementSystem.System.dto.school.SchoolDto;
-import com.SchoolManagementSystem.System.dtoMapper.school.SchoolMapper;
+import com.SchoolManagementSystem.System.mapper.school.SchoolMapper;
 import com.SchoolManagementSystem.System.entity.school.School;
 import com.SchoolManagementSystem.System.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.System.service.school.SchoolService;
@@ -31,13 +31,11 @@ public class SchoolServiceImpl implements SchoolService {
                 .orElseThrow(() -> new RuntimeException("School not found"));
 
         school.setName(dto.name());
-        school.setSchoolType(dto.schoolType());
+        school.setSchoolCategory(dto.schoolCategory());
         school.setAddress(dto.address());
         school.setPhone(dto.phone());
         school.setLogoPath(dto.logoPath());
-        school.setSupportsPrimary(dto.supportsPrimary());
-        school.setSupportsMiddle(dto.supportsMiddle());
-        school.setSupportsSecondary(dto.supportsSecondary());
+        school.setSupportedStages(dto.supportedStages());
 
         school = repository.save(school);
         return SchoolMapper.toDto(school);

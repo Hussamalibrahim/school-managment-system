@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import com.SchoolManagementSystem.System.dto.school.AcademicYearDto;
-import com.SchoolManagementSystem.System.dtoMapper.school.AcademicYearMapper;
+import com.SchoolManagementSystem.System.mapper.school.AcademicYearMapper;
 import com.SchoolManagementSystem.System.entity.school.AcademicYear;
 import com.SchoolManagementSystem.System.repository.school.AcademicYearRepository;
 

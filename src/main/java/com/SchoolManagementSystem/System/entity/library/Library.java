@@ -14,12 +14,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Library extends BaseEntity
-{
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
+public class Library extends BaseEntity {
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "school_id", unique = true, nullable = false)
+    private School school;
 }

@@ -1,12 +1,12 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.enumeration.PeriodNumber;
 import com.SchoolManagementSystem.System.entity.user.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.DayOfWeek;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "class_schedules")
@@ -14,11 +14,11 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassSchedule extends BaseEntity
-{
+public class ClassSchedule extends BaseEntity {
+
     @ManyToOne
     @JoinColumn(name = "class_id")
-    private Class studentClass;
+    private SchoolClass schoolClass;
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
@@ -29,15 +29,9 @@ public class ClassSchedule extends BaseEntity
     private Teacher teacher;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
 
     @Column(name = "period_number")
-    private Integer periodNumber;
-
-    @Column(name = "start_time")
-    private LocalTime startTime;
-
-    @Column(name = "end_time")
-    private LocalTime endTime;
+    @Enumerated(EnumType.STRING)
+    private PeriodNumber periodNumber;
 }

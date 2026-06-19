@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.file.impl;
 
 import com.SchoolManagementSystem.System.dto.file.FileDto;
-import com.SchoolManagementSystem.System.dtoMapper.file.FileMapper;
+import com.SchoolManagementSystem.System.mapper.file.FileMapper;
 import com.SchoolManagementSystem.System.entity.file.File;
 import com.SchoolManagementSystem.System.repository.file.FileRepository;
 import com.SchoolManagementSystem.System.service.file.FileService;

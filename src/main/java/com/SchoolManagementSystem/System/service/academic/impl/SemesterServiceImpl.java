@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.SemesterDto;
-import com.SchoolManagementSystem.System.dtoMapper.academic.SemesterMapper;
+import com.SchoolManagementSystem.System.mapper.academic.SemesterMapper;
 import com.SchoolManagementSystem.System.entity.academic.Semester;
 import com.SchoolManagementSystem.System.repository.academic.SemesterRepository;
 import com.SchoolManagementSystem.System.service.academic.SemesterService;
