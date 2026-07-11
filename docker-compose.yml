@@ -1,26 +1,28 @@
 services:
 
-  mysql-db:
-    image: mysql:8.4
-    container_name: school_mysql
+  postgres-db:
+    image: postgres:17
+    container_name: school_postgres
 
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: school_management_system
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
 
     ports:
-      - "3306:3306"
+      - "5432:5432"
 
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
+
 
   app:
     build: .
 
+    container_name: school_app
+
     depends_on:
-      - mysql-db
+      - postgres-db
 
     ports:
       - "8081:8081"
@@ -28,11 +30,6 @@ services:
     env_file:
       - .env.docker
 
-    environment:
-      DB_HOST: mysql-db
-
-    volumes:
-      - ./src/main/resources/keys:/app/keys:ro
 
 volumes:
-  mysql-data:
+  postgres-data:
