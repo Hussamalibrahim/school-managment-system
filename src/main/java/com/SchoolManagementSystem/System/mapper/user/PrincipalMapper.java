@@ -15,7 +15,6 @@ public final class PrincipalMapper {
                 principal.getFirstName(),
                 principal.getLastName(),
                 principal.getPhone(),
-                principal.getEmail(),
                 principal.getAddress(),
                 principal.getStatus(),
                 principal.getHireDate(),
@@ -32,7 +31,6 @@ public final class PrincipalMapper {
         principal.setFirstName(dto.firstName());
         principal.setLastName(dto.lastName());
         principal.setPhone(dto.phone());
-        principal.setEmail(dto.email());
         principal.setAddress(dto.address());
         principal.setStatus(dto.status());
         principal.setHireDate(dto.hireDate());

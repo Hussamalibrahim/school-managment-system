@@ -50,7 +50,6 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setFirstName(dto.firstName());
         teacher.setLastName(dto.lastName());
         teacher.setPhone(dto.phone());
-        teacher.setEmail(dto.email());
         teacher.setAddress(dto.address());
         teacher.setStatus(dto.status());
         teacher.setHireDate(dto.hireDate());

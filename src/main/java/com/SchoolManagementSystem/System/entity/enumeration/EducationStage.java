@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.entity.enumeration;
 
 public enum EducationStage {
-    PRIMARY,
+    ELEMENTARY,
     MIDDLE,
-    SECONDARY
+    HIGH
 }

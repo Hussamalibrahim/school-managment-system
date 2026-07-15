@@ -6,6 +6,7 @@ import com.SchoolManagementSystem.System.dto.student.WarningDto;
 import com.SchoolManagementSystem.System.service.student.StudentGuardianService;
 import com.SchoolManagementSystem.System.service.student.WarningService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.function.EntityResponse;
 
@@ -18,6 +19,7 @@ public class StudentGuardianController extends BaseCrudController<StudentGuardia
     }
 
 
+    @PreAuthorize("hasRole('SECRETARY')")
     @PostMapping("/connect/{studentId}/{guardianId}")
     public ResponseEntity<StudentGuardianDto> connectStudentToGuardian(
             @PathVariable Long studentId,
@@ -38,6 +40,7 @@ public class StudentGuardianController extends BaseCrudController<StudentGuardia
                         .getGuardiansByStudent(studentId)
         );
     }
+    @PreAuthorize("hasRole('GUARDIAN')")
     @GetMapping("/guardian/{guardianId}")
     public ResponseEntity<?> getStudentsByGuardian(
             @PathVariable Long guardianId) {

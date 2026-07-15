@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * DTO for {@link Teacher}
  */
 public record TeacherDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-                         String nationalId, String firstName, String lastName, String phone, String email,
+                         String nationalId, String firstName, String lastName, String phone,
                          String address, String status, LocalDate hireDate,
                          String specialization) implements Serializable {
 }

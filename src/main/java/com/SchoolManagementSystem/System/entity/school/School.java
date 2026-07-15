@@ -2,7 +2,7 @@ package com.SchoolManagementSystem.System.entity.school;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.EducationStage;
-import com.SchoolManagementSystem.System.entity.enumeration.SchoolCategory;
+import com.SchoolManagementSystem.System.entity.enumeration.SchoolType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +31,16 @@ public class School extends BaseEntity
     @Column(name = "logo_path")
     private String logoPath;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "school_education_stages",
+            joinColumns = @JoinColumn(name = "school_id")
+    )
+    @Column(name = "education_stage")
     @Enumerated(EnumType.STRING)
-    @Column(name = "supported_stages")
-    private Set<EducationStage> supportedStages;
+    private Set<EducationStage> educationStages;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "school_category")
-    private SchoolCategory schoolCategory;
+    @Column(name = "school_type")
+    private SchoolType schoolType;
 }

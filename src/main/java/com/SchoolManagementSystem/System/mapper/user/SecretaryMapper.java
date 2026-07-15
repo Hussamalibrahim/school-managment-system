@@ -16,7 +16,6 @@ public final class SecretaryMapper {
                 secretary.getFirstName(),
                 secretary.getLastName(),
                 secretary.getPhone(),
-                secretary.getEmail(),
                 secretary.getAddress(),
                 secretary.getStatus(),
                 secretary.getHireDate(),
@@ -33,7 +32,6 @@ public final class SecretaryMapper {
         secretary.setFirstName(dto.firstName());
         secretary.setLastName(dto.lastName());
         secretary.setPhone(dto.phone());
-        secretary.setEmail(dto.email());
         secretary.setAddress(dto.address());
         secretary.setStatus(dto.status());
         secretary.setHireDate(dto.hireDate());

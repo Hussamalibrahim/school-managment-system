@@ -50,7 +50,6 @@ public class PrincipalServiceImpl implements PrincipalService {
         principal.setFirstName(dto.firstName());
         principal.setLastName(dto.lastName());
         principal.setPhone(dto.phone());
-        principal.setEmail(dto.email());
         principal.setAddress(dto.address());
         principal.setStatus(dto.status());
         principal.setHireDate(dto.hireDate());
@@ -99,7 +98,6 @@ public class PrincipalServiceImpl implements PrincipalService {
         teacher.setFirstName(request.firstName());
         teacher.setLastName(request.lastName());
         teacher.setPhone(request.phone());
-        teacher.setEmail(request.email());
         teacher.setAddress(request.address());
         teacher.setHireDate(request.hireDate());
         teacher.setSpecialization(request.specialization());
@@ -116,7 +114,6 @@ public class PrincipalServiceImpl implements PrincipalService {
         s.setFirstName(request.firstName());
         s.setLastName(request.lastName());
         s.setPhone(request.phone());
-        s.setEmail(request.email());
         s.setAddress(request.address());
         s.setHireDate(request.hireDate());
 
@@ -132,7 +129,6 @@ public class PrincipalServiceImpl implements PrincipalService {
         l.setFirstName(request.firstName());
         l.setLastName(request.lastName());
         l.setPhone(request.phone());
-        l.setEmail(request.email());
         l.setAddress(request.address());
         l.setHireDate(request.hireDate());
 

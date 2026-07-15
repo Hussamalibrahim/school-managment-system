@@ -5,6 +5,7 @@ import com.SchoolManagementSystem.System.security.service.UserDetailsServiceImpl
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -39,6 +40,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/teachers/**").hasRole("TEACHER")
                         .requestMatchers("/api/students/**").hasAnyRole("TEACHER", "PRINCIPAL")
                         .requestMatchers("/api/principal/**").hasRole("PRINCIPAL")
+
+                        .requestMatchers(HttpMethod.GET, "/api/school/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/school/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/school/**").hasRole("PRINCIPAL")
+//                      .requestMatchers(HttpMethod.DELETE, "/api/school/**").hasRole("PRINCIPAL")
                         .requestMatchers("/api/schedules/**").permitAll()
                         .anyRequest().authenticated()
                 )

@@ -21,8 +21,8 @@ public final class SchoolMapper {
                 school.getPhone(),
                 school.getLogoPath(),
 
-                school.getSupportedStages(),
-                school.getSchoolCategory()
+                school.getEducationStages(),
+                school.getSchoolType()
         );
     }
 
@@ -41,8 +41,8 @@ public final class SchoolMapper {
         school.setPhone(dto.phone());
         school.setLogoPath(dto.logoPath());
 
-        school.setSupportedStages(dto.supportedStages());
-        school.setSchoolCategory(dto.schoolCategory());
+        school.setEducationStages(dto.educationStages());
+        school.setSchoolType(dto.schoolType());
 
         return school;
     }

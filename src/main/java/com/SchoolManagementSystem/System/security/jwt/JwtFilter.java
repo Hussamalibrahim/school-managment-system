@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.security.jwt;
 
 
+import com.SchoolManagementSystem.System.security.service.JwtService;
 import com.SchoolManagementSystem.System.security.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,11 +1,14 @@
 package com.SchoolManagementSystem.System.security.controller;
 
-import com.SchoolManagementSystem.System.entity.AuthUser;
 import com.SchoolManagementSystem.System.security.dto.AuthRequest;
 import com.SchoolManagementSystem.System.security.dto.AuthResponse;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
-import com.SchoolManagementSystem.System.security.jwt.JwtService;
+import com.SchoolManagementSystem.System.security.dto.AuthUserDto;
+import com.SchoolManagementSystem.System.security.dto.RegisterRequest;
+import com.SchoolManagementSystem.System.security.service.AuthUserService;
+import com.SchoolManagementSystem.System.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ public class AuthController {
 
     private final AuthenticationManager authManager;
     private final AuthUserRepository repo;
+    private final AuthUserService authUserService;
     private final JwtService jwtService;
 
     @PostMapping("/login")
@@ -37,11 +41,15 @@ public class AuthController {
             throw e;
         }
 
-        AuthUser user = repo.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        AuthUserDto user = authUserService.findByEmail(request.email());
 
         String token = jwtService.generateToken(user);
 
-        return new AuthResponse(token, user.getRole().name(), user.getRefId());
+        return new AuthResponse(token, user.role().name(), user.refId());
+    }
+    @PostMapping("/principle-register")
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
+        authUserService.register(request);
+        return null;
     }
 }

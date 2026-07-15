@@ -34,7 +34,6 @@ public class SecretaryServiceImpl implements SecretaryService {
         secretary.setFirstName(dto.firstName());
         secretary.setLastName(dto.lastName());
         secretary.setPhone(dto.phone());
-        secretary.setEmail(dto.email());
         secretary.setAddress(dto.address());
         secretary.setStatus(dto.status());
         secretary.setHireDate(dto.hireDate());

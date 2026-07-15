@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.dto.school;
 
 import com.SchoolManagementSystem.System.entity.enumeration.EducationStage;
-import com.SchoolManagementSystem.System.entity.enumeration.SchoolCategory;
+import com.SchoolManagementSystem.System.entity.enumeration.SchoolType;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -17,7 +17,7 @@ public record SchoolDto(
         String phone,
         String logoPath,
 
-        Set<EducationStage> supportedStages,
-        SchoolCategory schoolCategory
+        Set<EducationStage> educationStages,
+        SchoolType schoolType
 ) {
 }

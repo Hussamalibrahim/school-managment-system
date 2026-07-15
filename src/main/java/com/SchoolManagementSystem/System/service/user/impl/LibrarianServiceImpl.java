@@ -34,7 +34,6 @@ public class LibrarianServiceImpl implements LibrarianService {
         librarian.setFirstName(dto.firstName());
         librarian.setLastName(dto.lastName());
         librarian.setPhone(dto.phone());
-        librarian.setEmail(dto.email());
         librarian.setAddress(dto.address());
         librarian.setStatus(dto.status());
         librarian.setHireDate(dto.hireDate());

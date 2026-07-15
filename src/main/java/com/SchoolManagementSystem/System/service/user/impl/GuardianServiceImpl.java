@@ -34,7 +34,6 @@ public class GuardianServiceImpl implements GuardianService {
         guardian.setFirstName(dto.firstName());
         guardian.setLastName(dto.lastName());
         guardian.setPhone(dto.phone());
-        guardian.setEmail(dto.email());
         guardian.setAddress(dto.address());
         guardian.setOccupation(dto.occupation());
 

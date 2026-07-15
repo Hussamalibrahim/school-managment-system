@@ -18,7 +18,6 @@ public final class TeacherMapper {
                 teacher.getFirstName(),
                 teacher.getLastName(),
                 teacher.getPhone(),
-                teacher.getEmail(),
                 teacher.getAddress(),
                 teacher.getStatus(),
                 teacher.getHireDate(),
@@ -33,7 +32,6 @@ public final class TeacherMapper {
         teacher.setFirstName(dto.firstName());
         teacher.setLastName(dto.lastName());
         teacher.setPhone(dto.phone());
-        teacher.setEmail(dto.email());
         teacher.setAddress(dto.address());
         teacher.setStatus(dto.status());
         teacher.setHireDate(dto.hireDate());

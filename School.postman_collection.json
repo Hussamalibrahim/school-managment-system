@@ -248,7 +248,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"role\": \"TEACHER\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"T-1031\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hassan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"0999999999\",\r\n  \"email\": \"ali@dtest.com\",// unique\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\",\r\n  \"specialization\": \"Math\"\r\n}\r\n// prinipel only",
+                  "raw": "{\r\n  \"role\": \"TEACHER\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"T-1031\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hassan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"0999999999\",\r\n  \"email\": \"ali@dtest.com\",// unique, requied\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\",\r\n  \"specialization\": \"Math\"\r\n}\r\n// prinipel only",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1119,7 +1119,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"admin\",\r\n  \"password\": \"admin123\"\r\n}\r\n// Created by system",
+              "raw": "{\r\n  \"email\": \"priciple@gmail.com\",\r\n  \"password\": \"123456\"\r\n}\r\n// Created by system",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1137,6 +1137,144 @@
                 "api",
                 "auth",
                 "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"firstName\": \"priciple\",\r\n  \"lastName\": \"priciple\",\r\n  \"nationalId\": \"123465852\",\r\n  \"email\": \"priciple@gmail.com\",\r\n  \"password\": \"123456\"  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/auth/principle-register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "auth",
+                "principle-register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "school",
+      "item": [
+        {
+          "name": "define-school",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{  \r\n  \"name\": \"school name\",\r\n  \"schoolType\": \"PUBLIC\", // [PUBLIC, PRIVATE]\r\n  \"educationStages\": [\"ELEMENTARY\",\"MIDDLE\"]// ELEMENTARY, MIDDLE, HIGH\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/school/define-school",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "school",
+                "define-school"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUFJJTkNJUEFMIiwicmVmSWQiOjIsInN1YiI6InByaWNpcGxlQGdtYWlsLmNvbSIsImlhdCI6MTc4NDE0NzQxMywiZXhwIjoxNzg0MjMzODEzfQ.Sfv6O52RvFk5ip_LiNZGgCdlL6WYpCRj69gRLUdxab4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"edit the name\",\r\n    \"address\": \"Syria Daraa\",\r\n    \"phone\": \"0984646\",\r\n    \"logoPath\": \"any where\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/school/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "school",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/school/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "school",
+                "2"
               ]
             }
           },

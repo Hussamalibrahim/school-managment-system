@@ -17,7 +17,6 @@ public final class GuardianMapper {
                 guardian.getFirstName(),
                 guardian.getLastName(),
                 guardian.getPhone(),
-                guardian.getEmail(),
                 guardian.getAddress(),
                 guardian.getOccupation(),
                 guardian.getCreatedAt(),
@@ -33,7 +32,6 @@ public final class GuardianMapper {
         guardian.setFirstName(dto.firstName());
         guardian.setLastName(dto.lastName());
         guardian.setPhone(dto.phone());
-        guardian.setEmail(dto.email());
         guardian.setAddress(dto.address());
         guardian.setOccupation(dto.occupation());
 

@@ -15,7 +15,6 @@ public final class LibrarianMapper {
                   librarian.getFirstName(),
                   librarian.getLastName(),
                   librarian.getPhone(),
-                  librarian.getEmail(),
                   librarian.getAddress(),
                   librarian.getStatus(),
                   librarian.getHireDate(),
@@ -32,7 +31,6 @@ public final class LibrarianMapper {
           librarian.setFirstName(dto.firstName());
           librarian.setLastName(dto.lastName());
           librarian.setPhone(dto.phone());
-          librarian.setEmail(dto.email());
           librarian.setAddress(dto.address());
           librarian.setStatus(dto.status());
           librarian.setHireDate(dto.hireDate());

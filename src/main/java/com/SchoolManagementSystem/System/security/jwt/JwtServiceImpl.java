@@ -1,6 +1,8 @@
 package com.SchoolManagementSystem.System.security.jwt;
 
 import com.SchoolManagementSystem.System.entity.AuthUser;
+import com.SchoolManagementSystem.System.security.dto.AuthUserDto;
+import com.SchoolManagementSystem.System.security.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class JwtService {
+public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret}")
     private String secret;
@@ -26,15 +28,15 @@ public class JwtService {
     }
 
     // CREATE TOKEN
-    public String generateToken(AuthUser user) {
+    public String generateToken(AuthUserDto user) {
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRole().name());
-        claims.put("refId", user.getRefId());
+        claims.put("role", user.role().name());
+        claims.put("refId", user.refId());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.getEmail())
+                .setSubject(user.email())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
