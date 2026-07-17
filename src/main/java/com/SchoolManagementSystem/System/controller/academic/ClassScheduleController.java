@@ -17,7 +17,6 @@ public class ClassScheduleController {
     private final ClassScheduleService classScheduleService;
 
     @PostMapping("/extra/{classId}")
-    @PreAuthorize("hasRole('PRINCIPAL')")
     public ClassScheduleDto addExtra(@PathVariable Long classId) {
         return classScheduleService.addExtraPeriod(classId);
     }
@@ -39,12 +38,12 @@ public class ClassScheduleController {
         return ResponseEntity.ok(classScheduleService.getByTeacher(teacherId));
 
     }
-    @PreAuthorize("hasRole('PRINCIPAL')")
     @PostMapping("/class/{classId}/extra-period")
     public ResponseEntity<ClassScheduleDto> addExtraPeriod(@PathVariable Long classId)
     {
         return ResponseEntity.ok(classScheduleService.addExtraPeriod(classId));
     }
+
     @PutMapping("/{scheduleId}/assign")
     public ResponseEntity<ClassScheduleDto> assignTeacher(
             @PathVariable Long scheduleId,

@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.System.security.controller;
 
+import com.SchoolManagementSystem.System.entity.enumeration.UserType;
 import com.SchoolManagementSystem.System.security.dto.AuthRequest;
 import com.SchoolManagementSystem.System.security.dto.AuthResponse;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
@@ -11,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationManager authManager;
-    private final AuthUserRepository repo;
     private final AuthUserService authUserService;
     private final JwtService jwtService;
 
@@ -51,5 +48,30 @@ public class AuthController {
     public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
         authUserService.register(request);
         return null;
+    }
+
+    @GetMapping("/deactivate-account/by-user")
+    public ResponseEntity<AuthUserDto> deactivateAccountByIdAndRole(
+            @RequestParam Long userId,
+            @RequestParam UserType userType){
+
+        return ResponseEntity.ok(authUserService.deactivateAccountByIdAndRole(userId, userType));
+    }
+    @GetMapping("/deactivate-account/by-email")
+    public ResponseEntity<AuthUserDto> deactivateAccountByEmail(@RequestParam String email){
+
+        return ResponseEntity.ok(authUserService.deactivateAccountByEmail(email));
+    }
+    @GetMapping("/activate-account/by-user")
+    public ResponseEntity<AuthUserDto> activateAccountByIdAndRole(
+            @RequestParam Long userId,
+            @RequestParam UserType userType){
+
+        return ResponseEntity.ok(authUserService.activateAccountByIdAndRole(userId, userType));
+    }
+    @GetMapping("/activate-account/by-email")
+    public ResponseEntity<AuthUserDto> activateAccountByEmail(@RequestParam String email){
+
+        return ResponseEntity.ok(authUserService.activateAccountByEmail(email));
     }
 }

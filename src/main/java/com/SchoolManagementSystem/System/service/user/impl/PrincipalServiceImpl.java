@@ -2,6 +2,7 @@ package com.SchoolManagementSystem.System.service.user.impl;
 
 import com.SchoolManagementSystem.System.dto.request.CreateUserRequest;
 import com.SchoolManagementSystem.System.dto.user.PrincipalDto;
+import com.SchoolManagementSystem.System.entity.enumeration.UserType;
 import com.SchoolManagementSystem.System.mapper.user.PrincipalMapper;
 import com.SchoolManagementSystem.System.entity.AuthUser;
 import com.SchoolManagementSystem.System.entity.user.Librarian;
@@ -146,5 +147,6 @@ public class PrincipalServiceImpl implements PrincipalService {
 
         authUserRepository.save(authUser);
     }
+
 }
 

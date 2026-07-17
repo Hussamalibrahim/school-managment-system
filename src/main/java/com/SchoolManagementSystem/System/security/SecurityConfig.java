@@ -36,17 +36,68 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/teachers/**").hasRole("TEACHER")
-                        .requestMatchers("/api/students/**").hasAnyRole("TEACHER", "PRINCIPAL")
-                        .requestMatchers("/api/principal/**").hasRole("PRINCIPAL")
+                                .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth/deactivate-account").hasRole("PRINCIPAL")
+                                .requestMatchers("/api/auth/activate-account").hasRole("PRINCIPAL")
+                                .requestMatchers("/api/principal/**").hasRole("PRINCIPAL")
 
-                        .requestMatchers(HttpMethod.GET, "/api/school/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/school/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/school/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/files/download/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/files/**").authenticated()
+
+                                .requestMatchers(HttpMethod.POST, "/api/files/upload/student").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.POST, "/api/files/upload/guardian").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.POST, "/api/files/upload/user").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.DELETE, "/api/files/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/files/owner").hasRole("SECRETARY")
+
+                                .requestMatchers(HttpMethod.POST,"/api/schedules/extra/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST,"/api/schedules/class/**").hasRole("PRINCIPAL")
+
+                                .requestMatchers(HttpMethod.POST,"/api/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.PUT,"/api/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.DELETE,"/api/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/subjects/**").authenticated()
+
+                                .requestMatchers(HttpMethod.POST,"/api/teacher-subjects/connect/*/*").hasRole("PRINCIPAL")
+
+                                .requestMatchers(HttpMethod.PUT,"/api/schedules/**").hasRole("PRINCIPAL")
+
+                                .requestMatchers(HttpMethod.GET,"/api/schedules/**").authenticated()
+
+                                .requestMatchers(HttpMethod.GET, "/api/classes/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST,"/api/classes/**").hasRole("PRINCIPAL")
+
+                                .requestMatchers(HttpMethod.GET,"/api/students/me").hasRole("STUDENT")
+                                .requestMatchers("/api/students/**").hasRole("SECRETARY")
+
+
+                                .requestMatchers(HttpMethod.GET, "/api/teacher").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/teacher/my-students").hasAnyRole("TEACHER", "SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/teacher/teacher/*/students").hasAnyRole("TEACHER", "SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/teacher/my-schedule").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/api/teacher/class/*").hasRole("TEACHER")
+
+                                .requestMatchers(HttpMethod.GET, "/api/teacher/me").hasRole("TEACHER")
+
+                                .requestMatchers(HttpMethod.POST, "/api/student-guardian/connect/*/*").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET,"/api/student-guardian/student/**").hasRole("SECRETARY")
+
+
+                                .requestMatchers(HttpMethod.GET,"/api/student-guardian/guardian/**").hasAnyRole("SECRETARY","GUARDIAN")
+
+                                .requestMatchers(HttpMethod.POST, "/api/guardians/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.PUT, "/api/guardians/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.DELETE, "/api/guardians/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET,"/api/guardians/me").hasRole("GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/guardians/**").hasRole("SECRETARY")
+
+                                .requestMatchers("/api/secretary/**").hasRole("SECRETARY")
+
+                                .requestMatchers(HttpMethod.GET, "/api/school/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/school/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/school/**").hasRole("PRINCIPAL")
 //                      .requestMatchers(HttpMethod.DELETE, "/api/school/**").hasRole("PRINCIPAL")
-                        .requestMatchers("/api/schedules/**").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(s ->
                         s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

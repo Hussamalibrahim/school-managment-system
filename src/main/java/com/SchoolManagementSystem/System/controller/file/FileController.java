@@ -1,42 +1,122 @@
 package com.SchoolManagementSystem.System.controller.file;
 
-
 import com.SchoolManagementSystem.System.dto.file.FileDto;
+import com.SchoolManagementSystem.System.dto.file.request.GuardianFileUploadRequest;
+import com.SchoolManagementSystem.System.dto.file.request.StudentFileUploadRequest;
+import org.springframework.security.access.AccessDeniedException;
+import com.SchoolManagementSystem.System.dto.file.request.UserFileUploadRequest;
+import com.SchoolManagementSystem.System.dto.file.response.DownloadFileResponse;
+import com.SchoolManagementSystem.System.entity.enumeration.FileOwnerType;
+import com.SchoolManagementSystem.System.security.UserPrincipal;
 import com.SchoolManagementSystem.System.service.file.FileService;
+import com.SchoolManagementSystem.System.service.student.StudentGuardianService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/files")
 @RequiredArgsConstructor
+@RequestMapping("/api/files")
 public class FileController {
 
-    private final FileService service;
+    private final StudentGuardianService studentGuardianService;
+    private final FileService fileService;
 
-    @PostMapping
-    public FileDto create(@RequestBody FileDto dto) {
-        return service.save(dto);
+    @PostMapping(value = "/upload/student", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<FileDto> uploadStudentFile(
+            @RequestPart("request") @Valid StudentFileUploadRequest request,
+            @RequestPart("file") MultipartFile file) {
+
+        return ResponseEntity.ok(fileService.uploadStudentFile(request, file));
     }
 
-    @PutMapping("/{id}")
-    public FileDto update(@PathVariable Long id, @RequestBody FileDto dto) {
-        return service.update(id, dto);
+    @PostMapping(value = "/upload/guardian", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<FileDto> uploadGuardianFile(
+            @RequestPart("request") @Valid GuardianFileUploadRequest request,
+            @RequestPart("file") MultipartFile file) {
+
+        return ResponseEntity.ok(fileService.uploadGuardianFile(request, file));
+    }
+
+    @PostMapping(value = "/upload/user", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<FileDto> uploadUserFile(
+            @RequestPart("request") @Valid UserFileUploadRequest request,
+            @RequestPart("file") MultipartFile file) {
+
+        return ResponseEntity.ok(fileService.uploadUserFile(request, file));
     }
 
     @GetMapping("/{id}")
-    public FileDto getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<FileDto> getById(@AuthenticationPrincipal Authentication auth,@PathVariable Long id) {
+        checkAuth(auth,id);
+
+        return ResponseEntity.ok(fileService.getById(id));
     }
 
-    @GetMapping
-    public List<FileDto> getAll() {
-        return service.getAll();
+    @GetMapping("/download/{id}")
+    public ResponseEntity<?> download(@AuthenticationPrincipal Authentication auth, @PathVariable Long id) {
+
+        DownloadFileResponse response =
+                fileService.download(id);
+
+        checkAuth(auth, id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(
+                        response.mimeType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" +
+                                response.originalName() + "\"")
+                .contentLength(response.fileSize())
+                .body(response.resource());
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        fileService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<List<FileDto>> getByOwner(
+            @RequestParam FileOwnerType ownerType,
+            @RequestParam Long ownerId) {
+
+        return ResponseEntity.ok(fileService.getByOwner(ownerType, ownerId));
+    }
+
+    private void checkAuth(Authentication auth, Long fileId) {
+
+        Long id = fileService.getById(fileId).ownerId();
+        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
+
+        if (user.hasRole("SECRETARY")) {
+            return;
+        }
+
+        if (id.equals(user.getRefId())) {
+            return;
+        }
+
+        boolean haveSon = studentGuardianService
+                .getStudentsByGuardian(user.getRefId())
+                .stream()
+                .anyMatch(student -> student.id().equals(id));
+
+        if (haveSon) {
+            return;
+        }
+
+
+        throw new AccessDeniedException("You are not authorized to view this information.");
     }
 }

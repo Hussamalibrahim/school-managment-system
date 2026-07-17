@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class TeacherController {
     private final TeacherService teacherService;
     private final ClassScheduleService classScheduleService;
 
-    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/me")
     public ResponseEntity<TeacherDto> me(Authentication auth) {
 
@@ -30,14 +30,12 @@ public class TeacherController {
         return ResponseEntity.ok(teacherService.getById(user.getRefId()));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/my-students")
     public ResponseEntity<List<StudentDto>> myStudents(Authentication auth) {
         UserPrincipal user = (UserPrincipal) auth.getPrincipal();
         return ResponseEntity.ok(classScheduleService.getStudentsByTeacher(user.getRefId()));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/my-schedule")
     public ResponseEntity<List<ClassScheduleDto>> mySchedule(Authentication auth) {
 
@@ -45,13 +43,11 @@ public class TeacherController {
 
         return ResponseEntity.ok(classScheduleService.getByTeacher(user.getRefId()));
     }
-    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/class/{classId}")
     public ResponseEntity<List<ClassScheduleDto>> getByClass(@PathVariable Long classId)
     {
         return ResponseEntity.ok(classScheduleService.getByClass(classId));
     }
-    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/teacher/{teacherId}/students")
     public ResponseEntity<List<StudentDto>> getStudentsByTeacher(@PathVariable Long teacherId)
     {

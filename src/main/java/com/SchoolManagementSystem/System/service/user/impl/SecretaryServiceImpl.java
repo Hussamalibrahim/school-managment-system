@@ -4,8 +4,11 @@ import com.SchoolManagementSystem.System.dto.user.SecretaryDto;
 import com.SchoolManagementSystem.System.mapper.user.SecretaryMapper;
 import com.SchoolManagementSystem.System.entity.user.Secretary;
 import com.SchoolManagementSystem.System.repository.user.SecretaryRepository;
+import com.SchoolManagementSystem.System.security.AuthUserRepository;
+import com.SchoolManagementSystem.System.security.service.AuthUserService;
 import com.SchoolManagementSystem.System.service.user.SecretaryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +17,16 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class SecretaryServiceImpl implements SecretaryService {
 
+    private final AuthUserRepository authUserRepository;
     private final SecretaryRepository repository;
 
+    //should remove it
     @Override
     public SecretaryDto save(SecretaryDto dto) {
-        Secretary secretary = SecretaryMapper.toEntity(dto);
-        secretary = repository.save(secretary);
-        return SecretaryMapper.toDto(secretary);
+     return null;
     }
 
     @Override

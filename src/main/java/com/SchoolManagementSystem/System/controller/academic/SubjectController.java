@@ -5,8 +5,7 @@ import com.SchoolManagementSystem.System.service.academic.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,26 +13,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/subjects")
 public class SubjectController {
-    SubjectService subjectService;
+    private final SubjectService subjectService;
 
-    @PreAuthorize("hasRole('PRINCIPAL')")
-    public ResponseEntity<SubjectDto> create(SubjectDto dto) {
+    @PostMapping
+    public ResponseEntity<SubjectDto> create(@RequestBody SubjectDto dto) {
         return ResponseEntity.ok(subjectService.save(dto));
     }
-    @PreAuthorize("hasRole('PRINCIPAL')")
-    public ResponseEntity<SubjectDto> update(Long id, SubjectDto dto) {
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SubjectDto> update(@PathVariable Long id, @RequestBody SubjectDto dto) {
         return ResponseEntity.ok(subjectService.update(id, dto));
     }
-
-    public ResponseEntity<SubjectDto> getById(Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<SubjectDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(subjectService.getById(id));
     }
 
+    @GetMapping
     public ResponseEntity<List<SubjectDto>> getAll() {
         return ResponseEntity.ok(subjectService.getAll());
     }
 
-    public void delete(Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         subjectService.delete(id);
     }
 }

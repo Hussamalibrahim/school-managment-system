@@ -16,7 +16,6 @@ public class SchoolClassController
 {
     private final SchoolClassService schoolClassService;
 
-    @PreAuthorize("hasRole('PRINCIPAL')")
     @PostMapping
     public ResponseEntity<SchoolClassDto> create(@RequestBody SchoolClassDto dto)
     {
