@@ -19,6 +19,16 @@
                 "disableBodyPruning": true
               },
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "body": {
@@ -51,6 +61,16 @@
                 "disableBodyPruning": true
               },
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "body": {
@@ -73,75 +93,6 @@
                     "api",
                     "students",
                     "3"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "save",
-              "request": {
-                "auth": {
-                  "type": "jwt",
-                  "jwt": [
-                    {
-                      "key": "algorithm",
-                      "value": "HS256",
-                      "type": "string"
-                    },
-                    {
-                      "key": "isSecretBase64Encoded",
-                      "value": false,
-                      "type": "boolean"
-                    },
-                    {
-                      "key": "payload",
-                      "value": "{}",
-                      "type": "string"
-                    },
-                    {
-                      "key": "addTokenTo",
-                      "value": "header",
-                      "type": "string"
-                    },
-                    {
-                      "key": "headerPrefix",
-                      "value": "Bearer",
-                      "type": "string"
-                    },
-                    {
-                      "key": "queryParamKey",
-                      "value": "token",
-                      "type": "string"
-                    },
-                    {
-                      "key": "header",
-                      "value": "{}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"registrationNumber\": \"ST001\",\r\n  \"firstName\": \"Ahmad\",\r\n  \"lastName\": \"Ali\",\r\n  \"gender\": \"Male\",\r\n  \"dateOfBirth\": \"2010-05-15\",\r\n  \"address\": \"Damascus\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2024-09-01\",\r\n  \"phone\": \"0999999999\",\r\n  \"notes\": \"Excellent student\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8081/api/students",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students"
                   ]
                 }
               },
@@ -220,6 +171,37 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "me-profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_1dv1}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/students/me",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "students",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         }
@@ -231,6 +213,176 @@
         {
           "name": "principal",
           "item": [
+            {
+              "name": "deactivate",
+              "item": [
+                {
+                  "name": "byEmail",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{json_web_token_0w1u}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/auth/deactivate-account/by-email?email=aliss@test.com",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "auth",
+                        "deactivate-account",
+                        "by-email"
+                      ],
+                      "query": [
+                        {
+                          "key": "email",
+                          "value": "aliss@test.com"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "By-id-and-type",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authorization_secret}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/auth/deactivate-account/by-user?userId=1&userType=SECRETARY",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "auth",
+                        "deactivate-account",
+                        "by-user"
+                      ],
+                      "query": [
+                        {
+                          "key": "userId",
+                          "value": "1"
+                        },
+                        {
+                          "key": "userType",
+                          "value": "SECRETARY"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "activate",
+              "item": [
+                {
+                  "name": "byEmail",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_secret_0w1u}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/auth/activate-account/by-email?email=aliss@test.com",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "auth",
+                        "activate-account",
+                        "by-email"
+                      ],
+                      "query": [
+                        {
+                          "key": "email",
+                          "value": "aliss@test.com"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "By-id-and-type",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authorization_secret}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:8081/api/auth/activate-account/by-user?userId=1&userType=SECRETARY",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "8081",
+                      "path": [
+                        "api",
+                        "auth",
+                        "activate-account",
+                        "by-user"
+                      ],
+                      "query": [
+                        {
+                          "key": "userId",
+                          "value": "1"
+                        },
+                        {
+                          "key": "userType",
+                          "value": "SECRETARY"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
             {
               "name": "create-teacher",
               "request": {
@@ -308,6 +460,14 @@
                     "create-user"
                   ]
                 }
+              },
+              "response": []
+            },
+            {
+              "name": "me-profile",
+              "request": {
+                "method": "GET",
+                "header": []
               },
               "response": []
             }
@@ -489,7 +649,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{authorization_secret}}",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
                       "type": "string"
                     }
                   ]
@@ -498,7 +658,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"school\": { \"id\": 1 },\r\n  \"studentClass\": { \"id\": 1 },\r\n  \"registrationNumber\": \"S-1001\",\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Ahmed\",\r\n  \"gender\": \"MALE\",\r\n  \"dateOfBirth\": \"2010-05-10\",\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2026-01-01\",\r\n  \"phone\": \"0790000000\",\r\n  \"notes\": \"Good student\"\r\n}",
+                  "raw": "{\r\n  \"registrationNumber\": \"S-12010331\",\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Ahmed\",\r\n  \"phone\": \"0790000000\",\r\n  \"email\": \"te1st132@test.com\",// unique\r\n  \"gender\": \"MALE\",\r\n  \"dateOfBirth\": \"2010-05-10\",\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2026-01-01\",\r\n  \"notes\": \"Good student\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -529,7 +689,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{authorization_secret}}",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
                       "type": "string"
                     }
                   ]
@@ -538,7 +698,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"nationalId\": \"1234562789\",\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"0791111111\",\r\n  \"email\": \"test@test.com\",\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"occupation\": \"Engineer\"\r\n}",
+                  "raw": "{\r\n  \"nationalId\": \"1234256217289\",// unique\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"0791111111\",\r\n  \"email\": \"testt@test.com\",// unique\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"occupation\": \"Engineer\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -586,7 +746,7 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:8081/api/secretary/connect?studentId=13&guardianId=1&primary=true",
+                  "raw": "http://localhost:8081/api/secretary/connect?studentId=2&guardianId=1&primary=true",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -600,7 +760,7 @@
                   "query": [
                     {
                       "key": "studentId",
-                      "value": "13"
+                      "value": "2"
                     },
                     {
                       "key": "guardianId",
@@ -610,6 +770,134 @@
                       "key": "primary",
                       "value": "true"
                     }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "guardians",
+          "item": [
+            {
+              "name": "get-all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "me-profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/guardians/me",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "guardians",
+                    "me"
                   ]
                 }
               },
@@ -636,7 +924,7 @@
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "{{authorization_secret}}",
+                          "value": "{{supabase_service_role_api_key_0uw0}}",
                           "type": "string"
                         }
                       ]
@@ -754,14 +1042,7 @@
                   },
                   "request": {
                     "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{authorization_secret}}",
-                          "type": "string"
-                        }
-                      ]
+                      "type": "noauth"
                     },
                     "method": "GET",
                     "header": [],
@@ -796,14 +1077,7 @@
                   },
                   "request": {
                     "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{authorization_secret}}",
-                          "type": "string"
-                        }
-                      ]
+                      "type": "noauth"
                     },
                     "method": "GET",
                     "header": [],
@@ -1076,6 +1350,39 @@
               "response": []
             }
           ]
+        },
+        {
+          "name": "connect-teacher-to-subject",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0uw0}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/teacher-subjects/connect/1/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "teacher-subjects",
+                "connect",
+                "1",
+                "1"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1089,7 +1396,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"aliss@test.com\",\r\n  \"password\": \"123456\"\r\n}\r\n// created by principal",
+              "raw": "{\r\n  \"email\": \"aliss@test.com\",\r\n//   \"email\": \"ali@dtest.com\", \r\n  \"password\": \"123456\"\r\n}\r\n// created by principal",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1171,6 +1478,36 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "student-log",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"te1st132@test.com\",\r\n  \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -1215,7 +1552,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUFJJTkNJUEFMIiwicmVmSWQiOjIsInN1YiI6InByaWNpcGxlQGdtYWlsLmNvbSIsImlhdCI6MTc4NDE0NzQxMywiZXhwIjoxNzg0MjMzODEzfQ.Sfv6O52RvFk5ip_LiNZGgCdlL6WYpCRj69gRLUdxab4",
+                  "value": "{{authorization_secret}}",
                   "type": "string"
                 }
               ]
@@ -1281,6 +1618,334 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "file",
+      "item": [
+        {
+          "name": "upload",
+          "item": [
+            {
+              "name": "file-to-student",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "request",
+                      "value": "{\n  \"studentId\": 1,\n  \"fileType\": \"PROFILE_IMAGE\"\n}",
+                      "type": "text",
+                      "uuid": "aa128a68-de69-4dd9-832c-71a8d1d9cf9d",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "0ceafa5c-7596-446e-8637-cb5027ba19c0",
+                      "contentType": "image/png",
+                      "src": "/D:/University/بنيان 1/نظري/3erk6ksyhcpf1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/files/upload/student",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "files",
+                    "upload",
+                    "student"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "file-to-guardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "request",
+                      "value": "{\n  \"guardianId\": 1,\n  \"fileType\": \"IMAGE\"\n}",
+                      "type": "text",
+                      "uuid": "aa128a68-de69-4dd9-832c-71a8d1d9cf9d",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "0ceafa5c-7596-446e-8637-cb5027ba19c0",
+                      "contentType": "image/png",
+                      "src": "/D:/University/بنيان 1/نظري/3erk6ksyhcpf1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/files/upload/guardian",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "files",
+                    "upload",
+                    "guardian"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "file-to-user",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "request",
+                      "value": "{\n  \"employeeId\": 1,\n  \"employeeType\": \"TEACHER\",\n  \"fileType\": \"IMAGE\"\n}",
+                      "type": "text",
+                      "uuid": "aa128a68-de69-4dd9-832c-71a8d1d9cf9d",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "0ceafa5c-7596-446e-8637-cb5027ba19c0",
+                      "contentType": "image/png",
+                      "src": "/D:/University/بنيان 1/نظري/3erk6ksyhcpf1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/files/upload/user",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "files",
+                    "upload",
+                    "user"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "get-file-by-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0yzh}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/files/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "files",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "see-file-owner",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0yzh}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/files/owner?ownerType=STUDENT&ownerId=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "files",
+                "owner"
+              ],
+              "query": [
+                {
+                  "key": "ownerType",
+                  "value": "STUDENT"
+                },
+                {
+                  "key": "ownerId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "download-file",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{json_web_token_1auz}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/files/download/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "files",
+                "download",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-file",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_1auz}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/files/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "files",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "supabase_service_role_api_key_0yzh",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1auz",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_1auz",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0w1u",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_0uw0",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1dv1",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_1dv1",
+      "secret": true
     }
   ]
 }
