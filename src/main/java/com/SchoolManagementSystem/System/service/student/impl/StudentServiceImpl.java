@@ -1,16 +1,18 @@
 package com.SchoolManagementSystem.System.service.student.impl;
 
+import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.entity.AuthUser;
 import com.SchoolManagementSystem.System.entity.enumeration.Role;
-import com.SchoolManagementSystem.System.entity.user.Guardian;
-import com.SchoolManagementSystem.System.mapper.file.FileMapper;
+import com.SchoolManagementSystem.System.entity.enumeration.Semester;
+import com.SchoolManagementSystem.System.mapper.academic.SubjectMapper;
 import com.SchoolManagementSystem.System.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.System.entity.student.Student;
 import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
+import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
+import com.SchoolManagementSystem.System.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
-import com.SchoolManagementSystem.System.security.dto.AuthRequestGuardian;
 import com.SchoolManagementSystem.System.security.dto.AuthRequestStudent;
 import com.SchoolManagementSystem.System.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ public class StudentServiceImpl implements StudentService {
     private final PasswordEncoder passwordEncoder;
     private final StudentRepository studentRepository;
     private final SchoolClassRepository schoolClassRepository;
+    private final SubjectRepository subjectRepository;
+    private final SchoolRepository schoolRepository;
 
     @Override
     public StudentDto assignClass(Long studentId, Long classId)
@@ -70,7 +74,6 @@ public class StudentServiceImpl implements StudentService {
         student.setGradeLevel(authRequestStudent.gradeLevel());
         student.setDateOfBirth(authRequestStudent.dateOfBirth());
         student.setAddress(authRequestStudent.address());
-        student.setStatus(authRequestStudent.status());
         student.setEnrollmentDate(authRequestStudent.enrollmentDate());
         student.setNotes(authRequestStudent.notes());
 
@@ -117,8 +120,26 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
     }
 
+    public List<SubjectNameDto> getNamesSubjectByGradeAndSemester(long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+
+        return subjectRepository// Semester.FIRST WILL BY Schoolrepo.findById(student,getId)
+                .findByGradeLevelAndSemester(student.getGradeLevel(), Semester.FIRST)
+                .stream()
+                .map(SubjectMapper::toNameDto)
+                .toList();
+    }
     @Override
     public void delete(Long id) {
         studentRepository.deleteById(id);
+    }
+
+
+    @Override
+    public List<StudentDto> getStudentsByClass_Id(Long id) {
+        return studentRepository.findByStudentSchoolClass_Id(id)
+                .stream()
+                .map(StudentMapper::toDto)
+                .toList();
     }
 }

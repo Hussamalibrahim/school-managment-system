@@ -1,60 +1,174 @@
 package com.SchoolManagementSystem.System.service.student.impl;
 
 import com.SchoolManagementSystem.System.dto.student.AttendanceDto;
-import com.SchoolManagementSystem.System.mapper.student.AttendanceMapper;
+import com.SchoolManagementSystem.System.dto.student.request.AttendanceCreateRequest;
+import com.SchoolManagementSystem.System.dto.student.request.AttendanceRequest;
+import com.SchoolManagementSystem.System.dto.student.request.StudentAttendanceRequest;
 import com.SchoolManagementSystem.System.entity.student.Attendance;
+import com.SchoolManagementSystem.System.entity.student.Student;
+import com.SchoolManagementSystem.System.mapper.student.AttendanceMapper;
 import com.SchoolManagementSystem.System.repository.student.AttendanceRepository;
+import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.service.student.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class AttendanceServiceImpl implements AttendanceService {
 
-    private final AttendanceRepository repository;
+    private final AttendanceRepository attendanceRepository;
+    private final StudentRepository studentRepository;
 
     @Override
-    public AttendanceDto save(AttendanceDto dto) {
-        Attendance attendance = AttendanceMapper.toEntity(dto);
-        attendance = repository.save(attendance);
-        return AttendanceMapper.toDto(attendance);
+    public AttendanceDto save(AttendanceCreateRequest request) {
+
+        Student student = studentRepository.findById(request.studentId())
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        if (request.attendanceDate().getDayOfWeek() == DayOfWeek.FRIDAY
+                || request.attendanceDate().getDayOfWeek() == DayOfWeek.SATURDAY) {
+            throw new RuntimeException("Cannot record attendance on Friday or Saturday.");
+        }
+
+        if (attendanceRepository.existsByStudentIdAndAttendanceDate(
+                request.studentId(),
+                request.attendanceDate())) {
+
+            throw new RuntimeException("Attendance already exists for this student.");
+        }
+
+        Attendance attendance = new Attendance();
+        attendance.setStudent(student);
+        attendance.setAttendanceDate(request.attendanceDate());
+        attendance.setAttendanceStatus(request.attendanceStatus());
+
+        return AttendanceMapper.toDto(
+                attendanceRepository.save(attendance)
+        );
     }
 
     @Override
-    public AttendanceDto update(Long id, AttendanceDto dto) {
-        Attendance attendance = repository.findById(id)
+    public AttendanceDto update(Long id, AttendanceCreateRequest request) {
+
+        Attendance attendance = attendanceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Attendance not found"));
 
-        attendance.setAttendanceDate(dto.attendanceDate());
-        attendance.setAttendanceStatus(dto.attendanceStatus());
+        Student student = studentRepository.findById(request.studentId())
+                .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        attendance = repository.save(attendance);
-        return AttendanceMapper.toDto(attendance);
+        if (request.attendanceDate().getDayOfWeek() == DayOfWeek.FRIDAY
+                || request.attendanceDate().getDayOfWeek() == DayOfWeek.SATURDAY) {
+            throw new RuntimeException("Cannot record attendance on Friday or Saturday.");
+        }
+        Attendance existing = attendanceRepository
+                .findByStudentIdAndAttendanceDate(
+                        request.studentId(),
+                        request.attendanceDate());
+
+        if (existing != null && !existing.getId().equals(id)) {
+            throw new RuntimeException("Attendance already exists for this student.");
+        }
+
+        attendance.setStudent(student);
+        attendance.setAttendanceDate(request.attendanceDate());
+        attendance.setAttendanceStatus(request.attendanceStatus());
+
+        return AttendanceMapper.toDto(attendanceRepository.save(attendance));
     }
 
     @Override
+    public void delete(Long id) {
+
+        Attendance attendance = attendanceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Attendance not found"));
+
+        attendanceRepository.delete(attendance);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public AttendanceDto getById(Long id) {
-        return repository.findById(id)
-                .map(AttendanceMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Attendance not found"));
+
+        return AttendanceMapper.toDto(
+                attendanceRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Attendance not found"))
+        );
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AttendanceDto> getAll() {
-        return repository.findAll()
+
+        return attendanceRepository.findAll()
                 .stream()
                 .map(AttendanceMapper::toDto)
                 .toList();
     }
 
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    @Transactional(readOnly = true)
+    public List<AttendanceDto> getStudentAttendance(Long studentId) {
+
+        return attendanceRepository
+                .findByStudentIdOrderByAttendanceDateDesc(studentId)
+                .stream()
+                .map(AttendanceMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttendanceDto> getMyAttendance(Long studentId) {
+
+        LocalDate today = LocalDate.now();
+        LocalDate from = today.minusDays(6);
+
+        return attendanceRepository
+                .findByStudentIdAndAttendanceDateBetweenOrderByAttendanceDateDesc(
+                        studentId,
+                        from,
+                        today
+                )
+                .stream()
+                .map(AttendanceMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public void saveAttendance(AttendanceRequest request) {
+
+        if (request.attendanceDate().getDayOfWeek() == DayOfWeek.FRIDAY
+                || request.attendanceDate().getDayOfWeek() == DayOfWeek.SATURDAY) {
+            throw new RuntimeException("Cannot record attendance on Friday or Saturday.");
+        }
+
+        for (StudentAttendanceRequest studentRequest : request.students()) {
+
+            Student student = studentRepository.findById(studentRequest.studentId())
+                    .orElseThrow(() -> new RuntimeException("Student not found"));
+
+            if (attendanceRepository.existsByStudentIdAndAttendanceDate(
+                    student.getId(),
+                    request.attendanceDate())) {
+
+                throw new RuntimeException(
+                        "Attendance already exists for student: "
+                                + student.getFirstName() + " " + student.getLastName());
+            }
+
+            Attendance attendance = new Attendance();
+            attendance.setStudent(student);
+            attendance.setAttendanceDate(request.attendanceDate());
+            attendance.setAttendanceStatus(studentRequest.attendanceStatus());
+
+            attendanceRepository.save(attendance);
+        }
     }
 }

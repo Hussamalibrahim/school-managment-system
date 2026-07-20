@@ -67,23 +67,41 @@ public class StudentGuardianServiceImpl implements StudentGuardianService {
         studentGuardianRepository.deleteById(id);
     }
 
-    public StudentGuardianDto connectStudentToGuardian(Long studentId, Long guardianId,Boolean primaryGuardian)
-    {
-        if (studentGuardianRepository.existsByStudentIdAndGuardianId(studentId, guardianId))
-        {
-            throw new RuntimeException("Student already linked to this guardian");
+    @Override
+    public StudentGuardianDto connectStudentToGuardian(Long studentId,
+                                                       Long guardianId,
+                                                       Boolean primaryGuardian) {
+
+        if (studentGuardianRepository.existsByStudentIdAndGuardianId(studentId, guardianId)) {
+            throw new RuntimeException("This guardian is already connected to this student.");
         }
-        Student student = studentRepository.findById(studentId).orElseThrow();
-        Guardian guardian = guardianRepository.findById(guardianId).orElseThrow();
 
-        StudentGuardian sg = new StudentGuardian();
-        sg.setStudent(student);
-        sg.setGuardian(guardian);
-        sg.setPrimaryGuardian(primaryGuardian);
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        sg = studentGuardianRepository.save(sg);
+        Guardian guardian = guardianRepository.findById(guardianId)
+                .orElseThrow(() -> new RuntimeException("Guardian not found"));
 
-        return StudentGuardianMapper.toDto(sg);
+        // Each student can have only one primary guardian
+        if (Boolean.TRUE.equals(primaryGuardian)) {
+
+            boolean hasPrimaryGuardian = studentGuardianRepository.findByStudentId(studentId)
+                    .stream()
+                    .anyMatch(StudentGuardian::getPrimaryGuardian);
+
+            if (hasPrimaryGuardian) {
+                throw new RuntimeException("This student already has a primary guardian.");
+            }
+        }
+
+        StudentGuardian studentGuardian = new StudentGuardian();
+        studentGuardian.setStudent(student);
+        studentGuardian.setGuardian(guardian);
+        studentGuardian.setPrimaryGuardian(primaryGuardian);
+
+        studentGuardian = studentGuardianRepository.save(studentGuardian);
+
+        return StudentGuardianMapper.toDto(studentGuardian);
     }
 
     @Override
@@ -103,6 +121,23 @@ public class StudentGuardianServiceImpl implements StudentGuardianService {
                 .stream()
                 .map(StudentGuardian::getStudent)
                 .map(StudentMapper::toDto)
+                .toList();
+    }
+    @Override
+    public List<StudentDto> getStudentsWithoutGuardian() {
+
+        return studentRepository.findStudentsWithoutGuardian()
+                .stream()
+                .map(StudentMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<GuardianDto> getGuardiansWithoutStudents() {
+
+        return guardianRepository.findGuardiansWithoutStudents()
+                .stream()
+                .map(GuardianMapper::toDto)
                 .toList();
     }
 }

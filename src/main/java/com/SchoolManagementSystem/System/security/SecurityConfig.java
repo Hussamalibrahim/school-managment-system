@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth/principle-register").permitAll()
                                 .requestMatchers("/api/auth/deactivate-account").hasRole("PRINCIPAL")
                                 .requestMatchers("/api/auth/activate-account").hasRole("PRINCIPAL")
                                 .requestMatchers("/api/principal/**").hasRole("PRINCIPAL")
@@ -56,6 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/api/subjects/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.PUT,"/api/subjects/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.DELETE,"/api/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/subjects/search/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.GET, "/api/subjects/**").authenticated()
 
                                 .requestMatchers(HttpMethod.POST,"/api/teacher-subjects/connect/*/*").hasRole("PRINCIPAL")
@@ -64,10 +66,13 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET,"/api/schedules/**").authenticated()
 
+                                .requestMatchers(HttpMethod.GET, "/api/classes/student/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET, "/api/classes/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.POST,"/api/classes/**").hasRole("PRINCIPAL")
 
+                                .requestMatchers(HttpMethod.GET,"/api/students/me-attendance").hasRole("STUDENT")
                                 .requestMatchers(HttpMethod.GET,"/api/students/me").hasRole("STUDENT")
+                                .requestMatchers(HttpMethod.GET,"/api/students/me-subject").hasRole("STUDENT")
                                 .requestMatchers("/api/students/**").hasRole("SECRETARY")
 
 
@@ -84,6 +89,7 @@ public class SecurityConfig {
 
 
                                 .requestMatchers(HttpMethod.GET,"/api/student-guardian/guardian/**").hasAnyRole("SECRETARY","GUARDIAN")
+                                //only guardian can see his/her sons
 
                                 .requestMatchers(HttpMethod.POST, "/api/guardians/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.PUT, "/api/guardians/**").hasRole("SECRETARY")
@@ -92,6 +98,12 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/guardians/**").hasRole("SECRETARY")
 
                                 .requestMatchers("/api/secretary/**").hasRole("SECRETARY")
+
+                                .requestMatchers(HttpMethod.GET,"/api/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.PUT,"/api/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.POST,"/api/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.DELETE,"/api/attendance/**").hasRole("SECRETARY")
+
 
                                 .requestMatchers(HttpMethod.GET, "/api/school/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/school/**").permitAll()

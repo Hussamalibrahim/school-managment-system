@@ -34,12 +34,11 @@ public class GuardianServiceImpl implements GuardianService {
     public void save(AuthRequestGuardian authRequestGuardian) {
 
         if (authUserRepository.findByEmail(authRequestGuardian.email()).isPresent()) {
-            log.info("Principal already exists");
             throw new RuntimeException("Email already exists");
         }
 
         if (repository.findByNationalId(authRequestGuardian.nationalId()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("national already exists");
         }
 
         Guardian guardian = new Guardian();

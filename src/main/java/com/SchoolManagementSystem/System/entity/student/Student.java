@@ -52,16 +52,13 @@ public class Student extends BaseEntity
     @Column(name = "address")
     private String address;
 
-    @Column(name = "status")
-    private String status;
-
-    @Column(name = "enrollment_date")
-    private LocalDate enrollmentDate;
-
     @Column(name = "phone")
     private String phone;
 
     @Column(name = "notes")
-    private String notes;
+    private String notes;// create later
+
+    @Column(name = "enrollment_date")
+    private LocalDate enrollmentDate;// create later
 
 }

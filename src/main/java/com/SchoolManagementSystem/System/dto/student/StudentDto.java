@@ -24,7 +24,6 @@ public record StudentDto(
 
         LocalDate dateOfBirth,
         String address,
-        String status,
         LocalDate enrollmentDate,
         String phone,
         String notes

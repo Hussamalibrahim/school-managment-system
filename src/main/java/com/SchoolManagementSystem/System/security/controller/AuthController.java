@@ -9,11 +9,13 @@ import com.SchoolManagementSystem.System.security.dto.RegisterRequest;
 import com.SchoolManagementSystem.System.security.service.AuthUserService;
 import com.SchoolManagementSystem.System.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -46,8 +48,9 @@ public class AuthController {
     }
     @PostMapping("/principle-register")
     public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
+         log.info(request.toString());
         authUserService.register(request);
-        return null;
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/deactivate-account/by-user")

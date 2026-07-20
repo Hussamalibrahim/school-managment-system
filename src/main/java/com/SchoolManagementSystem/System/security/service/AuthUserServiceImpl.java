@@ -32,7 +32,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     public AuthUserDto findByEmail(String email) {
 
         Optional<AuthUser> authUser = authUserRepository.findByEmail(email);
-        return authUser.map(AuthUserMapper::toDto).orElse(null);
+        return authUser.map(AuthUserMapper::toDto).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override

@@ -12,22 +12,28 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "attendance")
+@Table(
+        name = "attendance",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = {"student_id", "attendance_date"}
+                )
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Attendance extends BaseEntity
-{
+public class Attendance extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @Column(name = "attendance_date")
+    @Column(name = "attendance_date", nullable = false)
     private LocalDate attendanceDate;
 
-    @Column(name = "attendance_Status")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "attendance_status", nullable = false)
     private AttendanceStatus attendanceStatus;
-
 }

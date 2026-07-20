@@ -1,16 +1,15 @@
 package com.SchoolManagementSystem.System.controller.student;
 
-import com.SchoolManagementSystem.System.controller.BaseCrudController;
+import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
+import com.SchoolManagementSystem.System.dto.student.AttendanceDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
-import com.SchoolManagementSystem.System.dto.user.TeacherDto;
 import com.SchoolManagementSystem.System.security.UserPrincipal;
-import com.SchoolManagementSystem.System.security.dto.AuthRequestStudent;
+import com.SchoolManagementSystem.System.service.student.AttendanceService;
 import com.SchoolManagementSystem.System.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +21,8 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final AttendanceService attendanceService;
+
 
     @PutMapping("/{studentId}/assign-class/{classId}")
     public ResponseEntity<StudentDto> assignClass(
@@ -60,5 +61,22 @@ public class StudentController {
         log.info(user.getAuthorities().toString());
 
         return ResponseEntity.ok(studentService.getById(user.getRefId()));
+    }
+    @GetMapping("/me-subject")
+    public ResponseEntity<List<SubjectNameDto>> meSubject(Authentication auth) {
+
+
+        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
+
+        log.info(user.getRole().toString());
+        log.info(user.getAuthorities().toString());
+
+        return ResponseEntity.ok(studentService.getNamesSubjectByGradeAndSemester(user.getRefId()));
+    }
+    @GetMapping("/me-attendance")
+    public List<AttendanceDto> getMyAttendance(Authentication auth) {
+
+        UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
+        return attendanceService.getMyAttendance(userPrincipal.getRefId());
     }
 }

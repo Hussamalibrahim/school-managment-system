@@ -1,6 +1,10 @@
 package com.SchoolManagementSystem.System.controller.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
+import com.SchoolManagementSystem.System.dto.academic.request.SubjectCreateRequest;
+import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
+import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
+import com.SchoolManagementSystem.System.entity.enumeration.Semester;
 import com.SchoolManagementSystem.System.service.academic.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +20,7 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @PostMapping
-    public ResponseEntity<SubjectDto> create(@RequestBody SubjectDto dto) {
+    public ResponseEntity<SubjectDto> create(@RequestBody SubjectCreateRequest dto) {
         return ResponseEntity.ok(subjectService.save(dto));
     }
 
@@ -32,6 +36,26 @@ public class SubjectController {
     @GetMapping
     public ResponseEntity<List<SubjectDto>> getAll() {
         return ResponseEntity.ok(subjectService.getAll());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SubjectDto>> search(
+            @RequestParam(required = false) GradeLevel gradeLevel,
+            @RequestParam(required = false) Semester semester) {
+        if (semester == null) {
+            return ResponseEntity.ok(
+                    subjectService.getByGrade(gradeLevel)
+            );
+        }
+        if (gradeLevel == null) {
+            return ResponseEntity.ok(
+                    subjectService.getBySemester(semester)
+            );
+        }
+
+        return ResponseEntity.ok(
+                subjectService.getSubjectByGradeAndSemester(gradeLevel, semester)
+        );
     }
 
     @DeleteMapping("/{id}")

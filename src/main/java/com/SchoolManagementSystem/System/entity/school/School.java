@@ -3,6 +3,7 @@ package com.SchoolManagementSystem.System.entity.school;
 import com.SchoolManagementSystem.System.entity.BaseEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.EducationStage;
 import com.SchoolManagementSystem.System.entity.enumeration.SchoolType;
+import com.SchoolManagementSystem.System.entity.enumeration.Semester;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,4 +44,8 @@ public class School extends BaseEntity
     @Enumerated(EnumType.STRING)
     @Column(name = "school_type")
     private SchoolType schoolType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "semester")
+    private Semester semester;
 }

@@ -1,7 +1,8 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
-import com.SchoolManagementSystem.System.entity.school.School;
+import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
+import com.SchoolManagementSystem.System.entity.enumeration.Semester;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,16 +20,18 @@ import java.util.List;
 @AllArgsConstructor
 public class Subject extends BaseEntity
 {
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
-
     @OneToMany(mappedBy = "subject")
     private List<TeacherSubject> teacherSubjects;
 
-    @Column(nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
 
-    private String description;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "grade_level", nullable = false)
+    private GradeLevel gradeLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "semester", nullable = false)
+    private Semester semester;
 
 }

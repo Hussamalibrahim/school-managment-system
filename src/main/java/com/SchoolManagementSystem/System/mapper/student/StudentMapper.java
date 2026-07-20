@@ -30,7 +30,6 @@ public final class StudentMapper {
 
                 student.getDateOfBirth(),
                 student.getAddress(),
-                student.getStatus(),
                 student.getEnrollmentDate(),
                 student.getPhone(),
                 student.getNotes()
@@ -66,7 +65,6 @@ public final class StudentMapper {
         student.setGradeLevel(dto.gradeLevel());
         student.setDateOfBirth(dto.dateOfBirth());
         student.setAddress(dto.address());
-        student.setStatus(dto.status());
         student.setEnrollmentDate(dto.enrollmentDate());
         student.setPhone(dto.phone());
         student.setNotes(dto.notes());

@@ -13,4 +13,7 @@ public interface StudentGuardianService extends CrudService<StudentGuardianDto, 
     List<GuardianDto> getGuardiansByStudent(Long studentId);
 
     List<StudentDto> getStudentsByGuardian(Long guardianId);
+
+     List<StudentDto> getStudentsWithoutGuardian();
+     List<GuardianDto> getGuardiansWithoutStudents();
 }

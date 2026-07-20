@@ -2,6 +2,7 @@ package com.SchoolManagementSystem.System.mapper.academic;
 
 
 import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
+import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.System.entity.academic.Subject;
 
 public final class SubjectMapper {
@@ -15,7 +16,8 @@ public final class SubjectMapper {
                 subject.getUpdatedAt(),
                 subject.getDeletedAt(),
                 subject.getName(),
-                subject.getDescription()
+                subject.getGradeLevel(),
+                subject.getSemester()
         );
     }
 
@@ -28,8 +30,18 @@ public final class SubjectMapper {
         subject.setUpdatedAt(dto.updatedAt());
         subject.setDeletedAt(dto.deletedAt());
         subject.setName(dto.name());
-        subject.setDescription(dto.description());
+        subject.setGradeLevel(dto.gradeLevel());
+        subject.setSemester(dto.semester());
 
         return subject;
+    }
+
+    public static SubjectNameDto toNameDto(Subject subject) {
+        if (subject == null) return null;
+
+        return new SubjectNameDto(
+                subject.getId(),
+                subject.getName()
+        );
     }
 }
