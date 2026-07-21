@@ -1,0 +1,84 @@
+package com.SchoolManagementSystem.System.exception;
+
+public enum ErrorCode {
+
+    // Student
+    STUDENT_NOT_FOUND,
+    STUDENT_ALREADY_EXISTS,
+    REGISTRATION_NUMBER_ALREADY_EXISTS,
+
+    // Guardian
+    GUARDIAN_NOT_FOUND,
+    GUARDIAN_ALREADY_EXISTS,
+    PRIMARY_GUARDIAN_ALREADY_EXISTS,
+    GUARDIAN_ALREADY_CONNECTED,
+
+    // Teacher
+    TEACHER_NOT_FOUND,
+
+    // Secretary
+    SECRETARY_NOT_FOUND,
+
+    // Principal
+    PRINCIPAL_NOT_FOUND,
+
+    // Librarian
+    LIBRARIAN_NOT_FOUND,
+
+    // Subject
+    SUBJECT_NOT_FOUND,
+    SUBJECT_ALREADY_EXISTS,
+
+    // School Class
+    CLASS_NOT_FOUND,
+    MAX_PERIODS_REACHED,
+
+    // Attendance
+    ATTENDANCE_NOT_FOUND,
+    ATTENDANCE_ALREADY_EXISTS,
+    INVALID_ATTENDANCE_DAY,
+
+    // Assessment
+    ASSESSMENT_NOT_FOUND,
+    ASSESSMENT_RESULT_NOT_FOUND,
+
+    // Semester
+    SEMESTER_NOT_FOUND,
+
+    // Education Record
+    EDUCATION_RECORD_NOT_FOUND,
+
+    // Library
+    LIBRARY_NOT_FOUND,
+    LIBRARY_BOOK_NOT_FOUND,
+    BORROW_NOT_FOUND,
+
+    // School
+    SCHOOL_NOT_FOUND,
+
+    // Finance
+    PAYMENT_NOT_FOUND,
+    DISCOUNT_NOT_FOUND,
+    CLASS_FEE_NOT_FOUND,
+    FEE_TYPE_NOT_FOUND,
+    STUDENT_DISCOUNT_NOT_FOUND,
+
+    // Communication
+    ANNOUNCEMENT_NOT_FOUND,
+    NOTIFICATION_NOT_FOUND,
+
+    // File
+    FILE_NOT_FOUND,
+    FILE_UPLOAD_FAILED,
+    FILE_DELETE_FAILED,
+
+    // Authentication
+    EMAIL_ALREADY_EXISTS,
+    INVALID_CREDENTIALS,
+    UNAUTHENTICATED,
+    FORBIDDEN,
+
+    // Generic
+    UNSUPPORTED_ROLE,
+    INTERNAL_ERROR
+}
