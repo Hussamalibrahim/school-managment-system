@@ -58,19 +58,18 @@ public class FileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FileDto> getById(@AuthenticationPrincipal Authentication auth,@PathVariable Long id) {
-        checkAuth(auth,id);
-
+    public ResponseEntity<FileDto> getById(@AuthenticationPrincipal UserPrincipal user,@PathVariable Long id) {
+        checkAuth(user,id);
         return ResponseEntity.ok(fileService.getById(id));
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<?> download(@AuthenticationPrincipal Authentication auth, @PathVariable Long id) {
+    public ResponseEntity<?> download(@AuthenticationPrincipal UserPrincipal user, @PathVariable Long id) {
 
         DownloadFileResponse response =
                 fileService.download(id);
 
-        checkAuth(auth, id);
+        checkAuth(user, id);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(
@@ -97,10 +96,9 @@ public class FileController {
         return ResponseEntity.ok(fileService.getByOwner(ownerType, ownerId));
     }
 
-    private void checkAuth(Authentication auth, Long fileId) {
+    private void checkAuth(UserPrincipal user, Long fileId) {
 
         Long id = fileService.getById(fileId).ownerId();
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
 
         if (user.hasRole("SECRETARY")) {
             return;

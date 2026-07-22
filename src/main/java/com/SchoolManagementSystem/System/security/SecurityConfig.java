@@ -62,11 +62,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/subjects/search/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.GET, "/api/subjects/**").authenticated()
 
-                                .requestMatchers(HttpMethod.POST,"/api/teacher-subjects/connect/*/*").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST,"/api/teacher-subjects/assign/*/*").hasRole("PRINCIPAL")
 
                                 .requestMatchers(HttpMethod.PUT,"/api/schedules/**").hasRole("PRINCIPAL")
-
-                                .requestMatchers(HttpMethod.GET,"/api/schedules/**").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/api/schedules/teacher/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET,"/api/schedules/**").hasRole("PRINCIPAL")
 
                                 .requestMatchers(HttpMethod.GET, "/api/classes/student/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET, "/api/classes/**").hasRole("PRINCIPAL")
@@ -88,8 +88,10 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.POST, "/api/student-guardian/connect/*/*").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET,"/api/student-guardian/student/**").hasRole("SECRETARY")
-
-
+                                .requestMatchers(HttpMethod.GET,"/api/student-guardian/student/*/guardian/*").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET,"/api/student-guardian/students-without-guardians").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET,"/api/student-guardian/guardians-without-students").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.PUT,"/api/student-guardian/student/*/primary-guardian/*").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET,"/api/student-guardian/guardian/**").hasAnyRole("SECRETARY","GUARDIAN")
                                 //only guardian can see his/her sons
 

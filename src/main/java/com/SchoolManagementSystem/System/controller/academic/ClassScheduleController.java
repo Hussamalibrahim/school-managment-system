@@ -19,16 +19,15 @@ public class ClassScheduleController {
 
     @GetMapping("/{classId}")
     public ResponseEntity<List<ClassScheduleDto>> get(@PathVariable Long classId) {
-        return ResponseEntity.ok(classScheduleService.getByClass(classId));
+        return ResponseEntity.ok(classScheduleService.getBySchoolClass(classId));
     }
-
     @GetMapping
     public ResponseEntity<List<ClassScheduleDto>> getAll() {
         return ResponseEntity.ok(classScheduleService.getAll());
     }
 
     @GetMapping("/teacher/{teacherId}")
-    public ResponseEntity<List<ClassScheduleDto>> getByTeacher(@PathVariable Long teacherId) {
+    public ResponseEntity<List<ClassScheduleDto>> getTeacherSchedule(@PathVariable Long teacherId) {
         return ResponseEntity.ok(classScheduleService.getByTeacher(teacherId));
     }
 

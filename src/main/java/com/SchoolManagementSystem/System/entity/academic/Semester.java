@@ -23,10 +23,13 @@ public class Semester extends BaseEntity
     @JoinColumn(name = "academic_year_id")
     private AcademicYear academicYear;
 
+    @Column(name = "semester_name")
+    @Enumerated(EnumType.STRING)
     private SemesterName semesterName;
 
+    @Column(name = "start_date")
     private LocalDate startDate;
-
+    @Column(name = "end_date")
     private LocalDate endDate;
 
 }

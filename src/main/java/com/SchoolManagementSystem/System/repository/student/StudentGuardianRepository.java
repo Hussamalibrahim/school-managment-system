@@ -15,6 +15,6 @@ public interface StudentGuardianRepository extends JpaRepository<StudentGuardian
 
     List<StudentGuardian> findByGuardianId(Long guardianId);
 
-    Optional<StudentGuardian> findByStudentIdAndGuardianId(Long studentId, Long studentId1);
+    Optional<StudentGuardian> findByStudentIdAndGuardianId(Long studentId, Long guardianId);
 
 }

@@ -27,8 +27,8 @@ public class AttendanceController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Void> saveAttendance(@PathVariable Long id, @RequestBody AttendanceCreateRequest request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateAttendance(@PathVariable Long id, @RequestBody AttendanceCreateRequest request) {
         attendanceService.update(id, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

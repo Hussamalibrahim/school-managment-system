@@ -92,9 +92,7 @@ public class StudentGuardianServiceImpl implements StudentGuardianService {
     @Transactional
     public void delete(Long id) {
 
-        studentGuardianRepository.delete(
-                findRelation(id)
-        );
+        studentGuardianRepository.delete(findRelation(id));
     }
 
 

@@ -87,7 +87,7 @@ public class StudentGuardianController {
         );
     }
 
-    @DeleteMapping("/student/{studentId}/guardian/{guardianId}")
+    @PutMapping("/student/{studentId}/guardian/{guardianId}")
     public ResponseEntity<Void> removeGuardian(
             @PathVariable Long studentId,
             @PathVariable Long guardianId) {

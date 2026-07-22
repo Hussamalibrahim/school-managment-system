@@ -53,6 +53,9 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     @Override
     @Transactional(readOnly = true)
     public List<ClassScheduleDto> getByTeacher(Long teacherId) {
+        if (!teacherRepository.existsById(teacherId)) {
+            throw new NotFoundException(ErrorCode.TEACHER_NOT_FOUND);
+        }
         return classSchedulesRepo.findByTeacherId(teacherId)
                 .stream()
                 .map(ClassScheduleMapper::toDto).toList();
@@ -60,7 +63,11 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ClassScheduleDto> getByClass(Long classId) {
+    public List<ClassScheduleDto> getBySchoolClass(Long classId) {
+        if (!schoolClassRepository.existsById(classId)) {
+            throw new NotFoundException(ErrorCode.CLASS_NOT_FOUND);
+        }
+
         return classSchedulesRepo.findClassScheduleBySchoolClass_Id(classId)
                 .stream()
                 .map(ClassScheduleMapper::toDto).toList();
@@ -68,7 +75,9 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     @Override
     @Transactional(readOnly = true)
     public List<StudentDto> getStudentsByTeacher(Long teacherId) {
-
+        if (!teacherRepository.existsById(teacherId)) {
+            throw new NotFoundException(ErrorCode.TEACHER_NOT_FOUND);
+        }
         List<ClassSchedule> schedules =
                 classSchedulesRepo.findByTeacherId(teacherId);
 

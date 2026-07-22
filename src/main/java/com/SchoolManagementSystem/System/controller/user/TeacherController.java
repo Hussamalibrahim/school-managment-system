@@ -8,7 +8,6 @@ import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
 import com.SchoolManagementSystem.System.service.user.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,33 +23,24 @@ public class TeacherController {
     private final ClassScheduleService classScheduleService;
 
     @GetMapping("/me")
-    public ResponseEntity<TeacherDto> me(Authentication auth) {
+    public ResponseEntity<TeacherDto> me(@AuthenticationPrincipal UserPrincipal user) {
 
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
         return ResponseEntity.ok(teacherService.getById(user.getRefId()));
     }
 
     @GetMapping("/my-students")
-    public ResponseEntity<List<StudentDto>> myStudents(Authentication auth) {
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
+    public ResponseEntity<List<StudentDto>> myStudents(@AuthenticationPrincipal UserPrincipal user) {
         return ResponseEntity.ok(classScheduleService.getStudentsByTeacher(user.getRefId()));
     }
 
     @GetMapping("/my-schedule")
-    public ResponseEntity<List<ClassScheduleDto>> mySchedule(Authentication auth) {
-
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
+    public ResponseEntity<List<ClassScheduleDto>> mySchedule(@AuthenticationPrincipal UserPrincipal user) {
 
         return ResponseEntity.ok(classScheduleService.getByTeacher(user.getRefId()));
     }
-    @GetMapping("/class/{classId}")
-    public ResponseEntity<List<ClassScheduleDto>> getByClass(@PathVariable Long classId)
-    {
-        return ResponseEntity.ok(classScheduleService.getByClass(classId));
-    }
+
     @GetMapping("/teacher/{teacherId}/students")
-    public ResponseEntity<List<StudentDto>> getStudentsByTeacher(@PathVariable Long teacherId)
-    {
+    public ResponseEntity<List<StudentDto>> getStudentsByTeacher(@PathVariable Long teacherId) {
         return ResponseEntity.ok(classScheduleService.getStudentsByTeacher(teacherId));
     }
     @GetMapping

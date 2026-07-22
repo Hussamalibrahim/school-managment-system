@@ -31,7 +31,7 @@ public class Subject extends BaseEntity
     private GradeLevel gradeLevel;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "semesterName", nullable = false)
+    @Column(name = "semester_name", nullable = false)
     private SemesterName semesterName;
 
 }

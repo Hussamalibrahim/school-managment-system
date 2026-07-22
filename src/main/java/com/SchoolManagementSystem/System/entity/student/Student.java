@@ -29,7 +29,7 @@ public class Student extends BaseEntity
     @JoinColumn(name = "school_class_id")
     private SchoolClass studentSchoolClass;
 
-    @Column(name = "registration_number", nullable = false)
+    @Column(name = "registration_number", nullable = false, unique = true)
     private String registrationNumber;
 
     @Column(name = "first_name")

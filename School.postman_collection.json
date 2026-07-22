@@ -8,6 +8,134 @@
   },
   "item": [
     {
+      "name": "guardians",
+      "item": [
+        {
+          "name": "get-all",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcxNDI2MiwiZXhwIjoxNzg0ODAwNjYyfQ.hmQJ2vz9ER975ulzM0ydTHZZb-bV31f9zfMojqY4RyA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/guardians",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "guardians"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/guardians/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "guardians",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0yzh}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/guardians/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "guardians",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/guardians/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "guardians",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "attendance",
       "item": [
         {
@@ -57,7 +185,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NTg4NjcsImV4cCI6MTc4NDY0NTI2N30.0uMwoSD0ZKAHCBHSIm9NY5JiEB2n7KNGFRX0myeZL9A",
+                  "value": "{{authorization_secret}}",
                   "type": "string"
                 }
               ]
@@ -109,7 +237,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NjAzNDksImV4cCI6MTc4NDY0Njc0OX0.iBlYiLIDxaSE12OSVab1eTd_tm3JVk6x0jo4ZyCnEaI",
+                  "value": "{{authorization_secret}}",
                   "type": "string"
                 }
               ]
@@ -139,7 +267,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NjAzNDksImV4cCI6MTc4NDY0Njc0OX0.iBlYiLIDxaSE12OSVab1eTd_tm3JVk6x0jo4ZyCnEaI",
+                  "value": "{{authorization_secret}}",
                   "type": "string"
                 }
               ]
@@ -171,7 +299,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NjAzNDksImV4cCI6MTc4NDY0Njc0OX0.iBlYiLIDxaSE12OSVab1eTd_tm3JVk6x0jo4ZyCnEaI",
+                  "value": "{{authorization_secret}}",
                   "type": "string"
                 }
               ]
@@ -211,7 +339,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NjAzNDksImV4cCI6MTc4NDY0Njc0OX0.iBlYiLIDxaSE12OSVab1eTd_tm3JVk6x0jo4ZyCnEaI",
+                  "value": "{{authorization_secret}}",
                   "type": "string"
                 }
               ]
@@ -240,261 +368,262 @@
       "name": "student",
       "item": [
         {
-          "name": "student",
-          "item": [
-            {
-              "name": "getAll",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NTk3NzEsImV4cCI6MTc4NDY0NjE3MX0.ByO0YGx6FKS7wBQzdXThI4dV23b3IPCuN1cMo5Qn1Lo",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8081/api/students",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students"
-                  ]
+          "name": "getAll",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
                 }
-              },
-              "response": []
+              ]
             },
-            {
-              "name": "getById",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{supabase_service_role_api_key_0yzh}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8081/api/students/3",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "3"
-                  ]
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              },
-              "response": []
+              }
             },
-            {
-              "name": "update",
-              "request": {
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"registrationNumber\": \"ST001\",\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"gender\": \"Male\",\r\n  \"dateOfBirth\": \"2010-05-15\",\r\n  \"address\": \"Aleppo\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2024-09-01\",\r\n  \"phone\": \"0988888888\",\r\n  \"notes\": \"Updated\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8081/api/students/4",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "4"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "delete",
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/students/5",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "5"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "assignClass",
-              "request": {
-                "method": "PUT",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/students/10/assign-class/2",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "10",
-                    "assign-class",
-                    "2"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "me-profile",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{authorization_secret}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/students/me",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "me"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "me-subject",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{authorization_secret}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/students/me-subject",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "me-subject"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "me-attendance",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU1RVREVOVCIsInJlZklkIjoxLCJzdWIiOiJzdHVkZW50MUB0ZXN0LmNvbSIsImlhdCI6MTc4NDU2MTA2OCwiZXhwIjoxNzg0NjQ3NDY4fQ.mwQftV6al8nmOnP9gvV2V7rmITSKKp1JOpLJ3kO-n7A",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/students/me-attendance",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "students",
-                    "me-attendance"
-                  ]
-                }
-              },
-              "response": []
+            "url": {
+              "raw": "http://localhost:8081/api/students",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students"
+              ]
             }
-          ]
+          },
+          "response": []
+        },
+        {
+          "name": "getById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcxNDI2MiwiZXhwIjoxNzg0ODAwNjYyfQ.hmQJ2vz9ER975ulzM0ydTHZZb-bV31f9zfMojqY4RyA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/students/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"registrationNumber\": \"ST001\",\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"gender\": \"Male\",\r\n  \"dateOfBirth\": \"2010-05-15\",\r\n  \"address\": \"Aleppo\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2024-09-01\",\r\n  \"phone\": \"0988888888\",\r\n  \"notes\": \"Updated\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/students/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/students/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "assignClass",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/students/10/assign-class/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "10",
+                "assign-class",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/students/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-subject",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/students/me-subject",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "me-subject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/students/me-attendance",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "students",
+                "me-attendance"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -515,13 +644,19 @@
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "{{json_web_token_0w1u}}",
+                          "value": "{{authorization_secret}}",
                           "type": "string"
                         }
                       ]
                     },
                     "method": "GET",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
                     "url": {
                       "raw": "http://localhost:8081/api/auth/deactivate-account/by-email?email=aliss@test.com",
                       "protocol": "http",
@@ -606,7 +741,13 @@
                       ]
                     },
                     "method": "GET",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
                     "url": {
                       "raw": "http://localhost:8081/api/auth/activate-account/by-email?email=aliss@test.com",
                       "protocol": "http",
@@ -644,7 +785,13 @@
                       ]
                     },
                     "method": "GET",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
                     "url": {
                       "raw": "http://localhost:8081/api/auth/activate-account/by-user?userId=1&userType=SECRETARY",
                       "protocol": "http",
@@ -688,7 +835,14 @@
                   ]
                 },
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
                 "body": {
                   "mode": "raw",
                   "raw": "{\r\n  \"role\": \"TEACHER\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"T-1031\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hassan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"0999999999\",\r\n  \"email\": \"ali@dtest.com\",// unique, requied\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\",\r\n  \"specialization\": \"Math\"\r\n}\r\n// prinipel only",
@@ -728,10 +882,16 @@
                   ]
                 },
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"role\": \"SECRETARY\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"T-SECRETARY\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hasssan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"09999999w99\",\r\n  \"email\": \"SECRETARY1@test.com\",// unique\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\"\r\n}\r\n// prinipel only",
+                  "raw": "{\r\n  \"role\": \"SECRETARY\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"T-SECRETARY\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hasssan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"09999999w99\",\r\n  \"email\": \"SECRETARY2@test.com\",// unique\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\"\r\n}\r\n// prinipel only",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -762,7 +922,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{supabase_service_role_api_key_1dv1}}",
+                      "value": "{{authorization_secret}}",
                       "type": "string"
                     }
                   ]
@@ -791,7 +951,7 @@
           "name": "teacher",
           "item": [
             {
-              "name": "teacherInfo",
+              "name": "me-info",
               "protocolProfileBehavior": {
                 "disableBodyPruning": true
               },
@@ -887,7 +1047,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{authorization_secret}}",
+                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUFJJTkNJUEFMIiwicmVmSWQiOjEsInN1YiI6InByaW5jaXBhbCIsImlhdCI6MTc4NDcxNDgyMiwiZXhwIjoxNzg0ODAxMjIyfQ.-tjW0f80KsaB-SctUfg0iVM2oOEa7XGLroFPNAo2hro",
                       "type": "string"
                     }
                   ]
@@ -896,7 +1056,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "\r\n// teacher only",
+                  "raw": "",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -904,7 +1064,7 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:8081/api/schedules/teacher/1",
+                  "raw": "http://localhost:8081/api/schedules/teacher/3",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -914,7 +1074,7 @@
                     "api",
                     "schedules",
                     "teacher",
-                    "1"
+                    "3"
                   ]
                 }
               },
@@ -922,6 +1082,105 @@
             },
             {
               "name": "get-all",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/teacher",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teacher"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "my-schedule",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// teacher only"
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/teacher/my-schedule",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teacher",
+                    "my-schedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "my-students",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// teacher only"
+                },
+                "url": {
+                  "raw": "http://localhost:8081/api/teacher/my-students",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teacher",
+                    "my-students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-student-by-teacher-id",
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -936,7 +1195,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "http://localhost:8081/api/teacher",
+                  "raw": "http://localhost:8081/api/teacher/teacher/1/students",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -944,7 +1203,72 @@
                   "port": "8081",
                   "path": [
                     "api",
-                    "teacher"
+                    "teacher",
+                    "teacher",
+                    "1",
+                    "students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "teacher-of-subject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcxNjE4NCwiZXhwIjoxNzg0ODAyNTg0fQ.YAgq8cHJ2puaVkqm5mP8frNJ2T7Kq-J_7IveHn6pyLc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/teacher-subjects/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teacher-subjects",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "subject-of-teacher",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcxNjE4NCwiZXhwIjoxNzg0ODAyNTg0fQ.YAgq8cHJ2puaVkqm5mP8frNJ2T7Kq-J_7IveHn6pyLc",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/teacher-subjects/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "teacher-subjects",
+                    "1"
                   ]
                 }
               },
@@ -1090,14 +1414,14 @@
               "response": []
             },
             {
-              "name": "get-students-by-guardian",
+              "name": "get-guardian-by-student",
               "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{authorization_secret}}",
+                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcxNDI2MiwiZXhwIjoxNzg0ODAwNjYyfQ.hmQJ2vz9ER975ulzM0ydTHZZb-bV31f9zfMojqY4RyA",
                       "type": "string"
                     }
                   ]
@@ -1105,7 +1429,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "http://localhost:8081/api/student-guardian/student/1",
+                  "raw": "http://localhost:8081/api/student-guardian/student/4",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -1115,14 +1439,14 @@
                     "api",
                     "student-guardian",
                     "student",
-                    "1"
+                    "4"
                   ]
                 }
               },
               "response": []
             },
             {
-              "name": "get-guardian-by-student",
+              "name": "get-student-by-guardian",
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -1135,9 +1459,15 @@
                   ]
                 },
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
                 "url": {
-                  "raw": "http://localhost:8081/api/student-guardian/guardian/3",
+                  "raw": "http://localhost:8081/api/student-guardian/guardian/1",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -1147,72 +1477,6 @@
                     "api",
                     "student-guardian",
                     "guardian",
-                    "3"
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "guardians",
-          "item": [
-            {
-              "name": "get-all",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{supabase_service_role_api_key_11cg}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/guardians",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "guardians"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "get-by-id",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{supabase_service_role_api_key_0yzh}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "http://localhost:8081/api/guardians/1",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "guardians",
                     "1"
                   ]
                 }
@@ -1220,22 +1484,28 @@
               "response": []
             },
             {
-              "name": "delete",
+              "name": "get-guardians-without-students",
               "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "value": "{{authorization_secret}}",
                       "type": "string"
                     }
                   ]
                 },
-                "method": "DELETE",
-                "header": [],
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
                 "url": {
-                  "raw": "http://localhost:8081/api/guardians/1",
+                  "raw": "http://localhost:8081/api/student-guardian/guardians-without-students",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -1243,15 +1513,15 @@
                   "port": "8081",
                   "path": [
                     "api",
-                    "guardians",
-                    "1"
+                    "student-guardian",
+                    "guardians-without-students"
                   ]
                 }
               },
               "response": []
             },
             {
-              "name": "me-profile",
+              "name": "get-students-without-guardians",
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -1266,7 +1536,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "http://localhost:8081/api/guardians/me",
+                  "raw": "http://localhost:8081/api/student-guardian/students-without-guardians",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -1274,8 +1544,76 @@
                   "port": "8081",
                   "path": [
                     "api",
-                    "guardians",
-                    "me"
+                    "student-guardian",
+                    "students-without-guardians"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "change-primary-guardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/student/2/primary-guardian/4",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "student",
+                    "2",
+                    "primary-guardian",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "remove-relation",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/student-guardian/student/1/guardian/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "student-guardian",
+                    "student",
+                    "1",
+                    "guardian",
+                    "1"
                   ]
                 }
               },
@@ -1459,7 +1797,14 @@
               },
               "request": {
                 "auth": {
-                  "type": "noauth"
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
                 },
                 "method": "GET",
                 "header": [],
@@ -1500,10 +1845,23 @@
               },
               "request": {
                 "auth": {
-                  "type": "noauth"
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
                 },
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
                 "body": {
                   "mode": "raw",
                   "raw": "// all have access",
@@ -1514,7 +1872,7 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:8081/api/schedules/6",
+                  "raw": "http://localhost:8081/api/schedules/2",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -1523,7 +1881,7 @@
                   "path": [
                     "api",
                     "schedules",
-                    "6"
+                    "2"
                   ]
                 }
               },
@@ -1535,6 +1893,16 @@
                 "disableBodyPruning": true
               },
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "body": {
@@ -1575,7 +1943,13 @@
                   ]
                 },
                 "method": "POST",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
                 "body": {
                   "mode": "raw",
                   "raw": "// principal only",
@@ -1586,7 +1960,7 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:8081/api/schedules/extra/5",
+                  "raw": "http://localhost:8081/api/schedules/class/1/extra-period/FRIDAY",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -1595,16 +1969,28 @@
                   "path": [
                     "api",
                     "schedules",
-                    "extra",
-                    "5"
+                    "class",
+                    "1",
+                    "extra-period",
+                    "FRIDAY"
                   ]
                 }
               },
               "response": []
             },
             {
-              "name": "assign-teacher",
+              "name": "assign-teacher-to-schedule",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "PUT",
                 "header": [],
                 "body": {
@@ -1642,6 +2028,38 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "get-teacher-schedule",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8081/api/schedules/teacher/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "schedules",
+                    "teacher",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -1656,7 +2074,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUFJJTkNJUEFMIiwicmVmSWQiOjIsInN1YiI6InByaWNpcGxlQGdtYWlsLmNvbSIsImlhdCI6MTc4NDU1OTY5MCwiZXhwIjoxNzg0NjQ2MDkwfQ.oPs_6Ib4g7xL71aKFLdydfFR4Ed6YlY9gmVsTYlmU7U",
+                      "value": "{{authorization_secret}}",
                       "type": "string"
                     }
                   ]
@@ -1695,7 +2113,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"gradeLevel\": \"GRADE_7\",\r\n  \"section\": \"A\",\r\n  \"location\": \"Building A - Floor 1\",\r\n  \"capacity\": 30\r\n}\r\n// principal only",
+                  "raw": "{\r\n  \"gradeLevel\": \"GRADE_8\",\r\n  \"section\": \"A\",\r\n  \"location\": \"Building A - Floor 1\",\r\n  \"capacity\": 30\r\n}\r\n// principal only",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1725,7 +2143,7 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6IlNFQ1JFVEFSWTFAdGVzdC5jb20iLCJpYXQiOjE3ODQ1NTk1NTksImV4cCI6MTc4NDY0NTk1OX0.WgtNQfXcVP1motn_J74HbPk6hxbVm9x0eWadi6cNQKw",
+                      "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcxNDcwMCwiZXhwIjoxNzg0ODAxMTAwfQ.QanzUybDWd7TOJBk-_rB5who-UbyaF9RUByBNWPm3Lo",
                       "type": "string"
                     }
                   ]
@@ -1796,7 +2214,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"SECRETARY1@test.com\",\r\n//   \"email\": \"ali@dtest.com\", \r\n//   \"email\": \"tesstt1@test.com\", \r\n  \"password\": \"123456\"\r\n}\r\n// created by principal",
+              "raw": "{\r\n  \"email\": \"secretary\",\r\n//   \"email\": \"ali@dtest.com\", \r\n//   \"email\": \"tesstt1@test.com\", \r\n//   \"email\": \"guiardian@test.com\", \r\n  \"password\": \"123456\"\r\n}\r\n// created by principal",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1826,7 +2244,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"priciple@gmail.com\",\r\n  \"password\": \"123456\"\r\n}\r\n// Created by system",
+              "raw": "{\r\n  \"email\": \"principal\",\r\n  \"password\": \"admin123\"\r\n}\r\n// Created by system",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1853,7 +2271,13 @@
           "name": "register",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\r\n  \"firstName\": \"priciple\",\r\n  \"lastName\": \"priciple\",\r\n  \"nationalId\": \"123465852\",\r\n  \"email\": \"priciple@gmail.com\",\r\n  \"password\": \"123456\"  \r\n}",

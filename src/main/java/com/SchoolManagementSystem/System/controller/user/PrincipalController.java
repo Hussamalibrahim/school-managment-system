@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -55,11 +56,7 @@ public class PrincipalController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<PrincipalDto> me(Authentication auth) {
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
-
-        log.info(user.getRole().toString());
-        log.info(auth.getAuthorities().toString());
+    public ResponseEntity<PrincipalDto> me(@AuthenticationPrincipal UserPrincipal user) {
 
         return ResponseEntity.ok(principalService.getById(user.getRefId()));
     }

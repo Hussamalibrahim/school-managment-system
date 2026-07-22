@@ -43,19 +43,12 @@ public class SubjectController {
             @RequestParam(required = false) GradeLevel gradeLevel,
             @RequestParam(required = false) SemesterName semesterName) {
         if (semesterName == null) {
-            return ResponseEntity.ok(
-                    subjectService.getByGrade(gradeLevel)
-            );
+            return ResponseEntity.ok(subjectService.getByGrade(gradeLevel));
         }
         if (gradeLevel == null) {
-            return ResponseEntity.ok(
-                    subjectService.getBySemester(semesterName)
-            );
+            return ResponseEntity.ok(subjectService.getBySemester(semesterName));
         }
-
-        return ResponseEntity.ok(
-                subjectService.getSubjectByGradeAndSemester(gradeLevel, semesterName)
-        );
+        return ResponseEntity.ok(subjectService.getSubjectByGradeAndSemester(gradeLevel, semesterName));
     }
 
     @DeleteMapping("/{id}")
