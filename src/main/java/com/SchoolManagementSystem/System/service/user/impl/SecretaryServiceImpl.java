@@ -1,68 +1,96 @@
 package com.SchoolManagementSystem.System.service.user.impl;
 
+
 import com.SchoolManagementSystem.System.dto.user.SecretaryDto;
-import com.SchoolManagementSystem.System.mapper.user.SecretaryMapper;
 import com.SchoolManagementSystem.System.entity.user.Secretary;
+import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import com.SchoolManagementSystem.System.mapper.user.SecretaryMapper;
 import com.SchoolManagementSystem.System.repository.user.SecretaryRepository;
-import com.SchoolManagementSystem.System.security.AuthUserRepository;
-import com.SchoolManagementSystem.System.security.service.AuthUserService;
+import com.SchoolManagementSystem.System.service.NationalIdValidator;
 import com.SchoolManagementSystem.System.service.user.SecretaryService;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class SecretaryServiceImpl implements SecretaryService {
 
-    private final AuthUserRepository authUserRepository;
     private final SecretaryRepository repository;
+    private final NationalIdValidator nationalIdValidator;
 
-    //should remove it
+    // remove later if creation only through Principal
     @Override
+    @Transactional
     public SecretaryDto save(SecretaryDto dto) {
-     return null;
+
+        if (nationalIdValidator.validate(dto.nationalId())) {
+            throw new AlreadyExistsException(ErrorCode.NATIONAL_ID_ALREADY_EXISTS);
+        }
+
+        Secretary secretary = SecretaryMapper.toEntity(dto);
+
+        return SecretaryMapper.toDto(repository.save(secretary));
     }
 
     @Override
+    @Transactional
     public SecretaryDto update(Long id, SecretaryDto dto) {
-        Secretary secretary = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Secretary not found"));
+        Secretary secretary =
+                repository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SECRETARY_NOT_FOUND));
 
-        secretary.setNationalId(dto.nationalId());
-        secretary.setFirstName(dto.firstName());
-        secretary.setLastName(dto.lastName());
-        secretary.setPhone(dto.phone());
-        secretary.setAddress(dto.address());
-        secretary.setStatus(dto.status());
-        secretary.setHireDate(dto.hireDate());
+        if (!secretary.getNationalId()
+                .equals(dto.nationalId()) && nationalIdValidator.validate(dto.nationalId())) {
 
-        secretary = repository.save(secretary);
-        return SecretaryMapper.toDto(secretary);
+            throw new AlreadyExistsException(
+                    ErrorCode.NATIONAL_ID_ALREADY_EXISTS
+            );
+        }
+
+        SecretaryMapper.updateEntity(secretary, dto);
+
+        return SecretaryMapper.toDto(
+                repository.save(secretary)
+        );
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SecretaryDto getById(Long id) {
+
         return repository.findById(id)
                 .map(SecretaryMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Secretary not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SECRETARY_NOT_FOUND));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SecretaryDto> getAll() {
+
         return repository.findAll()
                 .stream()
                 .map(SecretaryMapper::toDto)
                 .toList();
     }
 
+
     @Override
+    @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+
+        repository.delete(repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SECRETARY_NOT_FOUND)));
     }
+
 }

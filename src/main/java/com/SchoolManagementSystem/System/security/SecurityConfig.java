@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.System.security;
 
+import com.SchoolManagementSystem.System.exception.security.JwtAuthenticationEntryPoint;
 import com.SchoolManagementSystem.System.security.jwt.JwtFilter;
 import com.SchoolManagementSystem.System.security.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 
     @Bean
@@ -113,6 +115,8 @@ public class SecurityConfig {
                 )
                 .sessionManagement(s ->
                         s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ).exceptionHandling(ex ->
+                        ex.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider())

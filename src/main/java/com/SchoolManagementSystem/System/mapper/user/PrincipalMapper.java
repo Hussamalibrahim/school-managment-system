@@ -2,6 +2,7 @@ package com.SchoolManagementSystem.System.mapper.user;
 
 import com.SchoolManagementSystem.System.dto.user.PrincipalDto;
 import com.SchoolManagementSystem.System.entity.user.Principal;
+import com.SchoolManagementSystem.System.security.dto.RegisterRequest;
 
 public final class PrincipalMapper {
 
@@ -16,7 +17,6 @@ public final class PrincipalMapper {
                 principal.getLastName(),
                 principal.getPhone(),
                 principal.getAddress(),
-                principal.getStatus(),
                 principal.getHireDate(),
                 principal.getCreatedAt(),
                 principal.getUpdatedAt(),
@@ -32,9 +32,29 @@ public final class PrincipalMapper {
         principal.setLastName(dto.lastName());
         principal.setPhone(dto.phone());
         principal.setAddress(dto.address());
-        principal.setStatus(dto.status());
         principal.setHireDate(dto.hireDate());
 
+        return principal;
+    }
+
+    public static Principal fromRegisterRequest(RegisterRequest request) {
+
+        Principal principal = new Principal();
+
+        principal.setNationalId(request.nationalId());
+        principal.setFirstName(request.firstName());
+        principal.setLastName(request.lastName());
+
+        return principal;
+    }
+
+    public static Principal updateEntity(Principal principal, PrincipalDto dto) {
+        principal.setNationalId(dto.nationalId());
+        principal.setFirstName(dto.firstName());
+        principal.setLastName(dto.lastName());
+        principal.setPhone(dto.phone());
+        principal.setAddress(dto.address());
+        principal.setHireDate(dto.hireDate());
         return principal;
     }
 }

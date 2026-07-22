@@ -7,6 +7,7 @@ import com.SchoolManagementSystem.System.security.UserPrincipal;
 import com.SchoolManagementSystem.System.service.student.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,42 +21,48 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void saveAttendance(@RequestBody AttendanceRequest request) {
+    public ResponseEntity<Void> saveAttendance(@RequestBody AttendanceRequest request) {
         attendanceService.saveAttendance(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{id}")
-    public void saveAttendance(@PathVariable Long id, @RequestBody AttendanceCreateRequest request) {
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> saveAttendance(@PathVariable Long id, @RequestBody AttendanceCreateRequest request) {
         attendanceService.update(id, request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
-    public AttendanceDto getById(@PathVariable Long id) {
-        return attendanceService.getById(id);
+    public ResponseEntity<AttendanceDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(attendanceService.getById(id));
     }
 
     @GetMapping
-    public List<AttendanceDto> getAll() {
-        return attendanceService.getAll();
+    public ResponseEntity<List<AttendanceDto>> getAll() {
+        return ResponseEntity.ok(attendanceService.getAll());
     }
 
     @GetMapping("/student/{studentId}")
-    public List<AttendanceDto> getStudentAttendance(
+    public ResponseEntity<List<AttendanceDto>> getStudentAttendance(
             @PathVariable Long studentId) {
 
-        return attendanceService.getStudentAttendance(studentId);
+        return ResponseEntity.ok(attendanceService.getStudentAttendance(studentId));
     }
 
     //TODO should be removed
     @PostMapping("/test")
-    public void save(@RequestBody AttendanceCreateRequest request) {
+    public ResponseEntity<Void> save(@RequestBody AttendanceCreateRequest request) {
         attendanceService.save(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         attendanceService.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 

@@ -4,6 +4,7 @@ import com.SchoolManagementSystem.System.controller.BaseCrudController;
 import com.SchoolManagementSystem.System.dto.academic.TeacherSubjectDto;
 import com.SchoolManagementSystem.System.service.academic.TeacherSubjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +22,8 @@ public class TeacherSubjectController {
             @PathVariable Long teacherId,
             @PathVariable Long subjectId) {
 
-        return ResponseEntity.ok(
-                teacherSubjectService.connectTeacherToSubject(
-                        teacherId,
-                        subjectId
-                )
-        );
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(teacherSubjectService.connectTeacherToSubject(teacherId, subjectId));
     }
 }

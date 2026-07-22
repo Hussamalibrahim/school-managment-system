@@ -1,8 +1,12 @@
 package com.SchoolManagementSystem.System.security.jwt;
 
 
+import com.SchoolManagementSystem.System.exception.business.AuthenticationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import com.SchoolManagementSystem.System.exception.security.JwtAuthenticationException;
 import com.SchoolManagementSystem.System.security.service.JwtService;
 import com.SchoolManagementSystem.System.security.service.UserDetailsServiceImpl;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,34 +37,48 @@ public class JwtFilter extends OncePerRequestFilter {
                                     @NotNull FilterChain chain)
             throws ServletException, IOException {
 
+
         String header = request.getHeader("Authorization");
 
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
-
         String token = header.substring(7);
-        String username = jwtService.extractEmail(token);
 
-        if (username != null &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails user = userDetailsService.loadUserByUsername(username);
+        try {
 
-            if (jwtService.isValid(token, user)) {
+            String username = jwtService.extractEmail(token);
 
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(
-                                user,
-                                null,
-                                user.getAuthorities()
-                        );
 
-                SecurityContextHolder.getContext().setAuthentication(auth);
+            if (username != null &&
+                    SecurityContextHolder.getContext().getAuthentication() == null) {
+
+
+                UserDetails user =
+                        userDetailsService.loadUserByUsername(username);
+
+
+                if (jwtService.isValid(token, user)) {
+
+
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(
+                                    user,
+                                    null,
+                                    user.getAuthorities()
+                            );
+
+
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(auth);
+                }
             }
+        } catch (JwtException e) {
+            throw new JwtAuthenticationException(ErrorCode.INVALID_TOKEN);
         }
-
         chain.doFilter(request, response);
     }
 }

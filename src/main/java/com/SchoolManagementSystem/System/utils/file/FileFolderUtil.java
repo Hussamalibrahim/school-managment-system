@@ -1,6 +1,8 @@
 package com.SchoolManagementSystem.System.utils.file;
 
 import com.SchoolManagementSystem.System.entity.enumeration.FileOwnerType;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 
 public final class FileFolderUtil {
 
@@ -30,7 +32,9 @@ public final class FileFolderUtil {
                     "announcements/" + ownerId;
 
             default ->
-                    "others/" + ownerId;
+                    throw new ValidationException(
+                            ErrorCode.INVALID_OWNER_TYPE
+                    );
         };
     }
 

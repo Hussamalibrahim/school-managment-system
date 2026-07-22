@@ -5,6 +5,7 @@ import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.service.academic.SchoolClassService;
 import com.SchoolManagementSystem.System.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,11 @@ public class SchoolClassController
     private final StudentService studentService;
 
     @PostMapping
-    public ResponseEntity<SchoolClassDto> create(@RequestBody SchoolClassDto dto)
-    {
-        return ResponseEntity.ok(schoolClassService.save(dto));
+    public ResponseEntity<SchoolClassDto> create(
+            @RequestBody SchoolClassDto dto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(schoolClassService.save(dto));
     }
     @GetMapping
     public ResponseEntity<List<SchoolClassDto>> getAll()

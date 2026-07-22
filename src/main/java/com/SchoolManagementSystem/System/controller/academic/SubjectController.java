@@ -2,13 +2,12 @@ package com.SchoolManagementSystem.System.controller.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
 import com.SchoolManagementSystem.System.dto.academic.request.SubjectCreateRequest;
-import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
-import com.SchoolManagementSystem.System.entity.enumeration.Semester;
+import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.System.service.academic.SubjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,8 @@ public class SubjectController {
 
     @PostMapping
     public ResponseEntity<SubjectDto> create(@RequestBody SubjectCreateRequest dto) {
-        return ResponseEntity.ok(subjectService.save(dto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(subjectService.save(dto));
     }
 
     @PutMapping("/{id}")
@@ -41,25 +41,29 @@ public class SubjectController {
     @GetMapping("/search")
     public ResponseEntity<List<SubjectDto>> search(
             @RequestParam(required = false) GradeLevel gradeLevel,
-            @RequestParam(required = false) Semester semester) {
-        if (semester == null) {
+            @RequestParam(required = false) SemesterName semesterName) {
+        if (semesterName == null) {
             return ResponseEntity.ok(
                     subjectService.getByGrade(gradeLevel)
             );
         }
         if (gradeLevel == null) {
             return ResponseEntity.ok(
-                    subjectService.getBySemester(semester)
+                    subjectService.getBySemester(semesterName)
             );
         }
 
         return ResponseEntity.ok(
-                subjectService.getSubjectByGradeAndSemester(gradeLevel, semester)
+                subjectService.getSubjectByGradeAndSemester(gradeLevel, semesterName)
         );
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id) {
+
         subjectService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

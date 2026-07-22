@@ -2,6 +2,9 @@ package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.academic.ClassScheduleMapper;
 import com.SchoolManagementSystem.System.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.System.entity.academic.ClassSchedule;
@@ -13,12 +16,15 @@ import com.SchoolManagementSystem.System.entity.user.Teacher;
 import com.SchoolManagementSystem.System.repository.academic.ClassScheduleRepository;
 import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
+import com.SchoolManagementSystem.System.repository.academic.TeacherSubjectRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.user.TeacherRepository;
 import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,15 +40,18 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
     private final SchoolClassRepository schoolClassRepository;
+    private final TeacherSubjectRepository teacherSubjectRepository;
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClassScheduleDto> getAll() {
         return classSchedulesRepo.findAll().
                 stream().map(ClassScheduleMapper::toDto).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClassScheduleDto> getByTeacher(Long teacherId) {
         return classSchedulesRepo.findByTeacherId(teacherId)
                 .stream()
@@ -50,12 +59,14 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClassScheduleDto> getByClass(Long classId) {
-        return classSchedulesRepo.findStudentBySchoolClassId(classId)
+        return classSchedulesRepo.findClassScheduleBySchoolClass_Id(classId)
                 .stream()
                 .map(ClassScheduleMapper::toDto).toList();
     }
     @Override
+    @Transactional(readOnly = true)
     public List<StudentDto> getStudentsByTeacher(Long teacherId) {
 
         List<ClassSchedule> schedules =
@@ -66,49 +77,76 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
                 .collect(Collectors.toSet());
 
         List<Student> students =
-                studentRepository.findByStudentSchoolClassIdIn((List<Long>) classIds);
+                studentRepository.findByStudentSchoolClass_IdIn(classIds);
 
         return students.stream()
                 .map(StudentMapper::toDto)
                 .toList();
     }
 
-    public ClassScheduleDto addExtraPeriod(Long classId) {
+    @Override
+    @Transactional
+    public List<ClassScheduleDto> addExtraPeriod(Long id, DayOfWeek day) {
 
-        long count = classSchedulesRepo.countBySchoolClassId(classId);
+        SchoolClass schoolClass = schoolClassRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND));
 
-        if (count >= MAX_PERIODS) {
-            throw new RuntimeException("Max 7 periods allowed");
+        if (day == DayOfWeek.FRIDAY || day == DayOfWeek.SATURDAY) {
+            throw new ValidationException(ErrorCode.CANT_ADD_PERIOD_IN_HOLIDAY);
         }
 
-        SchoolClass schoolClass = schoolClassRepository.findById(classId)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+        List<ClassSchedule> classScheduleList = classSchedulesRepo.findClassScheduleBySchoolClass_Id(id);
 
+        long count = classScheduleList.stream()
+                .filter(s -> s.getDayOfWeek() == day)
+                .count();
+
+        if (count >= MAX_PERIODS) {
+            throw new ValidationException(ErrorCode.CLASS_ALREADY_HAVE_EXTRA_PERIOD);
+        }
         ClassSchedule schedule = new ClassSchedule();
         schedule.setSchoolClass(schoolClass);
 
         schedule.setPeriodNumber(
                 PeriodNumber.values()[(int) count]
         );
+        classSchedulesRepo.save(schedule);
+        classScheduleList.add(schedule);
 
-        return ClassScheduleMapper.toDto(classSchedulesRepo.save(schedule));
+        return classScheduleList.stream()
+                .map(ClassScheduleMapper::toDto)
+                .toList();
     }
 
-
     @Override
+    @Transactional
     public ClassScheduleDto assignTeacher(Long scheduleId, Long teacherId, Long subjectId) {
 
         ClassSchedule schedule =
                 classSchedulesRepo.findById(scheduleId)
-                        .orElseThrow();
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_SCHEDULE_NOT_FOUND));
 
         Teacher teacher =
                 teacherRepository.findById(teacherId)
-                        .orElseThrow();
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.TEACHER_NOT_FOUND));
+
+        if (!teacherSubjectRepository.existsByTeacherIdAndSubjectId(teacherId, subjectId)) {
+            throw new ValidationException(
+                    ErrorCode.TEACHER_DOES_NOT_TEACH_SUBJECT
+            );
+        }
+        if (classSchedulesRepo.existsByTeacherIdAndDayOfWeekAndPeriodNumber(teacherId, schedule.getDayOfWeek(), schedule.getPeriodNumber())) {
+            throw new ValidationException(
+                    ErrorCode.TEACHER_ALREADY_ASSIGNED_AT_THIS_TIME);
+        }
+        if (classSchedulesRepo.existsBySchoolClassIdAndDayOfWeekAndPeriodNumber(schedule.getSchoolClass().getId(), schedule.getDayOfWeek(), schedule.getPeriodNumber())) {
+            throw new ValidationException(
+                    ErrorCode.CLASS_ALREADY_HAS_TEACHER_ASSIGNED_AT_THIS_TIME);
+        }
 
         Subject subject =
                 subjectRepository.findById(subjectId)
-                        .orElseThrow();
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND));
 
         schedule.setTeacher(teacher);
         schedule.setSubject(subject);

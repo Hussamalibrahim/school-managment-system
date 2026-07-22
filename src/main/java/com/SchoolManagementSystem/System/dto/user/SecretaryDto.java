@@ -17,7 +17,6 @@ public record SecretaryDto (
     String lastName,
     String phone,
     String address,
-    String status,
     LocalDate hireDate,
     LocalDateTime createdAt,
     LocalDateTime updatedAt,

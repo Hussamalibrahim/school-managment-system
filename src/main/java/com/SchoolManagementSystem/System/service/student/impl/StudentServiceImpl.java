@@ -4,16 +4,19 @@ import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.entity.AuthUser;
 import com.SchoolManagementSystem.System.entity.enumeration.Role;
-import com.SchoolManagementSystem.System.entity.enumeration.Semester;
+import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
+import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.academic.SubjectMapper;
 import com.SchoolManagementSystem.System.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.System.entity.student.Student;
 import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
-import com.SchoolManagementSystem.System.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.security.dto.AuthRequestStudent;
+import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +29,6 @@ import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class StudentServiceImpl implements StudentService {
 
@@ -36,57 +38,43 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final SchoolClassRepository schoolClassRepository;
     private final SubjectRepository subjectRepository;
-    private final SchoolRepository schoolRepository;
 
     @Override
+    @Transactional
     public StudentDto assignClass(Long studentId, Long classId)
     {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
         SchoolClass studentSchoolClass = schoolClassRepository.findById(classId)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND));
 
         student.setStudentSchoolClass(studentSchoolClass);
 
-        student = studentRepository.save(student);
-
-        return StudentMapper.toDto(student);
+        return StudentMapper.toDto(studentRepository.save(student));
     }
     @Override
+    @Transactional
     public void save(AuthRequestStudent authRequestStudent) {
 
         if (authUserRepository.findByEmail(authRequestStudent.email()).isPresent()) {
-            log.info("Student already exists");
-            throw new RuntimeException("Email already exists");
+            throw new NotFoundException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
         if (studentRepository.findByRegistrationNumber(authRequestStudent.registrationNumber()).isPresent()) {
-            log.info("Student already exists");
-            throw new RuntimeException("Registration number already exists");
+            throw new NotFoundException(ErrorCode.REGISTRATION_NUMBER_ALREADY_EXISTS);
         }
-        Student student = new Student();
 
-        student.setRegistrationNumber(authRequestStudent.registrationNumber());
-        student.setFirstName(authRequestStudent.firstName());
-        student.setLastName(authRequestStudent.lastName());
-        student.setPhone(authRequestStudent.phone());
-        student.setGender(authRequestStudent.gender());
-        student.setGradeLevel(authRequestStudent.gradeLevel());
-        student.setDateOfBirth(authRequestStudent.dateOfBirth());
-        student.setAddress(authRequestStudent.address());
-        student.setEnrollmentDate(authRequestStudent.enrollmentDate());
-        student.setNotes(authRequestStudent.notes());
+        Student studentSaved = studentRepository.save(
+                StudentMapper.fromAuthRequestStudent(authRequestStudent));
 
-        Student studentSaved = studentRepository.save(student);
-
-        AuthUser authUser = new AuthUser();
-        authUser.setEmail(authRequestStudent.email());
-        authUser.setPassword(passwordEncoder.encode("1234"));
-        authUser.setRole(Role.STUDENT);
-        authUser.setRefId(studentSaved.getId());
+        AuthUser authUser = AuthUserMapper.fromRegisterRequest(authRequestStudent.email(),
+                passwordEncoder.encode("1234"),
+                studentSaved.getId(),
+                Role.STUDENT);
 
         authUserRepository.save(authUser);
     }
+
     @Override
     public StudentDto save(StudentDto dto) {
         //TODO should remove it
@@ -94,25 +82,32 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public StudentDto update(Long id, StudentDto dto) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
-        student.setRegistrationNumber(dto.registrationNumber());
-        student.setFirstName(dto.firstName());
-        student.setLastName(dto.lastName());
-        student.setGender(dto.gender());
-        student.setDateOfBirth(dto.dateOfBirth());
+        Student student =
+                studentRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
-        return null;
+        if (studentRepository.existsByRegistrationNumberAndIdNot(dto.registrationNumber(), id)) {
+            throw new AlreadyExistsException(ErrorCode.REGISTRATION_NUMBER_ALREADY_EXISTS);
+        }
+
+        StudentMapper.updateEntity(student,dto);
+
+        return StudentMapper.toDto(
+                studentRepository.save(student));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public StudentDto getById(Long id) {
         return studentRepository.findById(id)
                 .map(StudentMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<StudentDto> getAll() {
         return studentRepository.findAll()
                 .stream()
@@ -120,22 +115,25 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<SubjectNameDto> getNamesSubjectByGradeAndSemester(long id) {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
 
-        return subjectRepository// Semester.FIRST WILL BY Schoolrepo.findById(student,getId)
-                .findByGradeLevelAndSemester(student.getGradeLevel(), Semester.FIRST)
+        return subjectRepository// SemesterName.FIRST WILL BY Schoolrepo.findById(student,getId)
+                .findByGradeLevelAndSemesterName(student.getGradeLevel(), SemesterName.FIRST)
                 .stream()
                 .map(SubjectMapper::toNameDto)
                 .toList();
     }
     @Override
+    @Transactional
     public void delete(Long id) {
-        studentRepository.deleteById(id);
+        studentRepository.deleteById(studentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND)));
     }
 
-
     @Override
+    @Transactional(readOnly = true)
     public List<StudentDto> getStudentsByClass_Id(Long id) {
         return studentRepository.findByStudentSchoolClass_Id(id)
                 .stream()

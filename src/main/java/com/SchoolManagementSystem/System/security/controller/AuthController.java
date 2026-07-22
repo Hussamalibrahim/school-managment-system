@@ -10,6 +10,7 @@ import com.SchoolManagementSystem.System.security.service.AuthUserService;
 import com.SchoolManagementSystem.System.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,17 +29,12 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
-        try {
-            authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.email(),
-                            request.password()
-                    )
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.email(),
+                        request.password()
+                )
+        );
 
         AuthUserDto user = authUserService.findByEmail(request.email());
 
@@ -47,6 +43,7 @@ public class AuthController {
         return new AuthResponse(token, user.role().name(), user.refId());
     }
     @PostMapping("/principle-register")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
          log.info(request.toString());
         authUserService.register(request);
@@ -58,7 +55,7 @@ public class AuthController {
             @RequestParam Long userId,
             @RequestParam UserType userType){
 
-        return ResponseEntity.ok(authUserService.deactivateAccountByIdAndRole(userId, userType));
+        return ResponseEntity.status(HttpStatus.OK).body(authUserService.deactivateAccountByIdAndRole(userId, userType));
     }
     @GetMapping("/deactivate-account/by-email")
     public ResponseEntity<AuthUserDto> deactivateAccountByEmail(@RequestParam String email){

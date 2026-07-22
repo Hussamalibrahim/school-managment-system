@@ -1,7 +1,9 @@
 package com.SchoolManagementSystem.System.mapper.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.EducationRecordDto;
+import com.SchoolManagementSystem.System.dto.academic.SchoolClassDto;
 import com.SchoolManagementSystem.System.entity.academic.EducationRecord;
+import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.System.entity.school.AcademicYear;
 import com.SchoolManagementSystem.System.entity.student.Student;
 
@@ -56,5 +58,11 @@ public final class EducationRecordMapper {
         educationRecord.setNotes(dto.notes());
 
         return educationRecord;
+    }
+    public static void updateEntity(EducationRecord educationRecord, EducationRecordDto dto) {
+        educationRecord.setFinalAverage(dto.finalAverage());
+        educationRecord.setPassed(dto.passed());
+        educationRecord.setAbsenceDays(dto.absenceDays());
+        educationRecord.setNotes(dto.notes());
     }
 }

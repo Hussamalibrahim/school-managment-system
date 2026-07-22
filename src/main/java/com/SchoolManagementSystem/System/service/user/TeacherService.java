@@ -8,7 +8,6 @@ import com.SchoolManagementSystem.System.service.CrudService;
 import java.util.List;
 
 public interface TeacherService extends CrudService<TeacherDto, Long> {
-    boolean existsByNationalId(String nationalId);
     TeacherDto getById(Long id);
 
     List<StudentDto> getMyStudents(Long teacherId);

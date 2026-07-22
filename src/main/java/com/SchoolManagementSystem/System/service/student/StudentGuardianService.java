@@ -8,12 +8,17 @@ import com.SchoolManagementSystem.System.service.CrudService;
 import java.util.List;
 
 public interface StudentGuardianService extends CrudService<StudentGuardianDto, Long> {
-    StudentGuardianDto connectStudentToGuardian(Long studentId, Long guardianId,Boolean primaryGuardian);
+    StudentGuardianDto connectStudentToGuardian(Long studentId, Long guardianId, Boolean primaryGuardian);
 
-    List<GuardianDto> getGuardiansByStudent(Long studentId);
+    List<GuardianDto> getStudentGuardians(Long studentId);
 
-    List<StudentDto> getStudentsByGuardian(Long guardianId);
+    List<StudentDto> getGuardianStudents(Long guardianId);
 
-     List<StudentDto> getStudentsWithoutGuardian();
-     List<GuardianDto> getGuardiansWithoutStudents();
+    List<StudentDto> getStudentsWithoutGuardian();
+
+    List<GuardianDto> getGuardiansWithoutStudents();
+
+    StudentGuardianDto changePrimaryGuardian(Long studentId, Long newGuardianId);
+
+    void removeGuardian(Long studentId, Long guardianId);
 }

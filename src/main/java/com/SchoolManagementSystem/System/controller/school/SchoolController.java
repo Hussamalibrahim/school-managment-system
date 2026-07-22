@@ -18,8 +18,10 @@ public class SchoolController{
     private final SchoolService schoolService;
 
     @RequestMapping("define-school")
-    public void defineSchool(@RequestBody DefineSchool defineSchool) {
+    public ResponseEntity<Void> defineSchool(@RequestBody DefineSchool defineSchool) {
         schoolService.defineSchool(defineSchool);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
@@ -27,7 +29,6 @@ public class SchoolController{
         return ResponseEntity.ok(schoolService.getById(id));
     }
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('PRINCIPAL')")
     public ResponseEntity<SchoolDto> update(@PathVariable Long id, @RequestBody updateSchoolInfo dto) {
         return ResponseEntity.ok(schoolService.update(id, dto));
     }

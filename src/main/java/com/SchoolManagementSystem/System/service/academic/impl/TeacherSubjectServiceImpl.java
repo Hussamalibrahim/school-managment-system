@@ -1,6 +1,8 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.TeacherSubjectDto;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.academic.TeacherSubjectMapper;
 import com.SchoolManagementSystem.System.entity.academic.Subject;
 import com.SchoolManagementSystem.System.entity.academic.TeacherSubject;
@@ -25,13 +27,16 @@ public class TeacherSubjectServiceImpl implements TeacherSubjectService {
     private final SubjectRepository subjectRepository;
 
 
+    @Transactional
     public TeacherSubjectDto connectTeacherToSubject(Long teacherId, Long subjectId)
     {
         Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.TEACHER_NOT_FOUND));
 
         Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new RuntimeException("Subject not found"));
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND));
 
         TeacherSubject ts = new TeacherSubject();
         ts.setTeacher(teacher);
@@ -40,30 +45,5 @@ public class TeacherSubjectServiceImpl implements TeacherSubjectService {
         ts = teacherSubjectRepository.save(ts);
 
         return TeacherSubjectMapper.toDto(ts);
-    }
-
-    @Override
-    public TeacherSubjectDto save(TeacherSubjectDto dto) {
-        return null;
-    }
-
-    @Override
-    public TeacherSubjectDto update(Long aLong, TeacherSubjectDto dto) {
-        return null;
-    }
-
-    @Override
-    public TeacherSubjectDto getById(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public List<TeacherSubjectDto> getAll() {
-        return List.of();
-    }
-
-    @Override
-    public void delete(Long aLong) {
-
     }
 }

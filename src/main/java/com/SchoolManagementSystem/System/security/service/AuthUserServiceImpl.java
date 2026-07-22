@@ -4,6 +4,11 @@ import com.SchoolManagementSystem.System.entity.AuthUser;
 import com.SchoolManagementSystem.System.entity.enumeration.Role;
 import com.SchoolManagementSystem.System.entity.enumeration.UserType;
 import com.SchoolManagementSystem.System.entity.user.Principal;
+import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
+import com.SchoolManagementSystem.System.exception.business.BusinessRuleException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import com.SchoolManagementSystem.System.mapper.user.PrincipalMapper;
 import com.SchoolManagementSystem.System.repository.user.PrincipalRepository;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.security.dto.RegisterRequest;
@@ -11,7 +16,6 @@ import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.security.dto.AuthUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +24,6 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService {
 
@@ -29,85 +32,123 @@ public class AuthUserServiceImpl implements AuthUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
     public AuthUserDto findByEmail(String email) {
 
         Optional<AuthUser> authUser = authUserRepository.findByEmail(email);
-        return authUser.map(AuthUserMapper::toDto).orElseThrow(() -> new RuntimeException("User not found"));
+        return authUser.map(AuthUserMapper::toDto)
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
+    @Transactional
     public void register(RegisterRequest request) {
 
         if (authUserRepository.findByEmail(request.email()).isPresent()) {
-            log.info("Principal already exists");
-            throw new RuntimeException("Email already exists");
+            throw new AlreadyExistsException(
+                    ErrorCode.EMAIL_ALREADY_EXISTS
+            );
         }
 
         if (principalRepository.findByNationalId(request.nationalId()).isPresent()) {
-            log.info("Principal already exists in domain");
-            throw new RuntimeException("National Id already exists");
+            throw new AlreadyExistsException(
+                    ErrorCode.NATIONAL_ID_ALREADY_EXISTS
+            );
         }
 
-        Principal principal = new Principal();
-        principal.setNationalId(request.nationalId());
-        principal.setFirstName(request.firstName());
-        principal.setLastName(request.lastName());
+        Principal principal = principalRepository.save(
+                PrincipalMapper.fromRegisterRequest(request)
+        );
 
-        principal = principalRepository.save(principal);
-
-        AuthUser admin = new AuthUser();
-        admin.setEmail(request.email());
-        admin.setPassword(passwordEncoder.encode(request.password()));
-        admin.setRole(Role.PRINCIPAL);
-        admin.setRefId(principal.getId());
-
-        authUserRepository.save(admin);
+        authUserRepository.save(
+                AuthUserMapper.fromRegisterRequest(
+                        request.email(),
+                        passwordEncoder.encode(request.password()),
+                        principal.getId(),
+                        Role.PRINCIPAL)
+                );
 
         log.info("Principal created successfully");
     }
 
     @Override
+    @Transactional
     public AuthUserDto deactivateAccountByEmail(String email) {
-        AuthUser authUser = authUserRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!authUser.getEnabled()) {
-            throw new RuntimeException("User is already deactivated");
-        }
-        authUser.setEnabled(false);
-        return AuthUserMapper.toDto(authUserRepository.save(authUser));
+
+        AuthUser user = findAuthUserByEmail(email);
+
+        return AuthUserMapper.toDto(
+                updateAccountStatus(user, false)
+        );
     }
+
     @Override
+    @Transactional
     public AuthUserDto deactivateAccountByIdAndRole(Long ownerId, UserType userType) {
-        AuthUser authUser = authUserRepository.findAuthUserByRefIdAndRole(
-                ownerId, Role.valueOf(userType.name())
-        ).orElseThrow(() -> new RuntimeException(""));
-        if (!authUser.getEnabled()) {
-            throw new RuntimeException("User is already deactivated");
-        }
-        authUser.setEnabled(false);
+        AuthUser user = findAuthUser(ownerId, userType);
 
-        return AuthUserMapper.toDto(authUserRepository.save(authUser));
+        return AuthUserMapper.toDto(
+                updateAccountStatus(user, false)
+        );
     }
+
     @Override
+    @Transactional
     public AuthUserDto activateAccountByEmail(String email) {
-        AuthUser authUser = authUserRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        if (authUser.getEnabled()) {
-            throw new RuntimeException("User is already activated");
-        }
-        authUser.setEnabled(true);
-        return AuthUserMapper.toDto(authUserRepository.save(authUser));
-    }
-    @Override
-    public AuthUserDto activateAccountByIdAndRole(Long ownerId, UserType userType) {
-        AuthUser authUser = authUserRepository.findAuthUserByRefIdAndRole(
-                ownerId, Role.valueOf(userType.name())
-        ).orElseThrow(() -> new RuntimeException(""));
-        if (authUser.getEnabled()) {
-            throw new RuntimeException("User is already activated");
-        }
-        authUser.setEnabled(true);
 
-        return AuthUserMapper.toDto(authUserRepository.save(authUser));
+        AuthUser user = findAuthUserByEmail(email);
+
+        return AuthUserMapper.toDto(
+                updateAccountStatus(user, true)
+        );
+    }
+
+    @Override
+    @Transactional
+    public AuthUserDto activateAccountByIdAndRole(Long ownerId, UserType userType) {
+        AuthUser user = findAuthUser(ownerId, userType);
+
+        return AuthUserMapper.toDto(
+                updateAccountStatus(user, true)
+        );
+    }
+
+    private AuthUser updateAccountStatus(
+            AuthUser user,
+            boolean enabled) {
+
+        if (user.getEnabled() == enabled) {
+
+            throw new BusinessRuleException(
+                    enabled
+                            ? ErrorCode.USER_ALREADY_ACTIVATED
+                            : ErrorCode.USER_ALREADY_DEACTIVATED
+            );
+        }
+
+        user.setEnabled(enabled);
+
+        return authUserRepository.save(user);
+    }
+
+    private AuthUser findAuthUserByEmail(String email) {
+
+        return authUserRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private AuthUser findAuthUser(
+            Long refId,
+            UserType type) {
+
+        return authUserRepository
+                .findAuthUserByRefIdAndRole(
+                        refId,
+                        Role.valueOf(type.name())
+                )
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 }

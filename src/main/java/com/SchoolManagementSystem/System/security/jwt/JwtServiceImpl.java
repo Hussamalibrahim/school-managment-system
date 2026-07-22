@@ -1,9 +1,13 @@
 package com.SchoolManagementSystem.System.security.jwt;
 
 import com.SchoolManagementSystem.System.entity.AuthUser;
+import com.SchoolManagementSystem.System.exception.business.AuthenticationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import com.SchoolManagementSystem.System.exception.security.JwtAuthenticationException;
 import com.SchoolManagementSystem.System.security.dto.AuthUserDto;
 import com.SchoolManagementSystem.System.security.service.JwtService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -71,11 +75,15 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (JwtException e) {
+            throw new JwtAuthenticationException(ErrorCode.INVALID_TOKEN);
+        }
     }
 }
 

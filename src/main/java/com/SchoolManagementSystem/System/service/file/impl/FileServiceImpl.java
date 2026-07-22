@@ -9,6 +9,10 @@ import com.SchoolManagementSystem.System.entity.enumeration.FileOwnerType;
 import com.SchoolManagementSystem.System.entity.enumeration.FileType;
 import com.SchoolManagementSystem.System.entity.enumeration.UserType;
 import com.SchoolManagementSystem.System.entity.file.File;
+import com.SchoolManagementSystem.System.exception.business.AuthenticationException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.file.FileMapper;
 import com.SchoolManagementSystem.System.repository.file.FileRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
@@ -20,7 +24,9 @@ import com.SchoolManagementSystem.System.repository.user.TeacherRepository;
 import com.SchoolManagementSystem.System.security.UserPrincipal;
 import com.SchoolManagementSystem.System.service.file.FileService;
 import com.SchoolManagementSystem.System.service.file.StorageService;
+import com.SchoolManagementSystem.System.utils.file.FileExtensionUtil;
 import com.SchoolManagementSystem.System.utils.file.FileFolderUtil;
+import com.SchoolManagementSystem.System.utils.file.FileValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
@@ -34,7 +40,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class FileServiceImpl implements FileService {
 
     private final FileRepository repository;
@@ -48,15 +53,12 @@ public class FileServiceImpl implements FileService {
     private final LibrarianRepository librarianRepository;
 
     @Override
+    @Transactional
     public FileDto uploadStudentFile(
             StudentFileUploadRequest request,
-            MultipartFile multipartFile
-    ) {
+            MultipartFile multipartFile) {
 
-        validateOwner(
-                FileOwnerType.STUDENT,
-                request.studentId()
-        );
+        validateOwner(FileOwnerType.STUDENT, request.studentId());
 
         UserPrincipal currentUser = getCurrentUser();
 
@@ -66,8 +68,7 @@ public class FileServiceImpl implements FileService {
                 FileOwnerType.STUDENT,
                 request.studentId(),
                 UserType.valueOf(currentUser.getRole().name()),
-                currentUser.getRefId()
-        );
+                currentUser.getRefId());
 
         repository.save(file);
 
@@ -75,15 +76,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Transactional
     public FileDto uploadGuardianFile(
             GuardianFileUploadRequest request,
-            MultipartFile multipartFile
-    ) {
+            MultipartFile multipartFile) {
 
-        validateOwner(
-                FileOwnerType.GUARDIAN,
-                request.guardianId()
-        );
+        validateOwner(FileOwnerType.GUARDIAN, request.guardianId());
 
         UserPrincipal currentUser = getCurrentUser();
 
@@ -93,8 +91,7 @@ public class FileServiceImpl implements FileService {
                 FileOwnerType.GUARDIAN,
                 request.guardianId(),
                 UserType.valueOf(currentUser.getRole().name()),
-                currentUser.getRefId()
-        );
+                currentUser.getRefId());
 
         repository.save(file);
 
@@ -102,20 +99,15 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    @Transactional
     public FileDto uploadUserFile(
             UserFileUploadRequest request,
-            MultipartFile multipartFile
-    ) {
+            MultipartFile multipartFile) {
 
         FileOwnerType ownerType =
-                FileOwnerType.valueOf(
-                        request.employeeType().name()
-                );
+                FileOwnerType.valueOf(request.employeeType().name());
 
-        validateOwner(
-                ownerType,
-                request.employeeId()
-        );
+        validateOwner(ownerType, request.employeeId());
 
         UserPrincipal currentUser = getCurrentUser();
 
@@ -125,19 +117,18 @@ public class FileServiceImpl implements FileService {
                 ownerType,
                 request.employeeId(),
                 UserType.valueOf(currentUser.getRole().name()),
-                currentUser.getRefId()
-        );
+                currentUser.getRefId());
 
         repository.save(file);
 
         return FileMapper.toDto(file);
     }
+
     @Override
     @Transactional(readOnly = true)
     public DownloadFileResponse download(Long id) {
 
-        File file = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("File not found"));
+        File file = findFile(id);
 
         Resource resource =
                 storageService.load(file.getFilePath());
@@ -146,15 +137,14 @@ public class FileServiceImpl implements FileService {
                 resource,
                 file.getOriginalName(),
                 file.getMimeType(),
-                file.getFileSize()
-        );
+                file.getFileSize());
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
 
-        File file = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("File not found"));
+        File file = findFile(id);
 
         storageService.delete(file.getFilePath());
 
@@ -165,58 +155,21 @@ public class FileServiceImpl implements FileService {
     @Transactional(readOnly = true)
     public FileDto getById(Long id) {
 
-        return repository.findById(id)
-                .map(FileMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("File not found"));
+        return FileMapper.toDto(findFile(id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<FileDto> getByOwner(
             FileOwnerType ownerType,
-            Long ownerId
-    ) {
+            Long ownerId) {
+
+        validateOwner(ownerType, ownerId);
 
         return repository.findByOwnerTypeAndOwnerId(ownerType, ownerId)
                 .stream()
                 .map(FileMapper::toDto)
                 .toList();
-    }
-
-    private void validateOwner(
-            FileOwnerType ownerType,
-            Long ownerId
-    ) {
-
-        boolean exists = switch (ownerType) {
-
-            case STUDENT ->
-                    studentRepository.existsById(ownerId);
-
-            case GUARDIAN ->
-                    guardianRepository.existsById(ownerId);
-
-            case TEACHER ->
-                    teacherRepository.existsById(ownerId);
-
-            case PRINCIPAL ->
-                    principalRepository.existsById(ownerId);
-
-            case SECRETARY ->
-                    secretaryRepository.existsById(ownerId);
-
-            case LIBRARIAN ->
-                    librarianRepository.existsById(ownerId);
-
-            default ->
-                    true;
-        };
-
-        if (!exists) {
-            throw new RuntimeException(
-                    ownerType + " not found with id " + ownerId
-            );
-        }
     }
 
     private File createFile(
@@ -225,51 +178,34 @@ public class FileServiceImpl implements FileService {
             FileOwnerType ownerType,
             Long ownerId,
             UserType uploadedByType,
-            Long uploadedById
-    ) {
+            Long uploadedById) {
+
+        FileValidationUtil.validate(multipartFile, fileType);
 
         String folder =
                 FileFolderUtil.getFolder(ownerType, ownerId);
 
         String path =
-                storageService.store(
-                        multipartFile,
-                        folder
-                );
+                storageService.store(multipartFile, folder);
 
         File file = new File();
 
-        file.setOriginalName(
-                multipartFile.getOriginalFilename()
-        );
+        file.setOriginalName(multipartFile.getOriginalFilename());
 
         file.setStoredName(
                 Paths.get(path)
                         .getFileName()
-                        .toString()
-        );
+                        .toString());
 
         file.setFilePath(path);
 
-        file.setMimeType(
-                multipartFile.getContentType()
-        );
+        file.setMimeType(multipartFile.getContentType());
 
-        file.setFileSize(
-                multipartFile.getSize()
-        );
+        file.setFileSize(multipartFile.getSize());
 
-        String original =
-                multipartFile.getOriginalFilename();
-
-        if (original != null && original.contains(".")) {
-
-            file.setExtension(
-                    original.substring(
-                            original.lastIndexOf('.') + 1
-                    )
-            );
-        }
+        file.setExtension(
+                FileExtensionUtil.getExtension(
+                        multipartFile.getOriginalFilename()));
 
         file.setFileType(fileType);
 
@@ -282,20 +218,49 @@ public class FileServiceImpl implements FileService {
         return file;
     }
 
+    private void validateOwner(FileOwnerType ownerType, Long ownerId) {
+
+        boolean exists = switch (ownerType) {
+
+            case STUDENT -> studentRepository.existsById(ownerId);
+
+            case GUARDIAN -> guardianRepository.existsById(ownerId);
+
+            case TEACHER -> teacherRepository.existsById(ownerId);
+
+            case PRINCIPAL -> principalRepository.existsById(ownerId);
+
+            case SECRETARY -> secretaryRepository.existsById(ownerId);
+
+            case LIBRARIAN -> librarianRepository.existsById(ownerId);
+
+            default -> throw new ValidationException(
+                    ErrorCode.INVALID_OWNER_TYPE);
+        };
+
+        if (!exists) {
+            throw new ValidationException(ErrorCode.OWNER_NOT_FOUND);
+        }
+    }
+
+    private File findFile(Long id) {
+
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.FILE_NOT_FOUND));
+    }
+
     private UserPrincipal getCurrentUser() {
 
         Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
+                SecurityContextHolder.getContext().getAuthentication();
 
         Object principal = authentication.getPrincipal();
 
         if (!(principal instanceof UserPrincipal userPrincipal)) {
-            throw new RuntimeException("Unauthenticated user");
+            throw new AuthenticationException(ErrorCode.UNAUTHORIZED);
         }
 
         return userPrincipal;
     }
-
 }

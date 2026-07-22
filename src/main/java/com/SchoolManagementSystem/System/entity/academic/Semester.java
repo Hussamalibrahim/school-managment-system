@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.System.entity.school.AcademicYear;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class Semester extends BaseEntity
     @JoinColumn(name = "academic_year_id")
     private AcademicYear academicYear;
 
-    private String name;
+    private SemesterName semesterName;
 
     private LocalDate startDate;
 

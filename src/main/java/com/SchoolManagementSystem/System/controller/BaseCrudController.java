@@ -2,6 +2,7 @@ package com.SchoolManagementSystem.System.controller;
 
 import com.SchoolManagementSystem.System.service.CrudService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,9 @@ public abstract class BaseCrudController<D> {
 
     @PostMapping
     public ResponseEntity<D> create(@RequestBody D dto) {
-        return ResponseEntity.ok(service.save(dto));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.save(dto));
     }
 
     @PutMapping("/{id}")

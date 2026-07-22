@@ -9,8 +9,10 @@ import com.SchoolManagementSystem.System.service.student.StudentService;
 import com.SchoolManagementSystem.System.service.user.GuardianService;
 import com.SchoolManagementSystem.System.service.user.SecretaryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,24 +25,28 @@ public class SecretaryController {
     private final SecretaryService secretaryService;
     private final StudentGuardianService studentGuardianService;
 
-    // add student
     @PostMapping("/student")
-    public ResponseEntity<Void> createStudent(@RequestBody AuthRequestStudent dto) {
+    public ResponseEntity<Void> createStudent(
+            @RequestBody AuthRequestStudent dto) {
+
         studentService.save(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
-    // Add guardian
     @PostMapping("/guardian")
-    public ResponseEntity<Void> createGuardian(@RequestBody AuthRequestGuardian dto) {
-        guardianService.save(dto);
-        return ResponseEntity.ok().build();
-    }
-    @GetMapping("/me")
-    public ResponseEntity<SecretaryDto> me(Authentication auth) {
+    public ResponseEntity<Void> createGuardian(
+            @RequestBody AuthRequestGuardian dto) {
 
-        UserPrincipal user = (UserPrincipal) auth.getPrincipal();
+        guardianService.save(dto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<SecretaryDto> me(@AuthenticationPrincipal UserPrincipal user) {
+
         return ResponseEntity.ok(secretaryService.getById(user.getRefId()));
     }
 }

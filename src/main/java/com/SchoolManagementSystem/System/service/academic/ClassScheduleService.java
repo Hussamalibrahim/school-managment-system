@@ -4,6 +4,7 @@ import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.entity.academic.ClassSchedule;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 public interface ClassScheduleService {
@@ -12,6 +13,6 @@ public interface ClassScheduleService {
     List<ClassScheduleDto> getByTeacher(Long teacherId);
     List<ClassScheduleDto> getByClass(Long classId);
     List<StudentDto> getStudentsByTeacher(Long teacherId);
-    ClassScheduleDto addExtraPeriod(Long classId);
+    List<ClassScheduleDto> addExtraPeriod(Long classId, DayOfWeek day);
     ClassScheduleDto assignTeacher(Long scheduleId, Long teacherId, Long subjectId);
 }

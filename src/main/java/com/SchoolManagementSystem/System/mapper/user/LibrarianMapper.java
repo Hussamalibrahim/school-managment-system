@@ -16,7 +16,6 @@ public final class LibrarianMapper {
                   librarian.getLastName(),
                   librarian.getPhone(),
                   librarian.getAddress(),
-                  librarian.getStatus(),
                   librarian.getHireDate(),
                   librarian.getCreatedAt(),
                   librarian.getUpdatedAt(),
@@ -32,7 +31,6 @@ public final class LibrarianMapper {
           librarian.setLastName(dto.lastName());
           librarian.setPhone(dto.phone());
           librarian.setAddress(dto.address());
-          librarian.setStatus(dto.status());
           librarian.setHireDate(dto.hireDate());
 
           return librarian;

@@ -3,6 +3,9 @@ package com.SchoolManagementSystem.System.controller.file;
 import com.SchoolManagementSystem.System.dto.file.FileDto;
 import com.SchoolManagementSystem.System.dto.file.request.GuardianFileUploadRequest;
 import com.SchoolManagementSystem.System.dto.file.request.StudentFileUploadRequest;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import com.SchoolManagementSystem.System.dto.file.request.UserFileUploadRequest;
 import com.SchoolManagementSystem.System.dto.file.response.DownloadFileResponse;
@@ -35,7 +38,7 @@ public class FileController {
             @RequestPart("request") @Valid StudentFileUploadRequest request,
             @RequestPart("file") MultipartFile file) {
 
-        return ResponseEntity.ok(fileService.uploadStudentFile(request, file));
+        return ResponseEntity.status(HttpStatus.CREATED).body(fileService.uploadStudentFile(request, file));
     }
 
     @PostMapping(value = "/upload/guardian", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -51,7 +54,7 @@ public class FileController {
             @RequestPart("request") @Valid UserFileUploadRequest request,
             @RequestPart("file") MultipartFile file) {
 
-        return ResponseEntity.ok(fileService.uploadUserFile(request, file));
+        return ResponseEntity.status(HttpStatus.CREATED).body(fileService.uploadUserFile(request, file));
     }
 
     @GetMapping("/{id}")
@@ -108,15 +111,13 @@ public class FileController {
         }
 
         boolean haveSon = studentGuardianService
-                .getStudentsByGuardian(user.getRefId())
+                .getGuardianStudents(user.getRefId())
                 .stream()
                 .anyMatch(student -> student.id().equals(id));
 
         if (haveSon) {
             return;
         }
-
-
-        throw new AccessDeniedException("You are not authorized to view this information.");
+        throw new ValidationException(ErrorCode.UNAUTHENTICATED);
     }
 }

@@ -8,7 +8,6 @@ import com.SchoolManagementSystem.System.service.CrudService;
 import java.util.List;
 
 public interface SchoolClassService extends CrudService<SchoolClassDto, Long> {
-    List<StudentDto> getStudentsById(Long id);
     SchoolClassDto save(SchoolClassDto dto);
 
 }

@@ -2,7 +2,7 @@ package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
-import com.SchoolManagementSystem.System.entity.enumeration.Semester;
+import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class Subject extends BaseEntity
     private GradeLevel gradeLevel;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "semester", nullable = false)
-    private Semester semester;
+    @Column(name = "semesterName", nullable = false)
+    private SemesterName semesterName;
 
 }

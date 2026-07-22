@@ -2,9 +2,11 @@ package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
 import com.SchoolManagementSystem.System.dto.academic.request.SubjectCreateRequest;
-import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
-import com.SchoolManagementSystem.System.entity.enumeration.Semester;
+import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
+import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.academic.SubjectMapper;
 import com.SchoolManagementSystem.System.entity.academic.Subject;
 import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
@@ -18,37 +20,41 @@ import java.util.List;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class SubjectServiceImpl
         implements SubjectService {
     private final SubjectRepository subjectRepository;
 
     @Override
+    @Transactional
     public SubjectDto save(SubjectDto dto) {
         return null;
     }
 
     @Override
+    @Transactional
     public SubjectDto update(Long id, SubjectDto dto) {
 
         Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Guardian not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND));
 
-        subject.setName(dto.name());
-        subject.setGradeLevel(dto.gradeLevel());
-        subject.setSemester(dto.semester());
-        return SubjectMapper.toDto(subjectRepository.save(subject));
+        SubjectMapper.updateEntity(subject, dto);
+
+        return SubjectMapper.toDto(
+                subjectRepository.save(subject)
+        );
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SubjectDto getById(Long id) {
         return SubjectMapper.toDto(
                 subjectRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Subject not found with id: " + id)));
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SubjectDto> getAll() {
         return subjectRepository.findAll().stream()
                 .map(SubjectMapper::toDto)
@@ -56,45 +62,47 @@ public class SubjectServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void delete(Long id) {
-        Subject subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Guardian not found"));
-        subjectRepository.delete(subject);
+        subjectRepository.delete(
+                subjectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND)));
     }
+
     @Override
-    public SubjectDto save(SubjectCreateRequest dto){
+    @Transactional
+    public SubjectDto save(SubjectCreateRequest dto) {
 
-        if (subjectRepository.findSubjectByName(dto.name()).isPresent())
-            throw new RuntimeException("Subject with name " + dto.name() + " already exists");
+        if (subjectRepository.existsByName(dto.name()))
+            throw new AlreadyExistsException(ErrorCode.SUBJECT_ALREADY_EXISTS);
 
-        Subject subject = new Subject();
-        subject.setName(dto.name());
-        subject.setGradeLevel(dto.gradeLevel());
-        log.info("Saving subject with name: " + dto.name() + ", grade level: " + dto.gradeLevel() + ", semester: " + dto.semester());
-        log.info(dto.gradeLevel().getClass().getTypeName());
-        subject.setSemester(dto.semester());
-        return SubjectMapper.toDto(subjectRepository.save(subject));
+        return SubjectMapper.toDto(subjectRepository.save(SubjectMapper.fromCreateRequest(dto)));
     }
+
     @Override
-    public List<SubjectDto> getBySemester(Semester semester){
-        return subjectRepository.findSubjectBySemester(semester)
+    @Transactional(readOnly = true)
+    public List<SubjectDto> getBySemester(SemesterName semesterName) {
+        return subjectRepository.findSubjectBySemesterName(semesterName)
                 .stream().map(SubjectMapper::toDto)
                 .toList();
     }
 
     @Override
-    public List<SubjectDto> getByGrade(GradeLevel gradeLevel){
+    @Transactional(readOnly = true)
+    public List<SubjectDto> getByGrade(GradeLevel gradeLevel) {
         return subjectRepository.findSubjectByGradeLevel(gradeLevel)
                 .stream().map(SubjectMapper::toDto)
                 .toList();
     }
+
     @Override
+    @Transactional(readOnly = true)
     public List<SubjectDto> getSubjectByGradeAndSemester(
             GradeLevel gradeLevel,
-            Semester semester) {
+            SemesterName semesterName) {
 
         return subjectRepository
-                .findByGradeLevelAndSemester(gradeLevel, semester)
+                .findByGradeLevelAndSemesterName(gradeLevel, semesterName)
                 .stream()
                 .map(SubjectMapper::toDto)
                 .toList();

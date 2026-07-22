@@ -1,5 +1,7 @@
 package com.SchoolManagementSystem.System.mapper.school;
 
+import com.SchoolManagementSystem.System.dto.request.DefineSchool;
+import com.SchoolManagementSystem.System.dto.request.updateSchoolInfo;
 import com.SchoolManagementSystem.System.dto.school.SchoolDto;
 import com.SchoolManagementSystem.System.entity.school.School;
 
@@ -45,5 +47,17 @@ public final class SchoolMapper {
         school.setSchoolType(dto.schoolType());
 
         return school;
+    }
+    public static void fromDefineSchool(DefineSchool dto, School school) {
+
+        school.setName(dto.name());
+        school.setEducationStages(dto.educationStages());
+        school.setSchoolType(dto.schoolType());
+
+    }
+    public static void updateEntity(updateSchoolInfo dto, School school) {
+        school.setAddress(dto.address());
+        school.setPhone(dto.phone());
+        school.setLogoPath(dto.logoPath());
     }
 }

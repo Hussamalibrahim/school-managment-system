@@ -12,6 +12,7 @@ import com.SchoolManagementSystem.System.service.academic.SchoolClassService;
 import com.SchoolManagementSystem.System.service.user.PrincipalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -29,8 +30,10 @@ public class PrincipalController {
 
     // ADD Secretary, Librarian, Teacher Only
     @PostMapping("/create-user")
-    public void createStaff(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<Void> createStaff(@RequestBody CreateUserRequest request) {
         principalService.createStaff(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/assign-schedule")
@@ -39,12 +42,16 @@ public class PrincipalController {
             @RequestParam Long teacherId,
             @RequestParam Long subjectId
     ) {
-        return ResponseEntity.ok(classScheduleService.assignTeacher(scheduleId, teacherId, subjectId));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(classScheduleService.assignTeacher(scheduleId, teacherId, subjectId));
     }
 
     @PostMapping("/create-class")
-    public void createClass(@RequestBody SchoolClassDto request) {
+    public ResponseEntity<Void> createClass(@RequestBody SchoolClassDto request) {
         schoolClassService.save(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 
     @GetMapping("/me")

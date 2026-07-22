@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.System.entity.enumeration;
 
-public enum Semester {
+public enum SemesterName {
     FIRST,
     SECOND
 }

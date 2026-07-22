@@ -4,6 +4,7 @@ import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.System.entity.school.School;
 import com.SchoolManagementSystem.System.entity.student.Student;
+import com.SchoolManagementSystem.System.security.dto.AuthRequestStudent;
 
 public final class StudentMapper {
 
@@ -70,5 +71,31 @@ public final class StudentMapper {
         student.setNotes(dto.notes());
 
         return student;
+    }
+    public static Student fromAuthRequestStudent(AuthRequestStudent authRequestStudent) {
+        Student student = new Student();
+        student.setRegistrationNumber(authRequestStudent.registrationNumber());
+        student.setFirstName(authRequestStudent.firstName());
+        student.setLastName(authRequestStudent.lastName());
+        student.setGender(authRequestStudent.gender());
+        student.setGradeLevel(authRequestStudent.gradeLevel());
+        student.setDateOfBirth(authRequestStudent.dateOfBirth());
+        student.setAddress(authRequestStudent.address());
+        student.setEnrollmentDate(authRequestStudent.enrollmentDate());
+        student.setPhone(authRequestStudent.phone());
+        student.setNotes(authRequestStudent.notes());
+        return student;
+    }
+    public static void updateEntity(Student student, StudentDto dto) {
+
+        student.setRegistrationNumber(dto.registrationNumber());
+        student.setFirstName(dto.firstName());
+        student.setLastName(dto.lastName());
+        student.setGender(dto.gender());
+        student.setDateOfBirth(dto.dateOfBirth());
+        student.setAddress(dto.address());
+        student.setEnrollmentDate(dto.enrollmentDate());
+        student.setPhone(dto.phone());
+        student.setNotes(dto.notes());
     }
 }

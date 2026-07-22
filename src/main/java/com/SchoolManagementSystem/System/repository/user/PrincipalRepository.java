@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface PrincipalRepository extends JpaRepository<Principal, Long>
 {
     Optional<Principal> findByNationalId(String nationalId);
+
+    boolean existsByNationalId(String nationalId);
 }

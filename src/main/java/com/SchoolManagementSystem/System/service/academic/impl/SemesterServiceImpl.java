@@ -1,6 +1,9 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.SemesterDto;
+import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.academic.SemesterMapper;
 import com.SchoolManagementSystem.System.entity.academic.Semester;
 import com.SchoolManagementSystem.System.repository.academic.SemesterRepository;
@@ -13,48 +16,52 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SemesterServiceImpl implements SemesterService {
 
-    private final SemesterRepository repository;
+    private final SemesterRepository semesterRepository;
 
     @Override
+    @Transactional
     public SemesterDto save(SemesterDto dto) {
-        Semester semester = SemesterMapper.toEntity(dto);
-        semester = repository.save(semester);
-        return SemesterMapper.toDto(semester);
+        if (semesterRepository.existsBySemesterName(dto.semesterName()))
+            throw new AlreadyExistsException(ErrorCode.SEMESTER_ALREADY_EXISTS);
+        return SemesterMapper.toDto(
+                semesterRepository.save(SemesterMapper
+                        .toEntity(dto)));
     }
-
+    @Transactional
     @Override
     public SemesterDto update(Long id, SemesterDto dto) {
-        Semester semester = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Semester not found"));
+        Semester semester = semesterRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SEMESTER_NOT_FOUND));
 
-        semester.setName(dto.name());
-        semester.setStartDate(dto.startDate());
-        semester.setEndDate(dto.endDate());
+        SemesterMapper.updateEntity(semester, dto);
 
-        semester = repository.save(semester);
-        return SemesterMapper.toDto(semester);
+        return SemesterMapper.toDto(semesterRepository.save(semester));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SemesterDto getById(Long id) {
-        return repository.findById(id)
+        return semesterRepository.findById(id)
                 .map(SemesterMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Semester not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SEMESTER_NOT_FOUND));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SemesterDto> getAll() {
-        return repository.findAll()
+        return semesterRepository.findAll()
                 .stream()
                 .map(SemesterMapper::toDto)
                 .toList();
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        semesterRepository.deleteById(
+                semesterRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SEMESTER_NOT_FOUND)));
     }
 }

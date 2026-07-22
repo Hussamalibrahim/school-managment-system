@@ -35,9 +35,6 @@ public abstract class BaseUser extends BaseEntity {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "status")
-    private String status;
-
     @Column(name = "hire-date")
     private LocalDate hireDate;
 }

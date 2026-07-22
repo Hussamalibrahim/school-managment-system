@@ -17,7 +17,6 @@ public final class SecretaryMapper {
                 secretary.getLastName(),
                 secretary.getPhone(),
                 secretary.getAddress(),
-                secretary.getStatus(),
                 secretary.getHireDate(),
                 secretary.getCreatedAt(),
                 secretary.getUpdatedAt(),
@@ -33,9 +32,17 @@ public final class SecretaryMapper {
         secretary.setLastName(dto.lastName());
         secretary.setPhone(dto.phone());
         secretary.setAddress(dto.address());
-        secretary.setStatus(dto.status());
         secretary.setHireDate(dto.hireDate());
 
         return secretary;
+    }
+
+    public static void updateEntity(Secretary secretary, SecretaryDto dto) {
+        secretary.setNationalId(dto.nationalId());
+        secretary.setFirstName(dto.firstName());
+        secretary.setLastName(dto.lastName());
+        secretary.setPhone(dto.phone());
+        secretary.setAddress(dto.address());
+        secretary.setHireDate(dto.hireDate());
     }
 }

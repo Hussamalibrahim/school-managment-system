@@ -1,9 +1,11 @@
 package com.SchoolManagementSystem.System.service.academic.impl;
 
 import com.SchoolManagementSystem.System.dto.academic.SchoolClassDto;
-import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.entity.academic.ClassSchedule;
 import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.academic.SchoolClassMapper;
 import com.SchoolManagementSystem.System.entity.enumeration.PeriodNumber;
 import com.SchoolManagementSystem.System.repository.academic.ClassScheduleRepository;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import static com.SchoolManagementSystem.System.config.ScheduleConstants.DEFAULT_PERIODS;
@@ -20,35 +23,34 @@ import static com.SchoolManagementSystem.System.config.ScheduleConstants.DEFAULT
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SchoolClassServiceImpl implements SchoolClassService {
 
     private final SchoolClassRepository schoolClassRepository;
     private final ClassScheduleRepository classScheduleRepo;
-    private final SchoolClassRepository schoolRepository;
 
     @Override
+    @Transactional
     public SchoolClassDto update(Long id, SchoolClassDto dto) {
+
         SchoolClass clazz = schoolClassRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND));
 
-        clazz.setGradeLevel(dto.gradeLevel());
-        clazz.setSection(dto.section());
-        clazz.setLocation(dto.location());
-        clazz.setCapacity(dto.capacity());
+        SchoolClassMapper.updateEntity(clazz, dto);
 
-        clazz = schoolClassRepository.save(clazz);
-        return SchoolClassMapper.toDto(clazz);
+        return SchoolClassMapper.toDto(
+                schoolClassRepository.save(clazz));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SchoolClassDto getById(Long id) {
         return schoolClassRepository.findById(id)
                 .map(SchoolClassMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SchoolClassDto> getAll() {
         return schoolClassRepository.findAll()
                 .stream()
@@ -57,41 +59,42 @@ public class SchoolClassServiceImpl implements SchoolClassService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        schoolClassRepository.deleteById(id);
+        schoolClassRepository.delete(
+                schoolClassRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND)));
     }
 
-
     @Override
-    public List<StudentDto> getStudentsById(Long id) {
-        return List.of();
-    }
-    @Override
-    public SchoolClassDto save(SchoolClassDto dto)
-    {
+    @Transactional
+    public SchoolClassDto save(SchoolClassDto dto) {
+        if (schoolClassRepository.existsByGradeLevelAndSection(dto.gradeLevel(), dto.section())) {
+            throw new ValidationException(ErrorCode.CLASS_ALREADY_EXISTS);
+        }
+        SchoolClass schoolClass = schoolClassRepository.save(SchoolClassMapper.toEntity(dto));
 
-        SchoolClass schoolClass = SchoolClassMapper.toEntity(dto);
-
-
-        schoolClass = schoolClassRepository.save(schoolClass);
-
-        initClassSchedule(schoolClass.getId());
+        initClassSchedule(schoolClass);
 
         return SchoolClassMapper.toDto(schoolClass);
     }
-    private void initClassSchedule(Long classId)
-    {
-        SchoolClass schoolClass = schoolClassRepository.findById(classId)
-                .orElseThrow(() -> new RuntimeException("Class not found"));
 
-        for (int i = 1; i <= DEFAULT_PERIODS; i++)
-        {
-            ClassSchedule schedule = new ClassSchedule();
+    private void initClassSchedule(SchoolClass schoolClass) {
 
-            schedule.setSchoolClass(schoolClass);
-            schedule.setPeriodNumber(PeriodNumber.values()[i - 1]);
+        for (DayOfWeek day : DayOfWeek.values()) {
+            if (day == DayOfWeek.FRIDAY || day == DayOfWeek.SATURDAY) {
+                continue;
+            }
+            for (int i = 1; i <= DEFAULT_PERIODS; i++) {
 
-            classScheduleRepo.save(schedule);
+                ClassSchedule schedule = new ClassSchedule();
+
+                schedule.setSchoolClass(schoolClass);
+                schedule.setDayOfWeek(day);
+                schedule.setPeriodNumber(PeriodNumber.values()[i - 1]);
+
+                classScheduleRepo.save(schedule);
+            }
         }
     }
 }

@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
  */
 public record TeacherDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
                          String nationalId, String firstName, String lastName, String phone,
-                         String address, String status, LocalDate hireDate,
+                         String address, LocalDate hireDate,
                          String specialization) implements Serializable {
 }

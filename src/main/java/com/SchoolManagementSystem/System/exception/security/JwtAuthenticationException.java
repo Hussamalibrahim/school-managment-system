@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.exception.business;
+package com.SchoolManagementSystem.System.exception.security;
 
 import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import lombok.Getter;

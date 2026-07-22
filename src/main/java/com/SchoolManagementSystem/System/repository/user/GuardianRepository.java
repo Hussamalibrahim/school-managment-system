@@ -25,4 +25,9 @@ public interface GuardianRepository extends JpaRepository<Guardian, Long>
        )
        """)
     List<Guardian> findGuardiansWithoutStudents();
+
+
+    boolean existsByNationalIdAndIdNot(String nationalId, Long id);
+
+    boolean existsByNationalId(String nationalId);
 }

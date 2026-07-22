@@ -6,6 +6,10 @@ import com.SchoolManagementSystem.System.dto.student.request.AttendanceRequest;
 import com.SchoolManagementSystem.System.dto.student.request.StudentAttendanceRequest;
 import com.SchoolManagementSystem.System.entity.student.Attendance;
 import com.SchoolManagementSystem.System.entity.student.Student;
+import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.student.AttendanceMapper;
 import com.SchoolManagementSystem.System.repository.student.AttendanceRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
@@ -30,18 +34,18 @@ public class AttendanceServiceImpl implements AttendanceService {
     public AttendanceDto save(AttendanceCreateRequest request) {
 
         Student student = studentRepository.findById(request.studentId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
         if (request.attendanceDate().getDayOfWeek() == DayOfWeek.FRIDAY
                 || request.attendanceDate().getDayOfWeek() == DayOfWeek.SATURDAY) {
-            throw new RuntimeException("Cannot record attendance on Friday or Saturday.");
+            throw new ValidationException(ErrorCode.CANT_ADD_PERIOD_IN_HOLIDAY);
         }
 
         if (attendanceRepository.existsByStudentIdAndAttendanceDate(
                 request.studentId(),
                 request.attendanceDate())) {
 
-            throw new RuntimeException("Attendance already exists for this student.");
+            throw new AlreadyExistsException(ErrorCode.ATTENDANCE_ALREADY_EXISTS);
         }
 
         Attendance attendance = new Attendance();
@@ -58,14 +62,14 @@ public class AttendanceServiceImpl implements AttendanceService {
     public AttendanceDto update(Long id, AttendanceCreateRequest request) {
 
         Attendance attendance = attendanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Attendance not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ATTENDANCE_NOT_FOUND));
 
         Student student = studentRepository.findById(request.studentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
         if (request.attendanceDate().getDayOfWeek() == DayOfWeek.FRIDAY
                 || request.attendanceDate().getDayOfWeek() == DayOfWeek.SATURDAY) {
-            throw new RuntimeException("Cannot record attendance on Friday or Saturday.");
+            throw new ValidationException(ErrorCode.CANT_ADD_PERIOD_IN_HOLIDAY);
         }
         Attendance existing = attendanceRepository
                 .findByStudentIdAndAttendanceDate(
@@ -73,7 +77,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                         request.attendanceDate());
 
         if (existing != null && !existing.getId().equals(id)) {
-            throw new RuntimeException("Attendance already exists for this student.");
+            throw new AlreadyExistsException(ErrorCode.ATTENDANCE_ALREADY_EXISTS);
         }
 
         attendance.setStudent(student);
@@ -87,7 +91,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void delete(Long id) {
 
         Attendance attendance = attendanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Attendance not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.ATTENDANCE_NOT_FOUND));
 
         attendanceRepository.delete(attendance);
     }
@@ -98,8 +102,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         return AttendanceMapper.toDto(
                 attendanceRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Attendance not found"))
-        );
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.ATTENDANCE_NOT_FOUND)));
     }
 
     @Override
@@ -146,21 +149,17 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         if (request.attendanceDate().getDayOfWeek() == DayOfWeek.FRIDAY
                 || request.attendanceDate().getDayOfWeek() == DayOfWeek.SATURDAY) {
-            throw new RuntimeException("Cannot record attendance on Friday or Saturday.");
+            throw new ValidationException(ErrorCode.CANT_ADD_PERIOD_IN_HOLIDAY);
         }
 
         for (StudentAttendanceRequest studentRequest : request.students()) {
 
             Student student = studentRepository.findById(studentRequest.studentId())
-                    .orElseThrow(() -> new RuntimeException("Student not found"));
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
             if (attendanceRepository.existsByStudentIdAndAttendanceDate(
-                    student.getId(),
-                    request.attendanceDate())) {
-
-                throw new RuntimeException(
-                        "Attendance already exists for student: "
-                                + student.getFirstName() + " " + student.getLastName());
+                    student.getId(), request.attendanceDate())) {
+                throw new AlreadyExistsException(ErrorCode.ATTENDANCE_ALREADY_EXISTS);
             }
 
             Attendance attendance = new Attendance();

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import com.SchoolManagementSystem.System.entity.student.Student;
 
 
@@ -14,7 +16,6 @@ import com.SchoolManagementSystem.System.entity.student.Student;
 public interface StudentRepository extends JpaRepository<Student, Long>
 {
     Optional<Student> findByRegistrationNumber(String registrationNumber);
-    List<Student> findByStudentSchoolClassIdIn(List<Long> classIds);
 
     @Query("""
        SELECT s
@@ -28,4 +29,10 @@ public interface StudentRepository extends JpaRepository<Student, Long>
     List<Student> findStudentsWithoutGuardian();
 
     List<Student> findByStudentSchoolClass_Id(Long classId);
+
+    List<Student> findByStudentSchoolClass_IdIn(Set<Long> classIds);
+
+    void deleteById(Student student);
+
+    boolean existsByRegistrationNumberAndIdNot(String s, Long id);
 }

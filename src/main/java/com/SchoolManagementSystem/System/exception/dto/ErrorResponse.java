@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.exception;
+package com.SchoolManagementSystem.System.exception.dto;
 
 import java.time.LocalDateTime;
 
@@ -8,5 +8,4 @@ public record ErrorResponse(
         String error,
         String code,
         String message,
-        String path) {
-}
+        String path) {}

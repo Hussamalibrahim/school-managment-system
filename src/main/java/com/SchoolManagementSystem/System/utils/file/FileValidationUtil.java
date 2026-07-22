@@ -1,29 +1,31 @@
 package com.SchoolManagementSystem.System.utils.file;
 
 import com.SchoolManagementSystem.System.entity.enumeration.FileType;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 
 public final class FileValidationUtil {
 
     private FileValidationUtil() {
     }
 
-    private static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-    private static final long MAX_DOCUMENT_SIZE = 20 * 1024 * 1024;
+    @Value("${storage.max-image-size}")
+    private static long MAX_IMAGE_SIZE;
 
-    private static final List<String> IMAGE_TYPES = List.of(
-            "image/jpeg",
-            "image/png",
-            "image/webp"
-    );
+    @Value("${storage.max-document-size}")
+    private static long MAX_DOCUMENT_SIZE;
 
-    private static final List<String> DOCUMENT_TYPES = List.of(
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    );
+    @Value("${storage.image-types}")
+    private static List<String> IMAGE_TYPES;
+
+    @Value("${storage.document-types}")
+    private static List<String> DOCUMENT_TYPES;
 
     public static void validate(
             MultipartFile file,
@@ -31,7 +33,7 @@ public final class FileValidationUtil {
     ) {
 
         if (file == null || file.isEmpty()) {
-            throw new RuntimeException("File is empty.");
+            throw new ValidationException(ErrorCode.FILE_EMPTY);
         }
 
         switch (fileType) {
@@ -39,32 +41,27 @@ public final class FileValidationUtil {
             case IMAGE -> {
 
                 if (!IMAGE_TYPES.contains(file.getContentType())) {
-                    throw new RuntimeException("Invalid image type.");
+                    throw new ValidationException(ErrorCode.INVALID_IMAGE_TYPE);
                 }
 
                 if (file.getSize() > MAX_IMAGE_SIZE) {
-                    throw new RuntimeException("Image size exceeded.");
+                    throw new ValidationException(ErrorCode.IMAGE_SIZE_EXCEEDED);
                 }
-
             }
 
             case DOCUMENT -> {
 
                 if (!DOCUMENT_TYPES.contains(file.getContentType())) {
-                    throw new RuntimeException("Invalid document type.");
+                    throw new ValidationException(ErrorCode.INVALID_DOCUMENT_TYPE);
                 }
 
                 if (file.getSize() > MAX_DOCUMENT_SIZE) {
-                    throw new RuntimeException("Document size exceeded.");
+                    throw new ValidationException(ErrorCode.DOCUMENT_SIZE_EXCEEDED);
                 }
-
             }
 
             default -> {
             }
-
         }
-
     }
-
 }

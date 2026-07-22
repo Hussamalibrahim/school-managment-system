@@ -19,7 +19,6 @@ public final class TeacherMapper {
                 teacher.getLastName(),
                 teacher.getPhone(),
                 teacher.getAddress(),
-                teacher.getStatus(),
                 teacher.getHireDate(),
                 teacher.getSpecialization()
         );
@@ -33,10 +32,19 @@ public final class TeacherMapper {
         teacher.setLastName(dto.lastName());
         teacher.setPhone(dto.phone());
         teacher.setAddress(dto.address());
-        teacher.setStatus(dto.status());
         teacher.setHireDate(dto.hireDate());
         teacher.setSpecialization(dto.specialization());
 
         return teacher;
+    }
+
+    public static void updateEntity(Teacher teacher, TeacherDto dto) {
+        teacher.setNationalId(dto.nationalId());
+        teacher.setFirstName(dto.firstName());
+        teacher.setLastName(dto.lastName());
+        teacher.setPhone(dto.phone());
+        teacher.setAddress(dto.address());
+        teacher.setHireDate(dto.hireDate());
+        teacher.setSpecialization(dto.specialization());
     }
 }

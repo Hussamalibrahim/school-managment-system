@@ -1,12 +1,17 @@
 package com.SchoolManagementSystem.System.service.file.impl;
 
 import com.SchoolManagementSystem.System.config.StorageProperties;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.StorageException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.service.file.StorageService;
+import com.SchoolManagementSystem.System.utils.file.FileExtensionUtil;
 import com.SchoolManagementSystem.System.utils.file.FileNameUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,23 +28,18 @@ public class LocalStorageService implements StorageService {
     private final StorageProperties properties;
 
     @Override
+    @Transactional
     public String store(MultipartFile file, String folder) {
 
         try {
 
-            Path root = Paths.get(properties.getLocation());
-
-            Path uploadFolder = root.resolve(folder);
+            Path uploadFolder = Paths.get(properties.getLocation())
+                    .resolve(folder);
 
             Files.createDirectories(uploadFolder);
 
-            String extension = "";
-
-            String original = file.getOriginalFilename();
-
-            if (original != null && original.contains(".")) {
-                extension = original.substring(original.lastIndexOf('.') + 1);
-            }
+            String extension = FileExtensionUtil.getExtension(
+                    file.getOriginalFilename());
 
             String storedName =
                     FileNameUtil.generate(extension);
@@ -55,9 +55,8 @@ public class LocalStorageService implements StorageService {
 
             return destination.toString();
 
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new StorageException(ErrorCode.FILE_STORAGE_FAILED);
         }
     }
 
@@ -66,23 +65,22 @@ public class LocalStorageService implements StorageService {
 
         try {
 
-            Path file = Paths.get(path);
+            Resource resource =
+                    new UrlResource(Paths.get(path).toUri());
 
-            Resource resource = new UrlResource(file.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new NotFoundException(ErrorCode.FILE_NOT_FOUND);
             }
 
-            throw new RuntimeException("File not found.");
+            return resource;
 
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new StorageException(ErrorCode.FILE_LOAD_FAILED);
         }
-
     }
 
     @Override
+    @Transactional
     public void delete(String path) {
 
         try {
@@ -90,11 +88,7 @@ public class LocalStorageService implements StorageService {
             Files.deleteIfExists(Paths.get(path));
 
         } catch (IOException e) {
-
-            throw new RuntimeException("Could not delete file.", e);
-
+            throw new StorageException(ErrorCode.FILE_DELETE_FAILED);
         }
-
     }
-
 }

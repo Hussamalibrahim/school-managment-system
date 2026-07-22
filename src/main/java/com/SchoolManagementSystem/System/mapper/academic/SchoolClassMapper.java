@@ -1,7 +1,9 @@
 package com.SchoolManagementSystem.System.mapper.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.SchoolClassDto;
+import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
 import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
+import com.SchoolManagementSystem.System.entity.academic.Subject;
 
 public final class SchoolClassMapper {
 
@@ -43,5 +45,12 @@ public final class SchoolClassMapper {
         entity.setCapacity(dto.capacity());
 
         return entity;
+    }
+    public static void updateEntity(SchoolClass subject, SchoolClassDto dto) {
+
+        subject.setGradeLevel(dto.gradeLevel());
+        subject.setSection(dto.section());
+        subject.setLocation(dto.location());
+        subject.setCapacity(dto.capacity());
     }
 }
