@@ -1,4 +1,5 @@
 package com.SchoolManagementSystem.System.config;
 
-public class AttendanceStatistics {
+public record AttendanceStatistics(long absences, long late, long excused) {
+
 }

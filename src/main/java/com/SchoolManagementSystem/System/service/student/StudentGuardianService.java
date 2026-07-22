@@ -21,4 +21,7 @@ public interface StudentGuardianService extends CrudService<StudentGuardianDto, 
     StudentGuardianDto changePrimaryGuardian(Long studentId, Long newGuardianId);
 
     void removeGuardian(Long studentId, Long guardianId);
+
+    boolean isStudentBelongsToGuardian(Long studentId, Long guardianId);
+
 }

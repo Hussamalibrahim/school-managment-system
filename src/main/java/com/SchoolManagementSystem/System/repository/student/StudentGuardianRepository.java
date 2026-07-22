@@ -1,7 +1,10 @@
 package com.SchoolManagementSystem.System.repository.student;
 
+import com.SchoolManagementSystem.System.entity.student.Student;
 import com.SchoolManagementSystem.System.entity.student.StudentGuardian;
+import com.SchoolManagementSystem.System.entity.user.Guardian;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +19,25 @@ public interface StudentGuardianRepository extends JpaRepository<StudentGuardian
     List<StudentGuardian> findByGuardianId(Long guardianId);
 
     Optional<StudentGuardian> findByStudentIdAndGuardianId(Long studentId, Long guardianId);
+    @Query("""
+       SELECT g
+       FROM Guardian g
+       WHERE NOT EXISTS (
+           SELECT sg
+           FROM StudentGuardian sg
+           WHERE sg.guardian = g
+       )
+       """)
+    List<Guardian> findGuardiansWithoutStudents();
 
+    @Query("""
+       SELECT s
+       FROM Student s
+       WHERE NOT EXISTS (
+           SELECT sg
+           FROM StudentGuardian sg
+           WHERE sg.student = s
+       )
+       """)
+    List<Student> findStudentsWithoutGuardian();
 }

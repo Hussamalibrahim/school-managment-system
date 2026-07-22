@@ -1,8 +1,11 @@
 package com.SchoolManagementSystem.System.service.student;
 
+import com.SchoolManagementSystem.System.config.AttendanceStatistics;
 import com.SchoolManagementSystem.System.dto.student.AttendanceDto;
+import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.dto.student.request.AttendanceCreateRequest;
 import com.SchoolManagementSystem.System.dto.student.request.AttendanceRequest;
+import com.SchoolManagementSystem.System.entity.enumeration.AttendanceStatus;
 
 import java.util.List;
 
@@ -25,4 +28,12 @@ public interface AttendanceService {
     List<AttendanceDto> getMyAttendance(Long studentId);
 
     void saveAttendance(AttendanceRequest request);
+
+    List<AttendanceDto> getGuardianStudentsAttendance(Long guardianId);
+
+    List<AttendanceDto> getGuardianStudentAttendance(Long guardianId, Long studentId);
+
+    AttendanceStatistics getAttendanceStatistics(Long studentId);
+
+    List<StudentDto> getStudentsExceededAttendanceStatus(AttendanceStatus status, long limit);
 }

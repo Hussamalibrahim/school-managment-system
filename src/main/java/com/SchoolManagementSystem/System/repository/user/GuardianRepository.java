@@ -15,18 +15,6 @@ public interface GuardianRepository extends JpaRepository<Guardian, Long>
 {
     Optional<Guardian> findByNationalId(String nationalId);
 
-    @Query("""
-       SELECT g
-       FROM Guardian g
-       WHERE NOT EXISTS (
-           SELECT sg
-           FROM StudentGuardian sg
-           WHERE sg.guardian = g
-       )
-       """)
-    List<Guardian> findGuardiansWithoutStudents();
-
-
     boolean existsByNationalIdAndIdNot(String nationalId, Long id);
 
     boolean existsByNationalId(String nationalId);

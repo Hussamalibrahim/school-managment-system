@@ -17,16 +17,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>
 {
     Optional<Student> findByRegistrationNumber(String registrationNumber);
 
-    @Query("""
-       SELECT s
-       FROM Student s
-       WHERE NOT EXISTS (
-           SELECT sg
-           FROM StudentGuardian sg
-           WHERE sg.student = s
-       )
-       """)
-    List<Student> findStudentsWithoutGuardian();
+
 
     List<Student> findByStudentSchoolClass_Id(Long classId);
 
