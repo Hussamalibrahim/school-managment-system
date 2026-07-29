@@ -29,6 +29,7 @@ public class SemesterServiceImpl implements SemesterService {
                 semesterRepository.save(SemesterMapper
                         .toEntity(dto)));
     }
+
     @Transactional
     @Override
     public SemesterDto update(Long id, SemesterDto dto) {
@@ -63,5 +64,12 @@ public class SemesterServiceImpl implements SemesterService {
         semesterRepository.deleteById(
                 semesterRepository.findById(id)
                         .orElseThrow(() -> new NotFoundException(ErrorCode.SEMESTER_NOT_FOUND)));
+    }
+
+    @Override
+    public Semester getCurrentSemester() {
+
+        return semesterRepository.findById(1L).orElseThrow(() ->
+                new NotFoundException(ErrorCode.SEMESTER_NOT_FOUND));
     }
 }

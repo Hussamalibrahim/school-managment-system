@@ -1,4 +1,7 @@
 package com.SchoolManagementSystem.System.dto.academic;
 
-public class ExamResultDto {
-}
+public record ExamResultDto(
+        Long id,
+        Long examId,
+        Long studentId,
+        Double score) {}

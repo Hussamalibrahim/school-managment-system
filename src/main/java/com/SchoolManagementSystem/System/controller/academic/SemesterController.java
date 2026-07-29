@@ -13,4 +13,5 @@ public class SemesterController extends BaseCrudController<SemesterDto> {
     public SemesterController(SemesterService service) {
         super(service);
     }
+
 }

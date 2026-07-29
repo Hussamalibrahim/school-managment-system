@@ -1,9 +1,11 @@
 package com.SchoolManagementSystem.System.controller.user;
 
+import com.SchoolManagementSystem.System.dto.academic.AssessmentDto;
 import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.dto.user.TeacherDto;
 import com.SchoolManagementSystem.System.security.UserPrincipal;
+import com.SchoolManagementSystem.System.service.academic.AssessmentService;
 import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
 import com.SchoolManagementSystem.System.service.user.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherController {
 
+    private final AssessmentService assessmentService;
     private final TeacherService teacherService;
     private final ClassScheduleService classScheduleService;
 
@@ -38,6 +41,7 @@ public class TeacherController {
 
         return ResponseEntity.ok(classScheduleService.getByTeacher(user.getRefId()));
     }
+
 
     @GetMapping("/teacher/{teacherId}/students")
     public ResponseEntity<List<StudentDto>> getStudentsByTeacher(@PathVariable Long teacherId) {

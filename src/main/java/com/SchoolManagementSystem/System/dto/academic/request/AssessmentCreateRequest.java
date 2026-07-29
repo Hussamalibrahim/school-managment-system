@@ -1,4 +1,10 @@
 package com.SchoolManagementSystem.System.dto.academic.request;
 
-public class AssessmentCreateRequest {
-}
+import com.SchoolManagementSystem.System.entity.enumeration.ContinuousCategory;
+
+import java.time.LocalDate;
+
+public record AssessmentCreateRequest(Long classScheduleId, String name, ContinuousCategory category,
+                                      Double maxScore,
+                                      Double weight,
+                                      LocalDate assessmentDate) { }

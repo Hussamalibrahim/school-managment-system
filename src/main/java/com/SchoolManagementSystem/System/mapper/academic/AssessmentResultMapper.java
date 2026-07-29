@@ -15,8 +15,11 @@ public final class AssessmentResultMapper {
                 result.getCreatedAt(),
                 result.getUpdatedAt(),
                 result.getDeletedAt(),
-                result.getScore(),
-                result.getNotes()
+
+                result.getStudent() == null ? null : result.getStudent().getId(),
+                result.getAssessment() == null ? null : result.getAssessment().getId(),
+
+                result.getScore()
         );
     }
 
@@ -29,8 +32,11 @@ public final class AssessmentResultMapper {
         result.setUpdatedAt(dto.updatedAt());
         result.setDeletedAt(dto.deletedAt());
         result.setScore(dto.score());
-        result.setNotes(dto.notes());
 
         return result;
+    }
+
+    public static void updateEntity(AssessmentResult result, AssessmentResultDto dto) {
+        result.setScore(dto.score());
     }
 }

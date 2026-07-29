@@ -110,7 +110,7 @@
 --     CONSTRAINT fk_class_school FOREIGN KEY (school_id) REFERENCES schools (id)
 -- );
 --
--- CREATE TABLE students
+-- CREATE TABLE results
 -- (
 --     id                  BIGINT AUTO_INCREMENT PRIMARY KEY,
 --     school_id           BIGINT,
@@ -136,7 +136,7 @@
 --     student_id       BIGINT,
 --     guardian_id      BIGINT,
 --     primary_guardian BOOLEAN,
---     CONSTRAINT fk_sg_student FOREIGN KEY (student_id) REFERENCES students (id),
+--     CONSTRAINT fk_sg_student FOREIGN KEY (student_id) REFERENCES results (id),
 --     CONSTRAINT fk_sg_guardian FOREIGN KEY (guardian_id) REFERENCES guardians (id)
 -- );
 --
@@ -146,7 +146,7 @@
 --     student_id        BIGINT,
 --     attendance_date   DATE,
 --     attendance_status VARCHAR(20),
---     CONSTRAINT fk_att_student FOREIGN KEY (student_id) REFERENCES students (id)
+--     CONSTRAINT fk_att_student FOREIGN KEY (student_id) REFERENCES results (id)
 -- );
 --
 -- CREATE TABLE warnings
@@ -155,7 +155,7 @@
 --     student_id   BIGINT,
 --     warning_date DATE,
 --     reason       VARCHAR(255),
---     CONSTRAINT fk_warning_student FOREIGN KEY (student_id) REFERENCES students (id)
+--     CONSTRAINT fk_warning_student FOREIGN KEY (student_id) REFERENCES results (id)
 -- );
 --
 --
@@ -234,7 +234,7 @@
 --     assessment_id BIGINT,
 --     score         DOUBLE,
 --     notes         TEXT,
---     CONSTRAINT fk_ar_student FOREIGN KEY (student_id) REFERENCES students (id),
+--     CONSTRAINT fk_ar_student FOREIGN KEY (student_id) REFERENCES results (id),
 --     CONSTRAINT fk_ar_assessment FOREIGN KEY (assessment_id) REFERENCES assessments (id),
 --     CONSTRAINT uq_student_assessment UNIQUE (student_id, assessment_id)
 -- );
@@ -248,7 +248,7 @@
 --     absence_days     INT,
 --     passed           BOOLEAN,
 --     notes            TEXT,
---     CONSTRAINT fk_er_student FOREIGN KEY (student_id) REFERENCES students (id),
+--     CONSTRAINT fk_er_student FOREIGN KEY (student_id) REFERENCES results (id),
 --     CONSTRAINT fk_er_year FOREIGN KEY (academic_year_id) REFERENCES academic_years (id)
 -- );
 --
@@ -280,7 +280,7 @@
 --     due_date    DATE,
 --     return_date DATE,
 --     status      VARCHAR(50),
---     CONSTRAINT fk_borrow_student FOREIGN KEY (student_id) REFERENCES students (id),
+--     CONSTRAINT fk_borrow_student FOREIGN KEY (student_id) REFERENCES results (id),
 --     CONSTRAINT fk_borrow_book FOREIGN KEY (book_id) REFERENCES library_book (id)
 -- );
 --
@@ -292,7 +292,7 @@
 --     amount       DOUBLE,
 --     payment_date DATE,
 --     notes        TEXT,
---     CONSTRAINT fk_payment_student FOREIGN KEY (student_id) REFERENCES students (id)
+--     CONSTRAINT fk_payment_student FOREIGN KEY (student_id) REFERENCES results (id)
 -- );
 --
 -- CREATE TABLE discounts
@@ -308,7 +308,7 @@
 --     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
 --     student_id  BIGINT,
 --     discount_id BIGINT,
---     CONSTRAINT fk_sd_student FOREIGN KEY (student_id) REFERENCES students (id),
+--     CONSTRAINT fk_sd_student FOREIGN KEY (student_id) REFERENCES results (id),
 --     CONSTRAINT fk_sd_discount FOREIGN KEY (discount_id) REFERENCES discounts (id)
 -- );
 --

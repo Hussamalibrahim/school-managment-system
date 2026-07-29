@@ -14,7 +14,7 @@ public final class FileFolderUtil {
         return switch (ownerType) {
 
             case STUDENT ->
-                    "students/" + ownerId;
+                    "results/" + ownerId;
 
             case TEACHER ->
                     "teachers/" + ownerId;

@@ -144,13 +144,17 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
                     ErrorCode.TEACHER_DOES_NOT_TEACH_SUBJECT
             );
         }
-        if (classSchedulesRepo.existsByTeacherIdAndDayOfWeekAndPeriodNumber(teacherId, schedule.getDayOfWeek(), schedule.getPeriodNumber())) {
-            throw new ValidationException(
-                    ErrorCode.TEACHER_ALREADY_ASSIGNED_AT_THIS_TIME);
+        if (classSchedulesRepo.existsByTeacherIdAndDayOfWeekAndPeriodNumberAndIdNot(
+                teacherId,
+                schedule.getDayOfWeek(),
+                schedule.getPeriodNumber(),
+                schedule.getId())) {
+
+            throw new ValidationException(ErrorCode.TEACHER_ALREADY_ASSIGNED_AT_THIS_TIME);
         }
-        if (classSchedulesRepo.existsBySchoolClassIdAndDayOfWeekAndPeriodNumber(schedule.getSchoolClass().getId(), schedule.getDayOfWeek(), schedule.getPeriodNumber())) {
-            throw new ValidationException(
-                    ErrorCode.CLASS_ALREADY_HAS_TEACHER_ASSIGNED_AT_THIS_TIME);
+
+        if (classSchedulesRepo.existsBySchoolClassIdAndDayOfWeekAndPeriodNumberAndIdNot(schedule.getSchoolClass().getId(), schedule.getDayOfWeek(), schedule.getPeriodNumber(), schedule.getId())) {
+            throw new ValidationException(ErrorCode.CLASS_ALREADY_HAS_TEACHER_ASSIGNED_AT_THIS_TIME);
         }
 
         Subject subject =

@@ -16,8 +16,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -39,7 +41,8 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class,
+            DateTimeParseException.class})
     public ResponseEntity<ErrorResponse> handleValidation(
             MethodArgumentNotValidException ex,
             HttpServletRequest request

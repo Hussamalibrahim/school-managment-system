@@ -16,4 +16,5 @@ public interface TeacherSubjectRepository
     List<TeacherSubject> findByTeacher_Id(Long teacherId);
 
     List<TeacherSubject> findBySubject_Id(Long subjectId);
+
 }

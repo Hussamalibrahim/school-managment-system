@@ -1,4 +1,6 @@
 package com.SchoolManagementSystem.System.dto.academic.request;
 
-public class StudentExamScoreRequest {
-}
+public record StudentExamScoreRequest(
+        Long studentId,
+        Double score
+) {}

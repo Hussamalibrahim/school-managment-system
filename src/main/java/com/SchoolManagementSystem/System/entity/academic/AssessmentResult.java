@@ -37,6 +37,6 @@ public class AssessmentResult extends BaseEntity
     @Column(name = "score")
     private Double score;
 
-    @Column(name = "notes")
-    private String notes;
+//    @Column(name = "notes")
+//    private String notes;
 }

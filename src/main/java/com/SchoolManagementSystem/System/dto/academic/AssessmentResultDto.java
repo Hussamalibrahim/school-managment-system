@@ -8,6 +8,13 @@ import java.time.LocalDateTime;
 /**
  * DTO for {@link AssessmentResult}
  */
-public record AssessmentResultDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-                                  Double score, String notes) implements Serializable {
-}
+public record AssessmentResultDto(
+        Long id,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        LocalDateTime deletedAt,
+
+        Long studentId,
+        Long assessmentId,
+
+        Double score) {}

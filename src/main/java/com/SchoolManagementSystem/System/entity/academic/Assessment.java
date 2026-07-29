@@ -1,7 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
-import com.SchoolManagementSystem.System.entity.enumeration.AssessmentCategory;
+import com.SchoolManagementSystem.System.entity.enumeration.ContinuousCategory;
 import com.SchoolManagementSystem.System.entity.user.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,15 +21,15 @@ import java.time.LocalDate;
 public class Assessment extends BaseEntity
 {
 
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "class_schedule_id")
+    private ClassSchedule classSchedule;
 
-    @ManyToOne
     @JoinColumn(name = "semester_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Semester semester;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
@@ -38,7 +38,7 @@ public class Assessment extends BaseEntity
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
-    private AssessmentCategory category;
+    private ContinuousCategory category;
 
     @Column(name = "max_score")
     private Double maxScore;

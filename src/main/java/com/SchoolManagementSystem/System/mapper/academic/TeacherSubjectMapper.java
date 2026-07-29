@@ -21,12 +21,10 @@ public final class TeacherSubjectMapper
                 teacherSubject.getId(),
 
                 teacherSubject.getTeacher() != null
-                        ? teacherSubject.getTeacher().getId()
-                        : null,
+                        ? teacherSubject.getTeacher().getId() : null,
 
                 teacherSubject.getSubject() != null
-                        ? teacherSubject.getSubject().getId()
-                        : null
+                        ? teacherSubject.getSubject().getId() : null
         );
     }
 
@@ -36,8 +34,7 @@ public final class TeacherSubjectMapper
         if (dto == null)
             return null;
 
-        TeacherSubject teacherSubject =
-                new TeacherSubject();
+        TeacherSubject teacherSubject = new TeacherSubject();
 
         teacherSubject.setId(dto.id());
 

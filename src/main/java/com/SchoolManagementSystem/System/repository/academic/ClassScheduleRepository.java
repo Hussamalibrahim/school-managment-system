@@ -16,6 +16,10 @@ public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Lo
 
     List<ClassSchedule> findClassScheduleBySchoolClass_Id(Long schoolClassId);
 
+    boolean existsByTeacherIdAndDayOfWeekAndPeriodNumberAndIdNot(Long teacherId, DayOfWeek dayOfWeek, PeriodNumber periodNumber, Long id);
+
+    boolean existsBySchoolClassIdAndDayOfWeekAndPeriodNumberAndIdNot(Long schoolClassId, DayOfWeek dayOfWeek, PeriodNumber periodNumber, Long id);
+
     boolean existsByTeacherIdAndDayOfWeekAndPeriodNumber(Long teacherId, DayOfWeek dayOfWeek, PeriodNumber periodNumber);
 
     boolean existsBySchoolClassIdAndDayOfWeekAndPeriodNumber(Long id, DayOfWeek dayOfWeek, PeriodNumber periodNumber);

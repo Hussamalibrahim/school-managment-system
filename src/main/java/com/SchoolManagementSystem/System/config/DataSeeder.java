@@ -10,6 +10,7 @@ import com.SchoolManagementSystem.System.entity.student.Attendance;
 import com.SchoolManagementSystem.System.entity.student.Student;
 import com.SchoolManagementSystem.System.entity.student.StudentGuardian;
 import com.SchoolManagementSystem.System.entity.user.*;
+import com.SchoolManagementSystem.System.mapper.academic.SchoolClassMapper;
 import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
 import com.SchoolManagementSystem.System.repository.academic.TeacherSubjectRepository;
@@ -19,6 +20,7 @@ import com.SchoolManagementSystem.System.repository.student.StudentGuardianRepos
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.user.*;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
+import com.SchoolManagementSystem.System.service.academic.SchoolClassService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -46,6 +48,7 @@ public class DataSeeder implements CommandLineRunner {
     private final AuthUserRepository authUserRepository;
     private final SubjectRepository subjectRepository;
     private final SchoolClassRepository schoolClassRepository;
+    private final SchoolClassService schoolClassService;
     private final TeacherSubjectRepository teacherSubjectRepository;
     private final PasswordEncoder passwordEncoder;
     private final StudentRepository studentRepository;
@@ -219,11 +222,7 @@ public class DataSeeder implements CommandLineRunner {
 
         createTeacher(
                 school,
-                "2000001",
-                "Mohammad",
-                "Saleh",
-                "Math"
-        );
+                "2000001", "Mohammad", "Saleh", "Math");
 
         createTeacher(
                 school,
@@ -463,34 +462,21 @@ public class DataSeeder implements CommandLineRunner {
     private SchoolClass createClass(
             School school,
             GradeLevel gradeLevel,
-            String section
-    ) {
+            String section) {
 
         SchoolClass schoolClass = new SchoolClass();
 
-        schoolClass.setSchool(
-                school
-        );
+        schoolClass.setSchool(school);
 
-        schoolClass.setGradeLevel(
-                gradeLevel
-        );
+        schoolClass.setGradeLevel(gradeLevel);
 
-        schoolClass.setSection(
-                section
-        );
+        schoolClass.setSection(section);
 
-        schoolClass.setLocation(
-                "Room " + section
-        );
+        schoolClass.setLocation("Room " + section);
 
-        schoolClass.setCapacity(
-                30
-        );
+        schoolClass.setCapacity(30);
 
-        return schoolClassRepository.save(
-                schoolClass
-        );
+        return SchoolClassMapper.toEntity(schoolClassService.save(SchoolClassMapper.toDto(schoolClass)));
     }
 
     private void connectTeacherSubject(

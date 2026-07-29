@@ -1,6 +1,8 @@
 package com.SchoolManagementSystem.System.entity.enumeration;
 
-public enum AssessmentType {
-    CONTINUOUS,
-    EXAM
+public enum ExamCategory  {
+    MONTHLY,
+    MIDTERM,
+    FINAL,
+    MAKEUP;
 }
