@@ -155,7 +155,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"attendanceDate\": \"2026-07-20\",\r\n  \"students\": [\r\n    {\r\n      \"studentId\": 1,\r\n      \"attendanceStatus\": \"PRESENT\"\r\n    }\r\n  ]\r\n}",
+              "raw": "{\r\n  \"attendanceDate\": \"2026-07-22\",\r\n  \"students\": [\r\n    {\r\n      \"studentId\": 1,\r\n      \"attendanceStatus\": \"PRESENT\"\r\n    },\r\n    {\r\n      \"studentId\": 2,\r\n      \"attendanceStatus\": \"ABSENT\"\r\n    },\r\n    {\r\n      \"studentId\": 3,\r\n      \"attendanceStatus\": \"LATE\"\r\n    },\r\n    {\r\n      \"studentId\": 4,\r\n      \"attendanceStatus\": \"EXCUSED\"\r\n    }\r\n  ]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -357,6 +357,146 @@
                 "api",
                 "attendance",
                 "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics-of-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcyMDc1OCwiZXhwIjoxNzg0ODA3MTU4fQ.98MEVbMYQIuJH2HWy9JJ3dzyJNioLxaz0h5ubu3rgcc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/attendance/student/1/statistics",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "attendance",
+                "student",
+                "1",
+                "statistics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "search-for -student-who-exceeded-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcyMDc1OCwiZXhwIjoxNzg0ODA3MTU4fQ.98MEVbMYQIuJH2HWy9JJ3dzyJNioLxaz0h5ubu3rgcc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/attendance/exceeded?status=PRESENT&limit=1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "attendance",
+                "exceeded"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PRESENT",
+                  "type": "text"
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "guardian-see-one-student-exceeded",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcyMDc1OCwiZXhwIjoxNzg0ODA3MTU4fQ.98MEVbMYQIuJH2HWy9JJ3dzyJNioLxaz0h5ubu3rgcc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/attendance/guardian/student/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "attendance",
+                "guardian",
+                "student",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "guardian-see-all-student-exceeded",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiU0VDUkVUQVJZIiwicmVmSWQiOjEsInN1YiI6InNlY3JldGFyeSIsImlhdCI6MTc4NDcyMDc1OCwiZXhwIjoxNzg0ODA3MTU4fQ.98MEVbMYQIuJH2HWy9JJ3dzyJNioLxaz0h5ubu3rgcc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/attendance/guardian",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "attendance",
+                "guardian"
               ]
             }
           },
@@ -2214,7 +2354,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"secretary\",\r\n//   \"email\": \"ali@dtest.com\", \r\n//   \"email\": \"tesstt1@test.com\", \r\n//   \"email\": \"guiardian@test.com\", \r\n  \"password\": \"123456\"\r\n}\r\n// created by principal",
+              "raw": "{\r\n  \"email\": \"guardian1\",\r\n//   \"email\": \"ali@dtest.com\", \r\n//   \"email\": \"tesstt1@test.com\", \r\n//   \"email\": \"guiardian@test.com\", \r\n  \"password\": \"123456\"\r\n}\r\n// created by principal",
               "options": {
                 "raw": {
                   "language": "json"

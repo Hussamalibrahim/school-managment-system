@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.System.entity.enumeration;
 
-public enum AssessmentCategory {
-    //TODO
+public enum AssessmentType {
+    CONTINUOUS,
+    EXAM
 }
