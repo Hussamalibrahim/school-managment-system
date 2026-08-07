@@ -65,21 +65,22 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.POST,"/api/teacher-subjects/assign/*/*").hasRole("PRINCIPAL")
 
-                                .requestMatchers(HttpMethod.PUT,"/api/schedules/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.GET,"/api/schedules/teacher/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.GET,"/api/schedules/**").hasRole("PRINCIPAL")
 
                                 .requestMatchers(HttpMethod.GET, "/api/classes/student/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET, "/api/classes/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.POST,"/api/classes/**").hasRole("PRINCIPAL")
 
                                 .requestMatchers(HttpMethod.GET,"/api/students/me-attendance").hasRole("STUDENT")
+                                .requestMatchers(HttpMethod.GET,"/api/students/me-schedule").hasRole("STUDENT")
                                 .requestMatchers(HttpMethod.GET,"/api/students/attendance/guardian/**").hasRole("GUARDIAN")
                                 .requestMatchers(HttpMethod.GET,"/api/students/attendance/student/*/statistics").hasAnyRole("GUARDIAN","STUDENT")
                                 .requestMatchers(HttpMethod.GET,"/api/students/me").hasRole("STUDENT")
                                 .requestMatchers(HttpMethod.GET,"/api/students/me-subject").hasRole("STUDENT")
                                 .requestMatchers("/api/students/**").hasRole("SECRETARY")
 
+                                .requestMatchers(HttpMethod.PUT,"/api/schedules/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET,"/api/schedules/teacher/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET,"/api/schedules/**").hasRole("PRINCIPAL")
 
                                 .requestMatchers(HttpMethod.GET, "/api/teacher").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/teacher/my-students").hasAnyRole("TEACHER", "SECRETARY")

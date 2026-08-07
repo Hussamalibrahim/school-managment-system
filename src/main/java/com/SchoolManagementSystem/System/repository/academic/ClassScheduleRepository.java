@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.repository.academic;
 
 import com.SchoolManagementSystem.System.entity.academic.ClassSchedule;
+import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.System.entity.enumeration.PeriodNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -23,4 +24,6 @@ public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Lo
     boolean existsByTeacherIdAndDayOfWeekAndPeriodNumber(Long teacherId, DayOfWeek dayOfWeek, PeriodNumber periodNumber);
 
     boolean existsBySchoolClassIdAndDayOfWeekAndPeriodNumber(Long id, DayOfWeek dayOfWeek, PeriodNumber periodNumber);
+
+    List<ClassSchedule> findClassScheduleBySchoolClass(SchoolClass studentSchoolClass);
 }

@@ -1,9 +1,11 @@
 package com.SchoolManagementSystem.System.controller.student;
 
+import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.System.dto.student.AttendanceDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.security.UserPrincipal;
+import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
 import com.SchoolManagementSystem.System.service.student.AttendanceService;
 import com.SchoolManagementSystem.System.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final ClassScheduleService classScheduleService;
     private final AttendanceService attendanceService;
 
     @PutMapping("/{studentId}/assign-class/{classId}")
@@ -68,5 +71,9 @@ public class StudentController {
     public List<AttendanceDto> getMyAttendance(@AuthenticationPrincipal UserPrincipal user) {
 
         return attendanceService.getMyAttendance(user.getRefId());
+    }
+    @GetMapping("/me-schedule")
+    public ResponseEntity<List<ClassScheduleDto>> getMySchedule(@AuthenticationPrincipal UserPrincipal user) {
+        return ResponseEntity.ok(classScheduleService.getMySchedule(user));
     }
 }

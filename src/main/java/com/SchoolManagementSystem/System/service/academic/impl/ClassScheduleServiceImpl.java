@@ -19,6 +19,7 @@ import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
 import com.SchoolManagementSystem.System.repository.academic.TeacherSubjectRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.user.TeacherRepository;
+import com.SchoolManagementSystem.System.security.UserPrincipal;
 import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -165,5 +166,16 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
         schedule.setSubject(subject);
 
         return ClassScheduleMapper.toDto(classSchedulesRepo.save(schedule));
+    }
+
+    @Override
+    public List<ClassScheduleDto> getMySchedule(UserPrincipal user) {
+        Student student = studentRepository.findById(user.getRefId())
+                .orElseThrow(()-> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
+
+
+        return classSchedulesRepo.findClassScheduleBySchoolClass(student.getStudentSchoolClass())
+                .stream()
+                .map(ClassScheduleMapper::toDto).toList();
     }
 }
