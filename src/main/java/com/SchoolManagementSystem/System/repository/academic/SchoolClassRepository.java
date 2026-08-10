@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, Long> {
     boolean existsByGradeLevelAndSection(GradeLevel gradeLevel, String section);
+
 }

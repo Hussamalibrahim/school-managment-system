@@ -17,4 +17,5 @@ public interface ClassScheduleService {
     ClassScheduleDto assignTeacher(Long scheduleId, Long teacherId, Long subjectId);
 
     List<ClassScheduleDto> getMySchedule(UserPrincipal user);
+
 }

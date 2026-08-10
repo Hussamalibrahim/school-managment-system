@@ -10,6 +10,7 @@ import com.SchoolManagementSystem.System.mapper.academic.SchoolClassMapper;
 import com.SchoolManagementSystem.System.entity.enumeration.PeriodNumber;
 import com.SchoolManagementSystem.System.repository.academic.ClassScheduleRepository;
 import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
+import com.SchoolManagementSystem.System.repository.user.TeacherRepository;
 import com.SchoolManagementSystem.System.service.academic.SchoolClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.SchoolManagementSystem.System.config.ScheduleConstants.DEFAULT_PERIODS;
 
@@ -26,6 +29,7 @@ import static com.SchoolManagementSystem.System.config.ScheduleConstants.DEFAULT
 public class SchoolClassServiceImpl implements SchoolClassService {
 
     private final SchoolClassRepository schoolClassRepository;
+    private final TeacherRepository teacherRepository;
     private final ClassScheduleRepository classScheduleRepo;
 
     @Override
@@ -96,5 +100,24 @@ public class SchoolClassServiceImpl implements SchoolClassService {
                 classScheduleRepo.save(schedule);
             }
         }
+    }
+
+    @Override
+    public List<SchoolClassDto> getBySchoolClassByTeacher(Long teacherId) {
+
+        if (!teacherRepository.existsById(teacherId)) {
+            throw new NotFoundException(ErrorCode.TEACHER_NOT_FOUND);
+        }
+
+        List<ClassSchedule> schedules =
+                classScheduleRepo.findByTeacherId(teacherId);
+
+        Set<SchoolClass> teacherClasses = schedules.stream()
+                .map(ClassSchedule::getSchoolClass)
+                .collect(Collectors.toSet());
+
+        return teacherClasses.stream()
+                .map(SchoolClassMapper::toDto)
+                .toList();
     }
 }
