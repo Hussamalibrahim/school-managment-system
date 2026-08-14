@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.student;
+package com.SchoolManagementSystem.System.controller.tenant.student;
 
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
 import com.SchoolManagementSystem.System.dto.student.StudentGuardianDto;
@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/student-guardian")
+@RequestMapping("/student-guardian")
 public class StudentGuardianController {
 
     private final StudentGuardianService studentGuardianService;

@@ -22,6 +22,7 @@ import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.security.dto.AuthRequestStudent;
 import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.service.student.StudentService;
+import com.SchoolManagementSystem.System.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,22 +65,32 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     @Transactional
-    public void save(AuthRequestStudent authRequestStudent) {
+    public void save(AuthRequestStudent request) {
+        Long schoolId = TenantContext.getSchoolId();
 
-        if (authUserRepository.findByEmail(authRequestStudent.email()).isPresent()) {
-            throw new NotFoundException(ErrorCode.EMAIL_ALREADY_EXISTS);
+        if (schoolId == null) {
+            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
         }
-        if (studentRepository.findByRegistrationNumber(authRequestStudent.registrationNumber()).isPresent()) {
-            throw new NotFoundException(ErrorCode.REGISTRATION_NUMBER_ALREADY_EXISTS);
+        if (authUserRepository.findByEmailAndSchoolId(request.email(), schoolId).isPresent()) {
+            throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
-        Student studentSaved = studentRepository.save(
-                StudentMapper.fromAuthRequestStudent(authRequestStudent));
+        if(studentRepository.findByRegistrationNumber(request.registrationNumber()).isPresent()){
 
-        AuthUser authUser = AuthUserMapper.fromRegisterRequest(authRequestStudent.email(),
-                passwordEncoder.encode("1234"),
-                studentSaved.getId(),
-                Role.STUDENT);
+            throw new AlreadyExistsException(
+                    ErrorCode.REGISTRATION_NUMBER_ALREADY_EXISTS
+            );
+        }
+        Student student = StudentMapper.fromAuthRequestStudent(request);
+
+        Student savedStudent = studentRepository.save(student);
+
+        AuthUser authUser =
+                AuthUserMapper.fromRegisterRequest(
+                        request.email(),
+                        passwordEncoder.encode("1234"),
+                        savedStudent.getId(),
+                        Role.STUDENT);
 
         authUserRepository.save(authUser);
     }

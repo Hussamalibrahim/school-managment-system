@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
 import com.SchoolManagementSystem.System.dto.academic.TeacherSubjectDto;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/teacher-subjects")
+@RequestMapping("/teacher-subjects")
 public class TeacherSubjectController {
 
     private final TeacherSubjectService teacherSubjectService;

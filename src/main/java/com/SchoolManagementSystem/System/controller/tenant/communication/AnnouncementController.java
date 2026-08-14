@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.communication;
+package com.SchoolManagementSystem.System.controller.tenant.communication;
 
 import com.SchoolManagementSystem.System.dto.communication.AnnouncementDto;
 import com.SchoolManagementSystem.System.service.communication.AnnouncementService;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/announcements")
+@RequestMapping("/announcements")
 @RequiredArgsConstructor
 public class AnnouncementController {
 

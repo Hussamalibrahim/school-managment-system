@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.student;
+package com.SchoolManagementSystem.System.controller.tenant.student;
 
 import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.dto.academic.request.SubjectNameDto;
@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/students")
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;

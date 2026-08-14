@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.finance;
+package com.SchoolManagementSystem.System.controller.tenant.finance;
 
 import com.SchoolManagementSystem.System.dto.finance.FeeTypeDto;
 import com.SchoolManagementSystem.System.service.finance.FeeTypeService;

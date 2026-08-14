@@ -6,12 +6,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "auth_users")
+@Table(
+        name = "auth_users",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_email_school",
+                        columnNames = {
+                                "email",
+                                "school_id"
+                        }
+                )
+        }
+)
 @Getter
 @Setter
-public class AuthUser extends BaseEntity {
+public class AuthUser extends SchoolEntity {
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "password")

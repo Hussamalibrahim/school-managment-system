@@ -5,23 +5,28 @@ import com.SchoolManagementSystem.System.entity.enumeration.EducationStage;
 import com.SchoolManagementSystem.System.entity.enumeration.SchoolType;
 import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "schools")
+@Table(
+        name = "schools",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_school_code", columnNames = "code")
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class School extends BaseEntity
-{
+public class School extends BaseEntity {
+
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "code", nullable = false, unique = true, length = 100)
+    private String code;
 
     @Column(name = "address")
     private String address;
@@ -46,6 +51,6 @@ public class School extends BaseEntity
     private SchoolType schoolType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "semesterName")
+    @Column(name = "semester_name")
     private SemesterName semesterName;
 }

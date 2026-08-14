@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.user;
+package com.SchoolManagementSystem.System.controller.tenant.user;
 
 import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.dto.academic.SchoolClassDto;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/teacher")
+@RequestMapping("/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
 

@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.user;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.school.School;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
@@ -14,11 +15,7 @@ import java.time.LocalDate;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class BaseUser extends BaseEntity {
-
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
+public abstract class BaseUser extends SchoolEntity {
 
     @Column(name = "national_id", unique = true)
     private String nationalId;
@@ -35,6 +32,6 @@ public abstract class BaseUser extends BaseEntity {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "hire-date")
+    @Column(name = "hire_date")
     private LocalDate hireDate;
 }

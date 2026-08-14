@@ -16,6 +16,7 @@ import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.service.NationalIdValidator;
 import com.SchoolManagementSystem.System.service.user.PrincipalService;
 
+import com.SchoolManagementSystem.System.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -175,12 +176,13 @@ public class PrincipalServiceImpl implements PrincipalService {
     }
 
 
-    private void validateEmail(
-            String email) {
-
-        if (authUserRepository.findByEmail(email).isPresent()) {
+    private void validateEmail(String email) {
+        Long schoolId = TenantContext.getSchoolId();
+        if (schoolId == null) {
+            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
+        }
+        if (authUserRepository.findByEmailAndSchoolId(email, schoolId).isPresent()) {
             throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
-
     }
 }

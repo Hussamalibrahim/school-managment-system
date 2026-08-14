@@ -10,7 +10,6 @@ import com.SchoolManagementSystem.System.entity.student.Attendance;
 import com.SchoolManagementSystem.System.entity.student.Student;
 import com.SchoolManagementSystem.System.entity.student.StudentGuardian;
 import com.SchoolManagementSystem.System.entity.user.*;
-import com.SchoolManagementSystem.System.mapper.academic.SchoolClassMapper;
 import com.SchoolManagementSystem.System.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
 import com.SchoolManagementSystem.System.repository.academic.TeacherSubjectRepository;
@@ -21,6 +20,7 @@ import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.user.*;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.service.academic.SchoolClassService;
+import com.SchoolManagementSystem.System.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -37,6 +36,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Transactional
 public class DataSeeder implements CommandLineRunner {
+
 
     private final SchoolRepository schoolRepository;
 
@@ -56,23 +56,67 @@ public class DataSeeder implements CommandLineRunner {
     private final StudentGuardianRepository studentGuardianRepository;
     private final AttendanceRepository attendanceRepository;
 
+
     @Override
     public void run(String... args) {
+
 
         if (schoolRepository.count() > 0) {
             log.info("Database already seeded");
             return;
         }
 
-        /*
-         * SCHOOL
-         */
+
+        School school = createSchool(
+                "Al Noor Private School",
+                "alnoor"
+        );
+
+
+        seedMainSchool(
+                school
+        );
+
+
+        School secondSchool = createSchool(
+                "Test School",
+                "testschool"
+        );
+
+
+        createOnlyPrincipal(
+                secondSchool
+        );
+
+
+        log.info(
+                "Database seeded successfully"
+        );
+    }
+
+
+    private School createSchool(
+            String name,
+            String code
+    ) {
 
         School school = new School();
 
-        school.setName("Al Noor Private School");
-        school.setAddress("Damascus");
-        school.setPhone("0115555555");
+        school.setName(
+                name
+        );
+
+        school.setCode(
+                code
+        );
+
+        school.setAddress(
+                "Damascus"
+        );
+
+        school.setPhone(
+                "0115555555"
+        );
 
         school.setSchoolType(
                 SchoolType.PRIVATE
@@ -89,14 +133,20 @@ public class DataSeeder implements CommandLineRunner {
                 )
         );
 
-        school = schoolRepository.save(
+
+        return schoolRepository.save(
                 school
         );
+    }
 
-        /*
-         * PRINCIPAL
-         */
 
+    private void seedMainSchool(
+            School school
+    ) {
+        TenantContext.set(
+                school.getId(),
+                school.getCode()
+        );
         Principal principal = new Principal();
 
         principal.setSchool(
@@ -104,7 +154,7 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         principal.setNationalId(
-                "1000001"
+                "1111111111"
         );
 
         principal.setFirstName(
@@ -116,27 +166,29 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         principal.setPhone(
-                "0991111111"
+                "0999999999"
         );
 
         principal.setAddress(
                 "Damascus"
         );
 
-        principal = principalRepository.save(
-                principal
+        principal.setHireDate(
+                LocalDate.now()
         );
 
+
+        principal = principalRepository.save(principal);
+
+
         createAuth(
-                "principal",
+                school,
+                "principal@alnoor.com",
                 "admin123",
                 Role.PRINCIPAL,
                 principal.getId()
         );
 
-        /*
-         * SECRETARY
-         */
 
         Secretary secretary = new Secretary();
 
@@ -145,11 +197,11 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         secretary.setNationalId(
-                "1000002"
+                "2222222222"
         );
 
         secretary.setFirstName(
-                "Sara"
+                "Mohammad"
         );
 
         secretary.setLastName(
@@ -157,27 +209,31 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         secretary.setPhone(
-                "0992222222"
+                "0988888888"
         );
 
         secretary.setAddress(
                 "Damascus"
         );
 
+        secretary.setHireDate(
+                LocalDate.now()
+        );
+
+
         secretary = secretaryRepository.save(
                 secretary
         );
 
+
         createAuth(
-                "secretary",
-                "123456",
+                school,
+                "secretary@alnoor.com",
+                "1234",
                 Role.SECRETARY,
                 secretary.getId()
         );
 
-        /*
-         * LIBRARIAN
-         */
 
         Librarian librarian = new Librarian();
 
@@ -186,92 +242,348 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         librarian.setNationalId(
-                "1000003"
+                "3333333333"
         );
 
         librarian.setFirstName(
-                "Omar"
-        );
-
-        librarian.setLastName(
                 "Khaled"
         );
 
+        librarian.setLastName(
+                "Omar"
+        );
+
         librarian.setPhone(
-                "0993333333"
+                "0977777777"
         );
 
         librarian.setAddress(
                 "Damascus"
         );
 
+        librarian.setHireDate(
+                LocalDate.now()
+        );
+
+
         librarian = librarianRepository.save(
                 librarian
         );
 
+
         createAuth(
-                "librarian",
-                "123456",
+                school,
+                "librarian@alnoor.com",
+                "1234",
                 Role.LIBRARIAN,
                 librarian.getId()
         );
 
-        /*
-         * TEACHERS
-         */
 
-        createTeacher(
+        Teacher teacher1 = createTeacher(
                 school,
-                "2000001", "Mohammad", "Saleh", "Math");
-
-        createTeacher(
-                school,
-                "2000002",
-                "Lina",
+                "4444444444",
+                "Ali",
                 "Ahmad",
+                "0966666666"
+        );
+
+
+        Teacher teacher2 = createTeacher(
+                school,
+                "5555555555",
+                "Omar",
+                "Khaled",
+                "0955555555"
+        );
+
+
+        createAuth(
+                school,
+                "teacher1@alnoor.com",
+                "1234",
+                Role.TEACHER,
+                teacher1.getId()
+        );
+
+
+        createAuth(
+                school,
+                "teacher2@alnoor.com",
+                "1234",
+                Role.TEACHER,
+                teacher2.getId()
+        );
+        Subject math = new Subject();
+
+        math.setSchool(
+                school
+        );
+
+        math.setName(
+                "Mathematics"
+        );
+
+        math.setGradeLevel(
+                GradeLevel.GRADE_1
+        );
+        math.setSemesterName(
+                SemesterName.FIRST
+        );
+
+        math = subjectRepository.save(
+                math
+        );
+
+
+        Subject arabic = new Subject();
+
+        arabic.setSchool(
+                school
+        );
+
+        arabic.setName(
                 "Arabic"
         );
 
-        createTeacher(
-                school,
-                "2000003",
-                "Khaled",
-                "Omar",
-                "Physics"
+        arabic.setGradeLevel(
+                GradeLevel.GRADE_1
+        );
+        arabic.setSemesterName(
+                SemesterName.FIRST
         );
 
-        createTeacher(
-                school,
-                "2000004",
-                "Nour",
-                "Ali",
-                "English"
+        arabic = subjectRepository.save(
+                arabic
         );
 
-        seedAcademicData(
+
+        TeacherSubject teacherSubject1 =
+                new TeacherSubject();
+
+        teacherSubject1.setSchool(
                 school
         );
 
-        seedStudents(
+        teacherSubject1.setTeacher(
+                teacher1
+        );
+
+        teacherSubject1.setSubject(
+                math
+        );
+
+
+        teacherSubjectRepository.save(
+                teacherSubject1
+        );
+
+
+        TeacherSubject teacherSubject2 =
+                new TeacherSubject();
+
+        teacherSubject2.setSchool(
                 school
         );
 
-        seedAttendance();
+        teacherSubject2.setTeacher(
+                teacher2
+        );
 
-        log.info(
-                "Database seeded successfully"
+        teacherSubject2.setSubject(
+                arabic
+        );
+
+
+        teacherSubjectRepository.save(
+                teacherSubject2
+        );
+
+
+        SchoolClass class10A =
+                new SchoolClass();
+
+        class10A.setSchool(
+                school
+        );
+
+        class10A.setSection(
+                "10-A"
+        );
+
+        class10A.setGradeLevel(
+                GradeLevel.GRADE_1
+        );
+
+
+        class10A =
+                schoolClassRepository.save(
+                        class10A
+                );
+
+
+        Student student1 =
+                createStudent(
+                        school,
+                        class10A,
+                        "600001",
+                        "Ali",
+                        "Ahmad"
+                );
+
+
+        Student student2 =
+                createStudent(
+                        school,
+                        class10A,
+                        "600002",
+                        "Omar",
+                        "Hassan"
+                );
+
+
+        createAuth(
+                school,
+                "student1@alnoor.com",
+                "1234",
+                Role.STUDENT,
+                student1.getId()
+        );
+
+
+        createAuth(
+                school,
+                "student2@alnoor.com",
+                "1234",
+                Role.STUDENT,
+                student2.getId()
+        );
+
+        Guardian guardian =
+                createGuardian(
+                        school,
+                        "7777777777",
+                        "Father",
+                        "Ali"
+                );
+
+
+        StudentGuardian relation =
+                new StudentGuardian();
+
+        relation.setSchool(
+                school
+        );
+
+        relation.setStudent(
+                student1
+        );
+
+        relation.setGuardian(
+                guardian
+        );
+
+        relation.setPrimaryGuardian(
+                true
+        );
+
+
+        studentGuardianRepository.save(
+                relation
+        );
+
+
+        Attendance attendance =
+                new Attendance();
+
+        attendance.setSchool(
+                school
+        );
+
+        attendance.setStudent(
+                student1
+        );
+
+        attendance.setAttendanceDate(
+                LocalDate.now()
+        );
+
+        attendance.setAttendanceStatus(
+                AttendanceStatus.PRESENT
+        );
+
+
+        attendanceRepository.save(
+                attendance
         );
     }
 
-    private void createTeacher(
+
+    private void createOnlyPrincipal(
+            School school
+    ) {
+        TenantContext.set(
+                school.getId(),
+                school.getCode()
+        );
+        Principal principal =
+                new Principal();
+
+        principal.setSchool(
+                school
+        );
+
+        principal.setNationalId(
+                "9999999999"
+        );
+
+        principal.setFirstName(
+                "Test"
+        );
+
+        principal.setLastName(
+                "Principal"
+        );
+
+        principal.setPhone(
+                "0900000000"
+        );
+
+        principal.setAddress(
+                "Test Address"
+        );
+
+        principal.setHireDate(
+                LocalDate.now()
+        );
+
+
+        principal =
+                principalRepository.save(
+                        principal
+                );
+
+
+        createAuth(
+                school,
+                "principal@testschool.com",
+                "admin123",
+                Role.PRINCIPAL,
+                principal.getId()
+        );
+    }
+
+
+    private Teacher createTeacher(
             School school,
             String nationalId,
             String firstName,
             String lastName,
-            String specialization
+            String phone
     ) {
 
-        Teacher teacher = new Teacher();
+        Teacher teacher =
+                new Teacher();
 
         teacher.setSchool(
                 school
@@ -290,37 +602,120 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         teacher.setPhone(
-                "099" + nationalId
+                phone
         );
 
-        teacher.setAddress(
-                "Damascus"
+        teacher.setHireDate(
+                LocalDate.now()
         );
 
-        teacher.setSpecialization(
-                specialization
-        );
 
-        teacher = teacherRepository.save(
+        return teacherRepository.save(
                 teacher
-        );
-
-        createAuth(
-                firstName.toLowerCase(),
-                "123456",
-                Role.TEACHER,
-                teacher.getId()
         );
     }
 
+
+    private Student createStudent(
+            School school,
+            SchoolClass schoolClass,
+            String registrationNumber,
+            String firstName,
+            String lastName
+    ) {
+
+        Student student =
+                new Student();
+
+        student.setSchool(
+                school
+        );
+
+        student.setStudentSchoolClass(
+                schoolClass
+        );
+
+        student.setRegistrationNumber(
+                registrationNumber
+        );
+
+        student.setFirstName(
+                firstName
+        );
+
+        student.setLastName(
+                lastName
+        );
+
+        student.setGender(
+                Gender.MALE
+        );
+
+        student.setGradeLevel(
+                GradeLevel.GRADE_1
+        );
+
+        student.setDateOfBirth(
+                LocalDate.of(
+                        2010,
+                        1,
+                        1
+                )
+        );
+
+
+        return studentRepository.save(
+                student
+        );
+    }
+
+
+    private Guardian createGuardian(
+            School school,
+            String nationalId,
+            String firstName,
+            String lastName) {
+
+        Guardian guardian =
+                new Guardian();
+
+        guardian.setSchool(
+                school
+        );
+
+        guardian.setNationalId(
+                nationalId
+        );
+
+        guardian.setFirstName(
+                firstName
+        );
+
+        guardian.setLastName(
+                lastName
+        );
+
+
+        return guardianRepository.save(
+                guardian
+        );
+    }
+
+
     private void createAuth(
+            School school,
             String email,
             String password,
             Role role,
             Long refId
     ) {
 
-        AuthUser user = new AuthUser();
+        AuthUser user =
+                new AuthUser();
+
+        user.setSchool(
+                school
+        );
 
         user.setEmail(
                 email
@@ -344,533 +739,18 @@ public class DataSeeder implements CommandLineRunner {
                 true
         );
 
+        if(authUserRepository
+                .findByEmailAndSchoolId(
+                        email,
+                        school.getId()
+                )
+                .isPresent()) {
+
+            return;
+        }
         authUserRepository.save(
                 user
         );
     }
 
-    private void seedAcademicData(School school) {
-
-        /*
-         * SUBJECTS
-         */
-
-        Subject math = createSubject(
-                "Mathematics",
-                GradeLevel.GRADE_10
-        );
-
-        Subject arabic = createSubject(
-                "Arabic",
-                GradeLevel.GRADE_10
-        );
-
-        Subject english = createSubject(
-                "English",
-                GradeLevel.GRADE_10
-        );
-
-        Subject physics = createSubject(
-                "Physics",
-                GradeLevel.GRADE_10
-        );
-
-        Subject chemistry = createSubject(
-                "Chemistry",
-                GradeLevel.GRADE_10
-        );
-
-        /*
-         * CLASSES
-         */
-
-        createClass(
-                school,
-                GradeLevel.GRADE_10,
-                "A"
-        );
-
-        createClass(
-                school,
-                GradeLevel.GRADE_10,
-                "B"
-        );
-
-        createClass(
-                school,
-                GradeLevel.GRADE_11,
-                "A"
-        );
-
-        /*
-         * TEACHER SUBJECTS
-         */
-
-        Teacher mathTeacher = teacherRepository
-                .findByNationalId("2000001")
-                .orElseThrow();
-
-        Teacher arabicTeacher = teacherRepository
-                .findByNationalId("2000002")
-                .orElseThrow();
-
-        Teacher physicsTeacher = teacherRepository
-                .findByNationalId("2000003")
-                .orElseThrow();
-
-        connectTeacherSubject(
-                mathTeacher,
-                math
-        );
-
-        connectTeacherSubject(
-                arabicTeacher,
-                arabic
-        );
-
-        connectTeacherSubject(
-                physicsTeacher,
-                physics
-        );
-
-    }
-
-    private Subject createSubject(
-            String name,
-            GradeLevel gradeLevel
-    ) {
-
-        Subject subject = new Subject();
-
-        subject.setName(
-                name
-        );
-
-        subject.setGradeLevel(
-                gradeLevel
-        );
-
-        subject.setSemesterName(
-                SemesterName.FIRST
-        );
-
-        return subjectRepository.save(
-                subject
-        );
-    }
-
-    private SchoolClass createClass(
-            School school,
-            GradeLevel gradeLevel,
-            String section) {
-
-        SchoolClass schoolClass = new SchoolClass();
-
-        schoolClass.setSchool(school);
-
-        schoolClass.setGradeLevel(gradeLevel);
-
-        schoolClass.setSection(section);
-
-        schoolClass.setLocation("Room " + section);
-
-        schoolClass.setCapacity(30);
-
-        return SchoolClassMapper.toEntity(schoolClassService.save(SchoolClassMapper.toDto(schoolClass)));
-    }
-
-    private void connectTeacherSubject(
-            Teacher teacher,
-            Subject subject
-    ) {
-
-        TeacherSubject teacherSubject = new TeacherSubject();
-
-        teacherSubject.setTeacher(
-                teacher
-        );
-
-        teacherSubject.setSubject(
-                subject
-        );
-
-        teacherSubjectRepository.save(
-                teacherSubject
-        );
-    }
-
-    private void seedStudents(School school) {
-
-        SchoolClass class10A = schoolClassRepository.findAll()
-                .stream()
-                .filter(c ->
-                        c.getSection().equals("A")
-                                && c.getGradeLevel() == GradeLevel.GRADE_10
-                )
-                .findFirst()
-                .orElseThrow();
-
-        SchoolClass class10B = schoolClassRepository.findAll()
-                .stream()
-                .filter(c ->
-                        c.getSection().equals("B")
-                                && c.getGradeLevel() == GradeLevel.GRADE_10
-                )
-                .findFirst()
-                .orElseThrow();
-
-        Student ahmad = createStudent(
-                school,
-                class10A,
-                "ST1001",
-                "Ahmad",
-                "Ali",
-                Gender.MALE
-        );
-
-        Student mohammed = createStudent(
-                school,
-                class10A,
-                "ST1002",
-                "Mohammed",
-                "Hassan",
-                Gender.MALE
-        );
-
-        Student sara = createStudent(
-                school,
-                class10A,
-                "ST1003",
-                "Sara",
-                "Omar",
-                Gender.FEMALE
-        );
-
-        Student lina = createStudent(
-                school,
-                class10B,
-                "ST1004",
-                "Lina",
-                "Khaled",
-                Gender.FEMALE
-        );
-
-        Student yousef = createStudent(
-                school,
-                class10B,
-                "ST1005",
-                "Yousef",
-                "Mahmoud",
-                Gender.MALE
-        );
-
-        seedGuardians(
-                school,
-                ahmad,
-                mohammed,
-                sara,
-                lina,
-                yousef
-        );
-    }
-
-    private Student createStudent(
-            School school,
-            SchoolClass schoolClass,
-            String registration,
-            String firstName,
-            String lastName,
-            Gender gender
-    ) {
-
-        Student student = new Student();
-
-        student.setSchool(
-                school
-        );
-
-        student.setStudentSchoolClass(
-                schoolClass
-        );
-
-        student.setRegistrationNumber(
-                registration
-        );
-
-        student.setFirstName(
-                firstName
-        );
-
-        student.setLastName(
-                lastName
-        );
-
-        student.setGender(
-                gender
-        );
-
-        student.setGradeLevel(
-                schoolClass.getGradeLevel()
-        );
-
-        student.setDateOfBirth(
-                LocalDate.of(
-                        2010,
-                        5,
-                        10
-                )
-        );
-
-        student.setAddress(
-                "Damascus"
-        );
-
-        student.setPhone(
-                "0999999999"
-        );
-
-        student.setEnrollmentDate(
-                LocalDate.now()
-        );
-
-        student = studentRepository.save(
-                student
-        );
-
-        createAuth(
-                registration.toLowerCase(),
-                "123456",
-                Role.STUDENT,
-                student.getId()
-        );
-
-        return student;
-    }
-
-    private void seedGuardians(
-            School school,
-            Student ahmad,
-            Student mohammed,
-            Student sara,
-            Student lina,
-            Student yousef
-    ) {
-
-        Guardian father = createGuardian(
-                school,
-                "900001",
-                "Ali",
-                "Ahmad",
-                "Father"
-        );
-
-        Guardian mother = createGuardian(
-                school,
-                "900002",
-                "Mona",
-                "Ahmad",
-                "Mother"
-        );
-
-        Guardian khaled = createGuardian(
-                school,
-                "900003",
-                "Khaled",
-                "Omar",
-                "Engineer"
-        );
-
-        Guardian saraMother = createGuardian(
-                school,
-                "900004",
-                "Huda",
-                "Ali",
-                "Teacher"
-        );
-
-        /*
-         * Ahmad
-         */
-
-        connectGuardian(
-                ahmad,
-                father,
-                true
-        );
-
-        connectGuardian(
-                ahmad,
-                mother,
-                false
-        );
-
-        /*
-         * Mohammed
-         * without guardian
-         */
-
-        /*
-         * Sara
-         */
-
-        connectGuardian(
-                sara,
-                khaled,
-                true
-        );
-
-        /*
-         * Lina
-         */
-
-        connectGuardian(
-                lina,
-                saraMother,
-                true
-        );
-
-        /*
-         * Guardian Accounts
-         */
-
-        createAuth(
-                "guardian1",
-                "123456",
-                Role.GUARDIAN,
-                father.getId()
-        );
-
-        createAuth(
-                "guardian2",
-                "123456",
-                Role.GUARDIAN,
-                mother.getId()
-        );
-
-        createAuth(
-                "guardian3",
-                "123456",
-                Role.GUARDIAN,
-                khaled.getId()
-        );
-
-        createAuth(
-                "guardian4",
-                "123456",
-                Role.GUARDIAN,
-                saraMother.getId()
-        );
-    }
-
-    private Guardian createGuardian(
-            School school,
-            String nationalId,
-            String firstName,
-            String lastName,
-            String occupation
-    ) {
-
-        Guardian guardian = new Guardian();
-
-        guardian.setSchool(
-                school
-        );
-
-        guardian.setNationalId(
-                nationalId
-        );
-
-        guardian.setFirstName(
-                firstName
-        );
-
-        guardian.setLastName(
-                lastName
-        );
-
-        guardian.setPhone(
-                "0988888888"
-        );
-
-        guardian.setAddress(
-                "Damascus"
-        );
-
-        guardian.setOccupation(
-                occupation
-        );
-
-        return guardianRepository.save(
-                guardian
-        );
-    }
-
-    private void connectGuardian(
-            Student student,
-            Guardian guardian,
-            boolean primary
-    ) {
-
-        StudentGuardian relation = new StudentGuardian();
-
-        relation.setStudent(
-                student
-        );
-
-        relation.setGuardian(
-                guardian
-        );
-
-        relation.setPrimaryGuardian(
-                primary
-        );
-
-        studentGuardianRepository.save(
-                relation
-        );
-    }
-
-    private void seedAttendance() {
-
-        List<Student> students = studentRepository.findAll();
-
-        for (Student student : students) {
-
-            Attendance attendance = new Attendance();
-
-            attendance.setStudent(
-                    student
-            );
-
-            attendance.setAttendanceDate(
-                    LocalDate.now()
-            );
-
-            attendance.setAttendanceStatus(
-                    AttendanceStatus.PRESENT
-            );
-
-            attendanceRepository.save(
-                    attendance
-            );
-
-            Attendance oldAttendance = new Attendance();
-
-            oldAttendance.setStudent(
-                    student
-            );
-
-            oldAttendance.setAttendanceDate(
-                    LocalDate.now().minusDays(1)
-            );
-
-            oldAttendance.setAttendanceStatus(
-                    AttendanceStatus.ABSENT
-            );
-
-            attendanceRepository.save(
-                    oldAttendance
-            );
-        }
-    }
 }

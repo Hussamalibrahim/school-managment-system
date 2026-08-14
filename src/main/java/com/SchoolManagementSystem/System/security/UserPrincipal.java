@@ -26,6 +26,17 @@ public class UserPrincipal implements UserDetails {
         return user.getPassword();
     }
 
+    public Long getSchoolId(){
+        return user.getSchool() != null
+                ? user.getSchool().getId()
+                : null;
+    }
+
+    public String getSchoolCode(){
+        return user.getSchool() != null
+                ? user.getSchool().getCode()
+                : null;
+    }
     @Override
     public String getUsername() {
         return user.getEmail();
@@ -58,6 +69,8 @@ public class UserPrincipal implements UserDetails {
     public Role getRole() {
         return user.getRole();
     }
+
+
 
     public boolean hasRole(String role) {
         return user.getRole().name().equalsIgnoreCase(role);

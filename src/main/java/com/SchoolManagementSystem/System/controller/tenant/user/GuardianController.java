@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.user;
+package com.SchoolManagementSystem.System.controller.tenant.user;
 
 import com.SchoolManagementSystem.System.controller.BaseCrudController;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/guardians")
+@RequestMapping("/guardians")
 @RequiredArgsConstructor
 public class GuardianController {
 

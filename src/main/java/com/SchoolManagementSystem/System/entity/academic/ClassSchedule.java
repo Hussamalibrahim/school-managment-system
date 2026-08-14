@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.PeriodNumber;
 import com.SchoolManagementSystem.System.entity.user.Teacher;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.time.DayOfWeek;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassSchedule extends BaseEntity {
+public class ClassSchedule extends SchoolEntity {
 
     @ManyToOne
     @JoinColumn(name = "class_id")

@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.library;
+package com.SchoolManagementSystem.System.controller.tenant.library;
 
 import com.SchoolManagementSystem.System.controller.BaseCrudController;
 import com.SchoolManagementSystem.System.dto.library.LibraryDto;

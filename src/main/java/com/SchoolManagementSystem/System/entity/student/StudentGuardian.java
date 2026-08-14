@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.student;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.user.Guardian;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentGuardian extends BaseEntity
+public class StudentGuardian extends SchoolEntity
 {
     @ManyToOne
     @JoinColumn(name = "student_id")

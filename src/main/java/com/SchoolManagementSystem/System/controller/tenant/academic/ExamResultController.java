@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.ExamResultDto;
 import com.SchoolManagementSystem.System.dto.academic.request.SaveExamResultsRequest;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/exam-results")
+@RequestMapping("/exam-results")
 @RequiredArgsConstructor
 public class ExamResultController {
 

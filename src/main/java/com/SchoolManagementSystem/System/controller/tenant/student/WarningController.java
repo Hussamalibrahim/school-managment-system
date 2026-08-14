@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.student;
+package com.SchoolManagementSystem.System.controller.tenant.student;
 
 import com.SchoolManagementSystem.System.controller.BaseCrudController;
 import com.SchoolManagementSystem.System.dto.student.WarningDto;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/warnings")
+@RequestMapping("/warnings")
 public class WarningController extends BaseCrudController<WarningDto> {
 
     public WarningController(WarningService service) {

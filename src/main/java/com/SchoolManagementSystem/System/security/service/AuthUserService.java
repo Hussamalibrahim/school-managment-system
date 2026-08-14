@@ -17,4 +17,6 @@ public interface AuthUserService {
     AuthUserDto activateAccountByIdAndRole(Long ownerId, UserType userType);
 
     AuthUserDto activateAccountByEmail(String email);
+
+    AuthUserDto findByEmailAndSchool(String email, String schoolCode);
 }

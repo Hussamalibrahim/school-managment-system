@@ -3,6 +3,7 @@ package com.SchoolManagementSystem.System.entity.communication;
 import java.time.LocalDate;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notification extends BaseEntity
+public class Notification extends SchoolEntity
 {
     @Column(name = "title", nullable = false)
     private String title;

@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.student;
+package com.SchoolManagementSystem.System.controller.tenant.student;
 
 import com.SchoolManagementSystem.System.config.AttendanceStatistics;
 import com.SchoolManagementSystem.System.dto.student.AttendanceDto;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/attendance")
+@RequestMapping("/attendance")
 @RequiredArgsConstructor
 public class AttendanceController {
 

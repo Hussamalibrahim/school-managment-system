@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
@@ -11,7 +11,7 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/schedules")
+@RequestMapping("/schedules")
 @RequiredArgsConstructor
 public class ClassScheduleController {
 

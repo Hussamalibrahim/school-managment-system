@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.AssessmentDto;
 import com.SchoolManagementSystem.System.dto.academic.request.AssessmentCreateRequest;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/assessments")
+@RequestMapping("/assessments")
 public class AssessmentController {
 
     private final AssessmentService assessmentService;

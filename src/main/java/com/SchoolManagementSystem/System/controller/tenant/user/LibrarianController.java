@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.user;
+package com.SchoolManagementSystem.System.controller.tenant.user;
 
 import com.SchoolManagementSystem.System.controller.BaseCrudController;
 import com.SchoolManagementSystem.System.dto.user.LibrarianDto;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/librarians")
+@RequestMapping("/librarians")
 public class LibrarianController extends BaseCrudController<LibrarianDto> {
 
     public LibrarianController(LibrarianService service) {

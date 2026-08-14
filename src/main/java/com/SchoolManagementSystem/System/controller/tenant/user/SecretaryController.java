@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.user;
+package com.SchoolManagementSystem.System.controller.tenant.user;
 
 import com.SchoolManagementSystem.System.dto.user.SecretaryDto;
 import com.SchoolManagementSystem.System.security.UserPrincipal;
@@ -16,7 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/secretary")
+@RequestMapping("/secretary")
 @RequiredArgsConstructor
 public class SecretaryController {
 

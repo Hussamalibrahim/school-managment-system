@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.file;
+package com.SchoolManagementSystem.System.controller.tenant.file;
 
 import com.SchoolManagementSystem.System.dto.file.FileDto;
 import com.SchoolManagementSystem.System.dto.file.request.GuardianFileUploadRequest;
@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/files")
+@RequestMapping("/files")
 public class FileController {
 
     private final StudentGuardianService studentGuardianService;

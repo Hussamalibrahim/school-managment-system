@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.file;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.FileOwnerType;
 import com.SchoolManagementSystem.System.entity.enumeration.FileType;
 import com.SchoolManagementSystem.System.entity.enumeration.UserType;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class File extends BaseEntity {
+public class File extends SchoolEntity {
 
     @Column(name = "original_name", nullable = false)
     private String originalName;

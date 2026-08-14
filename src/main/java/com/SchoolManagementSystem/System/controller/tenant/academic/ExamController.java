@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.ExamDto;
 import com.SchoolManagementSystem.System.dto.academic.request.ExamCreateRequest;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/exams")
+@RequestMapping("/exams")
 @RequiredArgsConstructor
 public class ExamController {
 

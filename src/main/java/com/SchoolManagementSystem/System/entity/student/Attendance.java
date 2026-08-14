@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.student;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Attendance extends BaseEntity {
+public class Attendance extends SchoolEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)

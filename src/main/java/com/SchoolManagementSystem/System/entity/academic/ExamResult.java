@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.student.Student;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
@@ -23,7 +24,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExamResult extends BaseEntity {
+public class ExamResult extends SchoolEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "exam_id")

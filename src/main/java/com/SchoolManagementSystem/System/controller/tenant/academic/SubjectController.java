@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.SubjectDto;
 import com.SchoolManagementSystem.System.dto.academic.request.SubjectCreateRequest;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/subjects")
+@RequestMapping("/subjects")
 public class SubjectController {
     private final SubjectService subjectService;
 

@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.student;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.System.entity.enumeration.Gender;
 import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
@@ -14,17 +15,13 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "results")
+@Table(name = "student")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student extends BaseEntity
+public class Student extends SchoolEntity
 {
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
-
     @ManyToOne
     @JoinColumn(name = "school_class_id")
     private SchoolClass studentSchoolClass;

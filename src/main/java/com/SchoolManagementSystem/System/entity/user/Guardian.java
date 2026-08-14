@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.System.entity.user;
 
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

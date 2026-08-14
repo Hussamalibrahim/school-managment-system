@@ -1,4 +1,20 @@
-package com.SchoolManagementSystem.System.security;
+package com.SchoolManagementSystem.System.security.auth;
 
-public class MultiTenantAuthenticationToken {
+import lombok.Getter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+
+@Getter
+public class TenantAuthenticationToken extends UsernamePasswordAuthenticationToken {
+
+    private final String schoolCode;
+
+    public TenantAuthenticationToken(
+            String email,
+            String password,
+            String schoolCode) {
+        super(email, password);
+
+        this.schoolCode = schoolCode;
+    }
 }

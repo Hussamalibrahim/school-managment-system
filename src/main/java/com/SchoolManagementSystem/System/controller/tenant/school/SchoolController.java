@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.school;
+package com.SchoolManagementSystem.System.controller.tenant.school;
 
 import com.SchoolManagementSystem.System.dto.request.DefineSchool;
 import com.SchoolManagementSystem.System.dto.request.updateSchoolInfo;
@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/school")
+@RequestMapping("/school")
 @RequiredArgsConstructor
 public class SchoolController{
 

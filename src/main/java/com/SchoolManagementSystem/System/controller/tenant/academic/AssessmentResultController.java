@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.AssessmentResultDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/assessment-results")
+@RequestMapping("/assessment-results")
 public class AssessmentResultController {
 
     private final AssessmentResultService assessmentResultService;

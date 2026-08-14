@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.communication;
+package com.SchoolManagementSystem.System.controller.tenant.communication;
 
 import com.SchoolManagementSystem.System.dto.communication.NotificationDto;
 import com.SchoolManagementSystem.System.service.communication.NotificationService;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/notifications")
+@RequestMapping("/notifications")
 @RequiredArgsConstructor
 public class NotificationController {
 

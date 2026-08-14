@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.System.controller.academic;
+package com.SchoolManagementSystem.System.controller.tenant.academic;
 
 import com.SchoolManagementSystem.System.dto.academic.SchoolClassDto;
 import com.SchoolManagementSystem.System.dto.student.StudentDto;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/classes")
+@RequestMapping("/classes")
 public class SchoolClassController
 {
     private final SchoolClassService schoolClassService;
