@@ -195,4 +195,16 @@ public class ExamResultServiceImpl implements ExamResultService {
                 .map(ExamResultMapper::toDto)
                 .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ExamResultDto> getStudentResults(Long studentId) {
+        if (!studentRepository.existsById(studentId)) {
+            throw new NotFoundException(ErrorCode.STUDENT_NOT_FOUND);
+        }
+        return examResultRepository.findByStudentId(studentId)
+                .stream()
+                .map(ExamResultMapper::toDto)
+                .toList();
+    }
 }

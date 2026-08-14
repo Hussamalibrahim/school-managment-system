@@ -13,4 +13,5 @@ public interface ExamResultRepository extends JpaRepository<ExamResult,Long> {
 
     List<ExamResult> findByExamId(Long examId);
 
+    List<ExamResult> findByStudentId(Long studentId);
 }

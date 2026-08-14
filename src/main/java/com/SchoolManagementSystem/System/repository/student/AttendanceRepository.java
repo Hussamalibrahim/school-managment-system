@@ -26,6 +26,8 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     long countByStudentIdAndAttendanceStatus(Long studentId, AttendanceStatus status);
 
+    long countByAttendanceStatus(AttendanceStatus status);
+
     List<Attendance> findByStudentIdInOrderByAttendanceDateDesc(List<Long> studentIds);
 
     @Query("""

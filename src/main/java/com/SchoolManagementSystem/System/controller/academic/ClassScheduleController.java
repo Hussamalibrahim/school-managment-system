@@ -45,4 +45,14 @@ public class ClassScheduleController {
             @RequestParam Long subjectId) {
         return ResponseEntity.ok(classScheduleService.assignTeacher(scheduleId, teacherId, subjectId));
     }
+
+    @GetMapping("/my-schedule")
+    public ResponseEntity<List<ClassScheduleDto>> getMySchedule(@org.springframework.security.core.annotation.AuthenticationPrincipal com.SchoolManagementSystem.System.security.UserPrincipal user) {
+        return ResponseEntity.ok(classScheduleService.getByStudent(user.getRefId()));
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<ClassScheduleDto>> getStudentSchedule(@PathVariable Long studentId) {
+        return ResponseEntity.ok(classScheduleService.getByStudent(studentId));
+    }
 }

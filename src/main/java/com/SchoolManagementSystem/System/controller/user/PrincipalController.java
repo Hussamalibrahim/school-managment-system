@@ -60,4 +60,9 @@ public class PrincipalController {
 
         return ResponseEntity.ok(principalService.getById(user.getRefId()));
     }
+
+    @GetMapping("/dashboard-stats")
+    public ResponseEntity<com.SchoolManagementSystem.System.dto.school.DashboardStatsDto> getDashboardStats() {
+        return ResponseEntity.ok(principalService.getDashboardStats());
+    }
 }

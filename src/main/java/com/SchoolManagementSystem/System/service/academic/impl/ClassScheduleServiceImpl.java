@@ -166,4 +166,17 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
 
         return ClassScheduleMapper.toDto(classSchedulesRepo.save(schedule));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClassScheduleDto> getByStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
+
+        if (student.getStudentSchoolClass() == null) {
+            return List.of();
+        }
+
+        return getBySchoolClass(student.getStudentSchoolClass().getId());
+    }
 }

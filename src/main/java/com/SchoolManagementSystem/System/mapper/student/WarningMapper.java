@@ -15,6 +15,7 @@ public final class WarningMapper {
                 warning.getCreatedAt(),
                 warning.getUpdatedAt(),
                 warning.getDeletedAt(),
+                warning.getStudent() != null ? warning.getStudent().getId() : null,
                 warning.getWarningDate(),
                 warning.getReason()
         );
