@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إدارة النظام والمدارس المتعددة | Super Admin Portal</title>
+    <meta name="description" content="لوحة تحكم مدير النظام الشاملة لإدارة المدارس والمستأجرين (Multi-Tenancy) ومراقبة صحة النظام والتسجيل">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="main-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i data-lucide="shield-check"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-title">EduCloud</span>
+                        <span class="logo-subtitle">مدير النظام العام</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label" id="lbl-nav-main">الرئيسية</div>
+                <button class="nav-item active" data-tab="overview" id="nav-overview">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>نظرة عامة والمنظومة</span>
+                </button>
+                <button class="nav-item" data-tab="tenants" id="nav-tenants">
+                    <i data-lucide="building-2"></i>
+                    <span>إدارة المدارس (Tenants)</span>
+                    <span class="badge-count" id="sidebar-school-count">0</span>
+                </button>
+                <button class="nav-item" data-tab="register-tenant" id="nav-register">
+                    <i data-lucide="plus-circle"></i>
+                    <span>تسجيل مدرسة جديدة</span>
+                </button>
+
+                <div class="nav-section-label" id="lbl-nav-system">المراقبة والتشخيص</div>
+                <button class="nav-item" data-tab="tenant-explorer" id="nav-explorer">
+                    <i data-lucide="compass"></i>
+                    <span>مستكشف المستأجرين</span>
+                </button>
+                <button class="nav-item" data-tab="system-health" id="nav-health">
+                    <i data-lucide="activity"></i>
+                    <span>صحة النظام و Multi-Tenant</span>
+                </button>
+                <button class="nav-item" data-tab="api-console" id="nav-api">
+                    <i data-lucide="terminal"></i>
+                    <span>منصة اختبار الـ APIs</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="backend-status-card" id="status-card">
+                    <div class="status-indicator-dot online" id="status-dot"></div>
+                    <div class="status-info">
+                        <span class="status-label">حالة الباكيند</span>
+                        <span class="status-text" id="status-text">متصل (Port 8080)</span>
+                    </div>
+                    <button class="icon-btn-small" id="btn-refresh-status" title="إعادة فحص الاتصال">
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <button class="menu-toggle-btn" id="sidebar-toggle" aria-label="تبديل القائمة">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span id="breadcrumb-section">الرئيسية</span>
+                        <i data-lucide="chevron-left" class="breadcrumb-sep"></i>
+                        <span class="breadcrumb-current" id="breadcrumb-current">نظرة عامة</span>
+                    </div>
+                </div>
+
+                <div class="navbar-right">
+                    <!-- Base URL Config Modal Trigger -->
+                    <div class="server-endpoint-badge" id="server-url-badge" title="عنوان خادم الباكيند">
+                        <i data-lucide="server"></i>
+                        <span id="display-api-url">http://localhost:8080</span>
+                    </div>
+
+                    <!-- Language Switcher -->
+                    <button class="action-btn-circle" id="btn-toggle-lang" title="تبديل اللغة (English / العربية)">
+                        <span class="lang-text" id="lang-indicator">EN</span>
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <button class="action-btn-circle" id="btn-toggle-theme" title="تبديل الوضع الداكن / الفاتح">
+                        <i data-lucide="sun" id="theme-icon"></i>
+                    </button>
+
+                    <!-- Admin Profile Badge -->
+                    <div class="admin-pill">
+                        <div class="admin-avatar">SA</div>
+                        <div class="admin-details">
+                            <span class="admin-name">مدير النظام الأعلى</span>
+                            <span class="admin-role">Super Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Tab Views -->
+            <div class="content-body">
+                
+                <!-- TAB 1: OVERVIEW -->
+                <section class="tab-pane active" id="tab-overview">
+                    <div class="page-header">
+                        <div class="page-title-group">
+                            <h1 class="page-title">لوحة تحكم النظام العام (Super Admin)</h1>
+                            <p class="page-subtitle">مراقبة منظومة المدارس المتعددة (Multi-Tenancy) وإحصائيات المنصة المركزية</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn-secondary" id="btn-refresh-all">
+                                <i data-lucide="rotate-cw"></i>
+                                <span>تحديث البيانات</span>
+                            </button>
+                            <button class="btn-primary" id="btn-quick-new-school">
+                                <i data-lucide="plus"></i>
+                                <span>تسجيل مدرسة جديدة</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Stat Cards Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card glass-card">
+                            <div class="metric-icon-box bg-purple">
+                                <i data-lucide="building"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-title">إجمالي المدارس المسجلة</span>
+                                <div class="metric-value-row">
+                                    <span class="metric-value" id="stat-total-schools">...</span>
+                                    <span class="metric-badge positive">+100% Multi-Tenant</span>
+                                </div>
+                                <span class="metric-hint">مدارس مفعلة ومستأجرة في السحابة</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card glass-card">
+                            <div class="metric-icon-box bg-blue">
+                                <i data-lucide="layers"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-title">معمارية النظام الحالية</span>
+                                <div class="metric-value-row">
+                                    <span class="metric-value" style="font-size: 1.3rem;">Hibernate Filter</span>
+                                </div>
+                                <span class="metric-hint">عزل بيانات تام عبر <code>schoolFilter</code></span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card glass-card">
+                            <div class="metric-icon-box bg-emerald">
+                                <i data-lucide="key-round"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-title">تنسيق المصادقة (Auth)</span>
+                                <div class="metric-value-row">
+                                    <span class="metric-value" style="font-size: 1.3rem;">JWT Multi-Tenant</span>
+                                </div>
+                                <span class="metric-hint">تحديد وتوجيه السياق بالـ Tenant Code</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card glass-card">
+                            <div class="metric-icon-box bg-amber">
+                                <i data-lucide="shield-alert"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-title">حسابات الإدارة المركزية</span>
+                                <div class="metric-value-row">
+                                    <span class="metric-value" id="stat-total-principals">5 Roles</span>
+                                </div>
+                                <span class="metric-hint">مدير، أمين سر، معلم، طالب، ولي أمر</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Tenancy Architecture Showcase Banner -->
+                    <div class="showcase-banner glass-card">
+                        <div class="banner-content">
+                            <div class="banner-badge">
+                                <i data-lucide="cpu"></i>
+                                <span>Multi-Tenancy Engine Enabled</span>
+                            </div>
+                            <h2 class="banner-title">نظام متكامل لإدارة منصة المدارس المتعددة</h2>
+                            <p class="banner-desc">
+                                يدعم الباكيند الآن عزل قواعد البيانات الافتراضي لكل مدرسة، وتخصيص رموز نطاق فريدة (Tenant Code Slugs)، مع إمكانية وصول موحدة للـ Super Admin لإدارة المدارس والتحكم بالصلاحيات والإحصائيات.
+                            </p>
+                            <div class="banner-features">
+                                <div class="feature-tag"><i data-lucide="check"></i> Tenant Context ThreadLocal</div>
+                                <div class="feature-tag"><i data-lucide="check"></i> Dual Route Resolution (/api/* & /api/{code}/*)</div>
+                                <div class="feature-tag"><i data-lucide="check"></i> Isolated RBAC per School</div>
+                            </div>
+                        </div>
+                        <div class="banner-graphic">
+                            <div class="code-preview-card">
+                                <div class="code-header">
+                                    <span class="dot red"></span>
+                                    <span class="dot yellow"></span>
+                                    <span class="dot green"></span>
+                                    <span class="code-title">Tenant Resolver</span>
+                                </div>
+                                <pre class="code-body"><code>// Multi-Tenant Isolation
+@Filter(name="schoolFilter",
+ condition="school_id = :schoolId")
+TenantContext.set(schoolId, code);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Schools Quick Table -->
+                    <div class="section-card glass-card">
+                        <div class="section-card-header">
+                            <div>
+                                <h3 class="section-title">المدارس النشطة في المنظومة</h3>
+                                <p class="section-subtitle">نظرة سريعة على المستأجرين مع رموز الـ Tenant</p>
+                            </div>
+                            <button class="btn-outline-small" id="btn-view-all-schools">
+                                <span>عرض كل المدارس</span>
+                                <i data-lucide="arrow-left"></i>
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="custom-table" id="overview-schools-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>اسم المدرسة</th>
+                                        <th>كود المستأجر (Tenant Code)</th>
+                                        <th>نوع المدرسة</th>
+                                        <th>المراحل الدراسية</th>
+                                        <th>الهاتف / العنوان</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="overview-schools-tbody">
+                                    <tr>
+                                        <td colspan="7" class="text-center loading-cell">
+                                            <i data-lucide="loader-2" class="spin"></i> جاري تحميل بيانات المدارس...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: TENANTS MANAGEMENT -->
+                <section class="tab-pane" id="tab-tenants">
+                    <div class="page-header">
+                        <div class="page-title-group">
+                            <h1 class="page-title">إدارة المدارس والمستأجرين (Tenants)</h1>
+                            <p class="page-subtitle">استعراض، تصفية، تعديل وإدارة جميع المدارس المسجلة في السحابة</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn-primary" id="btn-add-school-tab2">
+                                <i data-lucide="plus-circle"></i>
+                                <span>إضافة مدرسة جديدة</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search and Filters Bar -->
+                    <div class="filters-bar glass-card">
+                        <div class="search-box">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="filter-search-input" placeholder="ابحث باسم المدرسة، الكود، أو العنوان...">
+                        </div>
+                        <div class="filter-controls">
+                            <select id="filter-type-select" class="custom-select">
+                                <option value="">كل أنواع المدارس</option>
+                                <option value="PRIVATE">خاصة (PRIVATE)</option>
+                                <option value="PUBLIC">عامة / حكومية (PUBLIC)</option>
+                            </select>
+                            <select id="filter-stage-select" class="custom-select">
+                                <option value="">كل المراحل</option>
+                                <option value="ELEMENTARY">ابتدائي (ELEMENTARY)</option>
+                                <option value="MIDDLE">إعدادي (MIDDLE)</option>
+                                <option value="HIGH">ثانوي (HIGH)</option>
+                            </select>
+                            <button class="btn-icon-clear" id="btn-clear-filters" title="إعادة تعيين الفلاتر">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Schools Grid View -->
+                    <div class="schools-grid" id="schools-cards-container">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </section>
+
+                <!-- TAB 3: REGISTER NEW TENANT WIZARD -->
+                <section class="tab-pane" id="tab-register-tenant">
+                    <div class="page-header">
+                        <div class="page-title-group">
+                            <h1 class="page-title">تسجيل مدرسة جديدة في السحابة</h1>
+                            <p class="page-subtitle">إنشاء مستأجر جديد (Tenant) مع تعيين كود مخصص وحساب مدير المدرسة الأول</p>
+                        </div>
+                    </div>
+
+                    <div class="form-container-card glass-card">
+                        <form id="form-register-school" class="multi-step-form">
+                            <!-- Section 1: School Information -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <div class="step-number">1</div>
+                                    <div>
+                                        <h3 class="form-section-title">بيانات المدرسة (School Entity)</h3>
+                                        <p class="form-section-desc">المعلومات الأساسية ونطاق المستأجر</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row-2">
+                                    <div class="form-group">
+                                        <label for="reg-school-name" class="form-label required">اسم المدرسة</label>
+                                        <input type="text" id="reg-school-name" class="form-input" placeholder="مثال: مدرسة الأمل النموذجية" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reg-school-code" class="form-label">
+                                            رمز المستأجر المولد تلقائياً (Tenant Code)
+                                            <span class="hint-tag">Auto-slug</span>
+                                        </label>
+                                        <div class="input-with-icon">
+                                            <i data-lucide="hash"></i>
+                                            <input type="text" id="reg-school-code" class="form-input" placeholder="al-amal-school" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row-2">
+                                    <div class="form-group">
+                                        <label for="reg-school-type" class="form-label required">نوع المدرسة</label>
+                                        <select id="reg-school-type" class="form-select" required>
+                                            <option value="PRIVATE">مدرسة خاصة (PRIVATE)</option>
+                                            <option value="PUBLIC">مدرسة عامة / حكومية (PUBLIC)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">المراحل الدراسية المتوفرة</label>
+                                        <div class="checkbox-group">
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" name="stages" value="ELEMENTARY" checked>
+                                                <span>ابتدائي (Elementary)</span>
+                                            </label>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" name="stages" value="MIDDLE" checked>
+                                                <span>إعدادي (Middle)</span>
+                                            </label>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" name="stages" value="HIGH" checked>
+                                                <span>ثانوي (High)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 2: Principal / Admin Credentials -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <div class="step-number">2</div>
+                                    <div>
+                                        <h3 class="form-section-title">بيانات مدير المدرسة (Principal Profile)</h3>
+                                        <p class="form-section-desc">إنشاء حساب المدير الأولي للمدرسة</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-row-3">
+                                    <div class="form-group">
+                                        <label for="reg-first-name" class="form-label required">الاسم الأول</label>
+                                        <input type="text" id="reg-first-name" class="form-input" placeholder="مثال: يوسف" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reg-last-name" class="form-label required">الكنية / اسم العائلة</label>
+                                        <input type="text" id="reg-last-name" class="form-input" placeholder="مثال: العلي" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reg-national-id" class="form-label required">الرقم الوطني / الهوية</label>
+                                        <input type="text" id="reg-national-id" class="form-input" placeholder="مثال: 01020304050" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row-2">
+                                    <div class="form-group">
+                                        <label for="reg-email" class="form-label required">البريد الإلكتروني / اسم الدخول</label>
+                                        <div class="input-with-icon">
+                                            <i data-lucide="mail"></i>
+                                            <input type="email" id="reg-email" class="form-input" placeholder="principal@alamal.edu" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reg-password" class="form-label required">كلمة المرور الابتدائية</label>
+                                        <div class="input-with-icon">
+                                            <i data-lucide="lock"></i>
+                                            <input type="password" id="reg-password" class="form-input" value="123456" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions-bar">
+                                <button type="reset" class="btn-secondary" id="btn-reset-form">
+                                    <i data-lucide="rotate-ccw"></i>
+                                    <span>مسح الحقول</span>
+                                </button>
+                                <button type="submit" class="btn-primary btn-large" id="btn-submit-registration">
+                                    <i data-lucide="building"></i>
+                                    <span>تسجيل وتفعيل المدرسة الآن</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- TAB 4: TENANT EXPLORER & SWITCHER -->
+                <section class="tab-pane" id="tab-tenant-explorer">
+                    <div class="page-header">
+                        <div class="page-title-group">
+                            <h1 class="page-title">مستكشف المستأجرين وسياق المدارس</h1>
+                            <p class="page-subtitle">التبديل بين سياقات المدارس واستعراض بيانات أي مدرسة مباشرة عبر الـ Multi-Tenant Engine</p>
+                        </div>
+                    </div>
+
+                    <div class="explorer-layout">
+                        <!-- School Selector Card -->
+                        <div class="explorer-selector glass-card">
+                            <label for="explorer-school-select" class="form-label">اختر المدرسة المستهدفة للمعاينة:</label>
+                            <div class="select-with-btn">
+                                <select id="explorer-school-select" class="form-select custom-select-lg">
+                                    <option value="">-- اختر مدرسة --</option>
+                                </select>
+                                <button class="btn-primary" id="btn-load-tenant-data">
+                                    <i data-lucide="search"></i>
+                                    <span>استكشاف</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- School Inspector Details -->
+                        <div class="explorer-details-container" id="explorer-details-view">
+                            <div class="empty-state-box glass-card">
+                                <i data-lucide="compass" class="empty-icon"></i>
+                                <h3>اختر مدرسة للبدء</h3>
+                                <p>قم باختيار إحدى المدارس من القائمة بالأعلى لاستعراض بيانات المستأجر، واختبار توكنات الدخول، ومعاينة الإحصائيات.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: SYSTEM HEALTH & DIAGNOSTICS -->
+                <section class="tab-pane" id="tab-system-health">
+                    <div class="page-header">
+                        <div class="page-title-group">
+                            <h1 class="page-title">صحة النظام ومعمارية Multi-Tenancy</h1>
+                            <p class="page-subtitle">تشخيص فوري لمحركات العزل، فلاتر Hibernate، ومزودات الأمان</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn-primary" id="btn-run-diagnostics">
+                                <i data-lucide="play"></i>
+                                <span>بدء الفحص الشامل</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="diagnostics-grid">
+                        <div class="diag-card glass-card">
+                            <div class="diag-card-header">
+                                <div class="diag-icon-circle green">
+                                    <i data-lucide="filter"></i>
+                                </div>
+                                <div>
+                                    <h4>Hibernate Tenant Filter</h4>
+                                    <span class="diag-status-badge active">Active (schoolFilter)</span>
+                                </div>
+                            </div>
+                            <p class="diag-desc">عزل البيانات التلقائي على مستوى كل استعلام SQL / JPQL عبر معامل <code>school_id</code>.</p>
+                            <div class="diag-code">Filter: school_id = :schoolId</div>
+                        </div>
+
+                        <div class="diag-card glass-card">
+                            <div class="diag-card-header">
+                                <div class="diag-icon-circle blue">
+                                    <i data-lucide="route"></i>
+                                </div>
+                                <div>
+                                    <h4>Tenant URI Resolver</h4>
+                                    <span class="diag-status-badge active">Operational</span>
+                                </div>
+                            </div>
+                            <p class="diag-desc">استخراج رمز المدرسة من الـ Path <code>/api/{schoolCode}/**</code> وتعيين <code>TenantContext</code>.</p>
+                            <div class="diag-code">Pattern: /api/{tenantCode}/*</div>
+                        </div>
+
+                        <div class="diag-card glass-card">
+                            <div class="diag-card-header">
+                                <div class="diag-icon-circle purple">
+                                    <i data-lucide="shield-check"></i>
+                                </div>
+                                <div>
+                                    <h4>Tenant Authentication</h4>
+                                    <span class="diag-status-badge active">JWT Provider Ready</span>
+                                </div>
+                            </div>
+                            <p class="diag-desc">التحقق من البريد ضمن نطاق المدرسة وتضمين الـ <code>schoolCode</code> داخل الـ Claims.</p>
+                            <div class="diag-code">Token: TenantAuthenticationToken</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: API CONSOLE -->
+                <section class="tab-pane" id="tab-api-console">
+                    <div class="page-header">
+                        <div class="page-title-group">
+                            <h1 class="page-title">منصة اختبار الـ APIs السريعة</h1>
+                            <p class="page-subtitle">تنفيذ واستعراض استجابة الـ Endpoints مباشرة من المتصفح</p>
+                        </div>
+                    </div>
+
+                    <div class="console-layout glass-card">
+                        <div class="console-top-bar">
+                            <select id="api-method-select" class="method-select">
+                                <option value="GET">GET</option>
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                                <option value="DELETE">DELETE</option>
+                            </select>
+                            <input type="text" id="api-url-input" class="api-url-input" value="/api/schools">
+                            <button class="btn-primary" id="btn-send-api">
+                                <i data-lucide="send"></i>
+                                <span>إرسال الطلب</span>
+                            </button>
+                        </div>
+
+                        <div class="api-quick-presets">
+                            <span class="preset-label">طلبات سريعة:</span>
+                            <button class="preset-pill" data-method="GET" data-url="/api/schools">قائمة المدارس (GET /api/schools)</button>
+                            <button class="preset-pill" data-method="GET" data-url="/api/principal/dashboard-stats">إحصائيات المنصة (GET /api/principal/dashboard-stats)</button>
+                            <button class="preset-pill" data-method="GET" data-url="/api/al-noor-academy/principal/me">مدير مدرسة النور (GET /api/al-noor-academy/principal/me)</button>
+                        </div>
+
+                        <div class="console-response-box">
+                            <div class="response-header">
+                                <span>استجابة السيرفر (Response):</span>
+                                <span class="response-status" id="response-status-badge">Status: N/A</span>
+                            </div>
+                            <pre class="response-json" id="api-response-output"><code>اضغط على "إرسال الطلب" لاختبار الـ API...</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit School Modal -->
+    <div class="modal-overlay" id="edit-school-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3 class="modal-title">تعديل بيانات المدرسة</h3>
+                <button class="icon-btn-close" id="btn-close-modal"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-edit-school">
+                <input type="hidden" id="edit-school-id">
+                <div class="form-group">
+                    <label for="edit-school-name" class="form-label">اسم المدرسة</label>
+                    <input type="text" id="edit-school-name" class="form-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="edit-school-phone" class="form-label">رقم الهاتف</label>
+                    <input type="text" id="edit-school-phone" class="form-input" placeholder="011...">
+                </div>
+                <div class="form-group">
+                    <label for="edit-school-address" class="form-label">العنوان / الموقع</label>
+                    <input type="text" id="edit-school-address" class="form-input" placeholder="دمشق...">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="btn-cancel-edit">إلغاء</button>
+                    <button type="submit" class="btn-primary">حفظ التعديلات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

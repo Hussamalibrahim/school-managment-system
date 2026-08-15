@@ -13,6 +13,7 @@ public record SchoolDto(
         LocalDateTime deletedAt,
 
         String name,
+        String code,
         String address,
         String phone,
         String logoPath,

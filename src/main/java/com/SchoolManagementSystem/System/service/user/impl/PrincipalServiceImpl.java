@@ -24,11 +24,7 @@ import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.service.NationalIdValidator;
 import com.SchoolManagementSystem.System.service.user.PrincipalService;
-<<<<<<< HEAD
-=======
-
 import com.SchoolManagementSystem.System.tenant.TenantContext;
->>>>>>> origin/main
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,6 +50,7 @@ public class PrincipalServiceImpl implements PrincipalService {
     private final AnnouncementRepository announcementRepository;
     private final WarningRepository warningRepository;
     private final AuthUserRepository authUserRepository;
+    private final com.SchoolManagementSystem.System.repository.school.SchoolRepository schoolRepository;
     private final NationalIdValidator nationalIdValidator;
     private final PasswordEncoder passwordEncoder;
 
@@ -192,6 +189,10 @@ public class PrincipalServiceImpl implements PrincipalService {
                 refId,
                 request.role()
         );
+        Long schoolId = com.SchoolManagementSystem.System.tenant.TenantContext.getSchoolId();
+        if (schoolId != null) {
+            schoolRepository.findById(schoolId).ifPresent(user::setSchool);
+        }
         authUserRepository.save(user);
     }
 
