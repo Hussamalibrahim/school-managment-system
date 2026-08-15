@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.System.entity.school.AcademicYear;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Semester extends BaseEntity
+public class Semester extends SchoolEntity
 {
     @ManyToOne
     @JoinColumn(name = "academic_year_id")

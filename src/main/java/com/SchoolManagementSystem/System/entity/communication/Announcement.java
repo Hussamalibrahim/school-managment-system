@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.communication;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.AnnouncementStatus;
 import com.SchoolManagementSystem.System.entity.enumeration.UserType;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Announcement extends BaseEntity
+public class Announcement extends SchoolEntity
 {
     private String title;
 

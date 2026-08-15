@@ -19,6 +19,7 @@ import com.SchoolManagementSystem.System.repository.academic.SubjectRepository;
 import com.SchoolManagementSystem.System.repository.academic.TeacherSubjectRepository;
 import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.user.TeacherRepository;
+import com.SchoolManagementSystem.System.security.UserPrincipal;
 import com.SchoolManagementSystem.System.service.academic.ClassScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -178,5 +179,11 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
         }
 
         return getBySchoolClass(student.getStudentSchoolClass().getId());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClassScheduleDto> getMySchedule(UserPrincipal user) {
+        return getByStudent(user.getRefId());
     }
 }

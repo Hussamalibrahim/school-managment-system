@@ -49,6 +49,7 @@ import com.SchoolManagementSystem.System.repository.student.StudentRepository;
 import com.SchoolManagementSystem.System.repository.student.WarningRepository;
 import com.SchoolManagementSystem.System.repository.user.*;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
+import com.SchoolManagementSystem.System.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -106,68 +107,73 @@ public class DataSeeder implements CommandLineRunner {
             return;
         }
 
-        log.info(">>> Starting Master Database Seeding for 5 Core Roles...");
+        log.info(">>> Starting Master Database Seeding for Multi-Tenant 5 Core Roles...");
 
         // 1. School
         School school = seedSchool();
+        TenantContext.set(school.getId(), school.getCode());
 
-        // 2. Academic Year & Semesters
-        AcademicYear academicYear = seedAcademicYear(school);
-        Semester semester1 = seedSemester(academicYear, SemesterName.FIRST, LocalDate.of(2025, 9, 1), LocalDate.of(2026, 1, 31));
-        Semester semester2 = seedSemester(academicYear, SemesterName.SECOND, LocalDate.of(2026, 2, 1), LocalDate.of(2026, 6, 30));
+        try {
+            // 2. Academic Year & Semesters
+            AcademicYear academicYear = seedAcademicYear(school);
+            Semester semester1 = seedSemester(academicYear, SemesterName.FIRST, LocalDate.of(2025, 9, 1), LocalDate.of(2026, 1, 31));
+            Semester semester2 = seedSemester(academicYear, SemesterName.SECOND, LocalDate.of(2026, 2, 1), LocalDate.of(2026, 6, 30));
 
-        // 3. Principal (مدير)
-        Principal principal = seedPrincipal(school);
+            // 3. Principal (مدير)
+            Principal principal = seedPrincipal(school);
 
-        // 4. Secretary (أمين سر)
-        Secretary secretary = seedSecretary(school);
+            // 4. Secretary (أمين سر)
+            Secretary secretary = seedSecretary(school);
 
-        // 5. Librarian (أمين مكتبة)
-        Librarian librarian = seedLibrarian(school);
+            // 5. Librarian (أمين مكتبة)
+            Librarian librarian = seedLibrarian(school);
 
-        // 6. Teachers (معلمون)
-        Map<String, Teacher> teachers = seedTeachers(school);
+            // 6. Teachers (معلمون)
+            Map<String, Teacher> teachers = seedTeachers(school);
 
-        // 7. Classes (صفوف وشعب)
-        Map<String, SchoolClass> classes = seedClasses(school);
+            // 7. Classes (صفوف وشعب)
+            Map<String, SchoolClass> classes = seedClasses(school);
 
-        // 8. Subjects (مواد دراسية)
-        Map<String, Subject> subjects = seedSubjects();
+            // 8. Subjects (مواد دراسية)
+            Map<String, Subject> subjects = seedSubjects(school);
 
-        // 9. Teacher-Subject Assignments
-        seedTeacherSubjects(teachers, subjects);
+            // 9. Teacher-Subject Assignments
+            seedTeacherSubjects(school, teachers, subjects);
 
-        // 10. Class Schedules (جدول الحصص الأسبوعي)
-        Map<String, List<ClassSchedule>> schedules = seedClassSchedules(classes, teachers, subjects);
+            // 10. Class Schedules (جدول الحصص الأسبوعي)
+            Map<String, List<ClassSchedule>> schedules = seedClassSchedules(school, classes, teachers, subjects);
 
-        // 11. Students (طلاب)
-        List<Student> students = seedStudents(school, classes);
+            // 11. Students (طلاب)
+            List<Student> students = seedStudents(school, classes);
 
-        // 12. Guardians (أولياء أمور) & Linking to Students
-        seedGuardians(school, students);
+            // 12. Guardians (أولياء أمور) & Linking to Students
+            seedGuardians(school, students);
 
-        // 13. Attendance Records (سجل الحضور والغياب)
-        seedAttendance(students);
+            // 13. Attendance Records (سجل الحضور والغياب)
+            seedAttendance(school, students);
 
-        // 14. Continuous Assessments & Marks (تقييمات وواجبات)
-        seedAssessmentsAndResults(schedules, semester1, teachers, students);
+            // 14. Continuous Assessments & Marks (تقييمات وواجبات)
+            seedAssessmentsAndResults(school, schedules, semester1, teachers, students);
 
-        // 15. Official Exams & Results (امتحانات ونتائج)
-        seedExamsAndResults(classes, subjects, semester1, students);
+            // 15. Official Exams & Results (امتحانات ونتائج)
+            seedExamsAndResults(school, classes, subjects, semester1, students);
 
-        // 16. Warnings & Disciplinary Notes (إنذارات وملاحظات سلوكية)
-        seedWarnings(students);
+            // 16. Warnings & Disciplinary Notes (إنذارات وملاحظات سلوكية)
+            seedWarnings(school, students);
 
-        // 17. Finance (رسوم، خصومات، مدفوعات)
-        seedFinance(school, academicYear, classes, students);
+            // 17. Finance (رسوم، خصومات، مدفوعات)
+            seedFinance(school, academicYear, classes, students);
 
-        // 18. Library & Borrowing (مكتبة مدرسية وإعارة كتب)
-        seedLibrary(school, students);
+            // 18. Library & Borrowing (مكتبة مدرسية وإعارة كتب)
+            seedLibrary(school, students);
 
-        // 19. Announcements (إعلانات مدرسية)
-        seedAnnouncements();
+            // 19. Announcements (إعلانات مدرسية)
+            seedAnnouncements(school);
 
-        log.info(">>> Master Database Seeding Completed Successfully! All 5 roles are ready for testing.");
+            log.info(">>> Master Database Seeding Completed Successfully! All 5 roles are ready for testing.");
+        } finally {
+            TenantContext.clear();
+        }
     }
 
     // ==========================================
@@ -176,6 +182,7 @@ public class DataSeeder implements CommandLineRunner {
     private School seedSchool() {
         School school = new School();
         school.setName("Al Noor International Academy");
+        school.setCode("al-noor-academy");
         school.setAddress("Damascus, Mezzeh - Education District");
         school.setPhone("0116655440");
         school.setSchoolType(SchoolType.PRIVATE);
@@ -199,6 +206,7 @@ public class DataSeeder implements CommandLineRunner {
 
     private Semester seedSemester(AcademicYear academicYear, SemesterName name, LocalDate start, LocalDate end) {
         Semester semester = new Semester();
+        semester.setSchool(academicYear.getSchool());
         semester.setAcademicYear(academicYear);
         semester.setSemesterName(name);
         semester.setStartDate(start);
@@ -220,8 +228,8 @@ public class DataSeeder implements CommandLineRunner {
         principal.setHireDate(LocalDate.of(2018, 8, 1));
         principal = principalRepository.save(principal);
 
-        createAuth("admin", "admin123", Role.PRINCIPAL, principal.getId());
-        createAuth("principal", "123456", Role.PRINCIPAL, principal.getId());
+        createAuth(school, "admin", "admin123", Role.PRINCIPAL, principal.getId());
+        createAuth(school, "principal", "123456", Role.PRINCIPAL, principal.getId());
         return principal;
     }
 
@@ -239,7 +247,7 @@ public class DataSeeder implements CommandLineRunner {
         secretary.setHireDate(LocalDate.of(2020, 9, 1));
         secretary = secretaryRepository.save(secretary);
 
-        createAuth("secretary", "123456", Role.SECRETARY, secretary.getId());
+        createAuth(school, "secretary", "123456", Role.SECRETARY, secretary.getId());
         return secretary;
     }
 
@@ -257,7 +265,7 @@ public class DataSeeder implements CommandLineRunner {
         librarian.setHireDate(LocalDate.of(2021, 9, 1));
         librarian = librarianRepository.save(librarian);
 
-        createAuth("librarian", "123456", Role.LIBRARIAN, librarian.getId());
+        createAuth(school, "librarian", "123456", Role.LIBRARIAN, librarian.getId());
         return librarian;
     }
 
@@ -290,9 +298,9 @@ public class DataSeeder implements CommandLineRunner {
         teacher.setHireDate(LocalDate.of(2021, 9, 1));
         teacher = teacherRepository.save(teacher);
 
-        createAuth(email1, "123456", Role.TEACHER, teacher.getId());
+        createAuth(school, email1, "123456", Role.TEACHER, teacher.getId());
         if (email2 != null && !email2.equals(email1)) {
-            createAuth(email2, "123456", Role.TEACHER, teacher.getId());
+            createAuth(school, email2, "123456", Role.TEACHER, teacher.getId());
         }
         return teacher;
     }
@@ -323,35 +331,36 @@ public class DataSeeder implements CommandLineRunner {
     // ==========================================
     // 8. Subjects (مواد دراسية)
     // ==========================================
-    private Map<String, Subject> seedSubjects() {
+    private Map<String, Subject> seedSubjects(School school) {
         Map<String, Subject> map = new HashMap<>();
 
         // Grade 10
-        map.put("math10", createSubject("Mathematics 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("physics10", createSubject("Physics 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("chemistry10", createSubject("Chemistry 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("arabic10", createSubject("Arabic Language 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("english10", createSubject("English Language 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("history10", createSubject("World History 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+        map.put("math10", createSubject(school, "Mathematics 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+        map.put("physics10", createSubject(school, "Physics 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+        map.put("chemistry10", createSubject(school, "Chemistry 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+        map.put("arabic10", createSubject(school, "Arabic Language 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+        map.put("english10", createSubject(school, "English Language 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+        map.put("history10", createSubject(school, "World History 10", GradeLevel.GRADE_10, SemesterName.FIRST));
 
         // Grade 11
-        map.put("math11", createSubject("Advanced Mathematics 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("physics11", createSubject("Physics 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("chemistry11", createSubject("Chemistry 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("arabic11", createSubject("Arabic Literature 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("english11", createSubject("English Literature 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+        map.put("math11", createSubject(school, "Advanced Mathematics 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+        map.put("physics11", createSubject(school, "Physics 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+        map.put("chemistry11", createSubject(school, "Chemistry 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+        map.put("arabic11", createSubject(school, "Arabic Literature 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+        map.put("english11", createSubject(school, "English Literature 11", GradeLevel.GRADE_11, SemesterName.FIRST));
 
         // Grade 12
-        map.put("math12", createSubject("Calculus 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-        map.put("physics12", createSubject("Modern Physics 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-        map.put("chemistry12", createSubject("Organic Chemistry 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-        map.put("english12", createSubject("English for Academic Studies 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+        map.put("math12", createSubject(school, "Calculus 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+        map.put("physics12", createSubject(school, "Modern Physics 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+        map.put("chemistry12", createSubject(school, "Organic Chemistry 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+        map.put("english12", createSubject(school, "English for Academic Studies 12", GradeLevel.GRADE_12, SemesterName.FIRST));
 
         return map;
     }
 
-    private Subject createSubject(String name, GradeLevel gradeLevel, SemesterName semesterName) {
+    private Subject createSubject(School school, String name, GradeLevel gradeLevel, SemesterName semesterName) {
         Subject subject = new Subject();
+        subject.setSchool(school);
         subject.setName(name);
         subject.setGradeLevel(gradeLevel);
         subject.setSemesterName(semesterName);
@@ -361,31 +370,32 @@ public class DataSeeder implements CommandLineRunner {
     // ==========================================
     // 9. Teacher-Subject Assignments
     // ==========================================
-    private void seedTeacherSubjects(Map<String, Teacher> teachers, Map<String, Subject> subjects) {
-        connectTeacherSubject(teachers.get("math"), subjects.get("math10"));
-        connectTeacherSubject(teachers.get("math"), subjects.get("math11"));
-        connectTeacherSubject(teachers.get("math"), subjects.get("math12"));
+    private void seedTeacherSubjects(School school, Map<String, Teacher> teachers, Map<String, Subject> subjects) {
+        connectTeacherSubject(school, teachers.get("math"), subjects.get("math10"));
+        connectTeacherSubject(school, teachers.get("math"), subjects.get("math11"));
+        connectTeacherSubject(school, teachers.get("math"), subjects.get("math12"));
 
-        connectTeacherSubject(teachers.get("physics"), subjects.get("physics10"));
-        connectTeacherSubject(teachers.get("physics"), subjects.get("physics11"));
-        connectTeacherSubject(teachers.get("physics"), subjects.get("physics12"));
+        connectTeacherSubject(school, teachers.get("physics"), subjects.get("physics10"));
+        connectTeacherSubject(school, teachers.get("physics"), subjects.get("physics11"));
+        connectTeacherSubject(school, teachers.get("physics"), subjects.get("physics12"));
 
-        connectTeacherSubject(teachers.get("chemistry"), subjects.get("chemistry10"));
-        connectTeacherSubject(teachers.get("chemistry"), subjects.get("chemistry11"));
-        connectTeacherSubject(teachers.get("chemistry"), subjects.get("chemistry12"));
+        connectTeacherSubject(school, teachers.get("chemistry"), subjects.get("chemistry10"));
+        connectTeacherSubject(school, teachers.get("chemistry"), subjects.get("chemistry11"));
+        connectTeacherSubject(school, teachers.get("chemistry"), subjects.get("chemistry12"));
 
-        connectTeacherSubject(teachers.get("arabic"), subjects.get("arabic10"));
-        connectTeacherSubject(teachers.get("arabic"), subjects.get("arabic11"));
+        connectTeacherSubject(school, teachers.get("arabic"), subjects.get("arabic10"));
+        connectTeacherSubject(school, teachers.get("arabic"), subjects.get("arabic11"));
 
-        connectTeacherSubject(teachers.get("english"), subjects.get("english10"));
-        connectTeacherSubject(teachers.get("english"), subjects.get("english11"));
-        connectTeacherSubject(teachers.get("english"), subjects.get("english12"));
+        connectTeacherSubject(school, teachers.get("english"), subjects.get("english10"));
+        connectTeacherSubject(school, teachers.get("english"), subjects.get("english11"));
+        connectTeacherSubject(school, teachers.get("english"), subjects.get("english12"));
 
-        connectTeacherSubject(teachers.get("history"), subjects.get("history10"));
+        connectTeacherSubject(school, teachers.get("history"), subjects.get("history10"));
     }
 
-    private void connectTeacherSubject(Teacher teacher, Subject subject) {
+    private void connectTeacherSubject(School school, Teacher teacher, Subject subject) {
         TeacherSubject ts = new TeacherSubject();
+        ts.setSchool(school);
         ts.setTeacher(teacher);
         ts.setSubject(subject);
         teacherSubjectRepository.save(ts);
@@ -395,6 +405,7 @@ public class DataSeeder implements CommandLineRunner {
     // 10. Class Schedules (جدول الحصص)
     // ==========================================
     private Map<String, List<ClassSchedule>> seedClassSchedules(
+            School school,
             Map<String, SchoolClass> classes,
             Map<String, Teacher> teachers,
             Map<String, Subject> subjects) {
@@ -403,40 +414,41 @@ public class DataSeeder implements CommandLineRunner {
 
         // Weekly schedule for Grade 10-A
         List<ClassSchedule> list10A = new ArrayList<>();
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subjects.get("physics10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_3, teachers.get("arabic"), subjects.get("arabic10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("chemistry"), subjects.get("chemistry10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.TUESDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.TUESDAY, PeriodNumber.PERIOD_2, teachers.get("history"), subjects.get("history10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_1, teachers.get("physics"), subjects.get("physics10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.THURSDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subjects.get("arabic10")));
-        list10A.add(createSchedule(classes.get("10A"), DayOfWeek.THURSDAY, PeriodNumber.PERIOD_2, teachers.get("chemistry"), subjects.get("chemistry10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subjects.get("physics10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_3, teachers.get("arabic"), subjects.get("arabic10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("chemistry"), subjects.get("chemistry10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.TUESDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.TUESDAY, PeriodNumber.PERIOD_2, teachers.get("history"), subjects.get("history10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_1, teachers.get("physics"), subjects.get("physics10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.THURSDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subjects.get("arabic10")));
+        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.THURSDAY, PeriodNumber.PERIOD_2, teachers.get("chemistry"), subjects.get("chemistry10")));
         result.put("10A", list10A);
 
         // Weekly schedule for Grade 10-B
         List<ClassSchedule> list10B = new ArrayList<>();
-        list10B.add(createSchedule(classes.get("10B"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subjects.get("arabic10")));
-        list10B.add(createSchedule(classes.get("10B"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("math"), subjects.get("math10")));
-        list10B.add(createSchedule(classes.get("10B"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("english"), subjects.get("english10")));
-        list10B.add(createSchedule(classes.get("10B"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subjects.get("physics10")));
+        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subjects.get("arabic10")));
+        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("math"), subjects.get("math10")));
+        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("english"), subjects.get("english10")));
+        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subjects.get("physics10")));
         result.put("10B", list10B);
 
         // Weekly schedule for Grade 11-A
         List<ClassSchedule> list11A = new ArrayList<>();
-        list11A.add(createSchedule(classes.get("11A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("physics"), subjects.get("physics11")));
-        list11A.add(createSchedule(classes.get("11A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english11")));
-        list11A.add(createSchedule(classes.get("11A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math11")));
-        list11A.add(createSchedule(classes.get("11A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("chemistry"), subjects.get("chemistry11")));
+        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("physics"), subjects.get("physics11")));
+        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english11")));
+        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math11")));
+        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("chemistry"), subjects.get("chemistry11")));
         result.put("11A", list11A);
 
         return result;
     }
 
-    private ClassSchedule createSchedule(SchoolClass schoolClass, DayOfWeek day, PeriodNumber period, Teacher teacher, Subject subject) {
+    private ClassSchedule createSchedule(School school, SchoolClass schoolClass, DayOfWeek day, PeriodNumber period, Teacher teacher, Subject subject) {
         ClassSchedule cs = new ClassSchedule();
+        cs.setSchool(school);
         cs.setSchoolClass(schoolClass);
         cs.setDayOfWeek(day);
         cs.setPeriodNumber(period);
@@ -488,9 +500,9 @@ public class DataSeeder implements CommandLineRunner {
         student.setEnrollmentDate(LocalDate.of(2025, 9, 1));
         student = studentRepository.save(student);
 
-        createAuth(email1, "123456", Role.STUDENT, student.getId());
+        createAuth(school, email1, "123456", Role.STUDENT, student.getId());
         if (email2 != null && !email2.equals(email1)) {
-            createAuth(email2, "123456", Role.STUDENT, student.getId());
+            createAuth(school, email2, "123456", Role.STUDENT, student.getId());
         }
         return student;
     }
@@ -501,24 +513,24 @@ public class DataSeeder implements CommandLineRunner {
     private void seedGuardians(School school, List<Student> students) {
         // G1: Father of Ahmad Ali (ST1001) & Zaid Al-Masri (ST1101)
         Guardian g1 = createGuardian(school, "900001", "Ali", "Ahmad", "Civil Engineer", "guardian1", "parent1");
-        connectGuardian(students.get(0), g1, true); // Ahmad
-        connectGuardian(students.get(6), g1, true); // Zaid
+        connectGuardian(school, students.get(0), g1, true); // Ahmad
+        connectGuardian(school, students.get(6), g1, true); // Zaid
 
         // G2: Mother of Sara Omar (ST1003)
         Guardian g2 = createGuardian(school, "900002", "Mona", "Ibrahim", "Pediatrician", "guardian2", "parent2");
-        connectGuardian(students.get(2), g2, true); // Sara
+        connectGuardian(school, students.get(2), g2, true); // Sara
 
         // G3: Father of Lina Khaled (ST1004)
         Guardian g3 = createGuardian(school, "900003", "Khaled", "Al-Mansoor", "Legal Consultant", "guardian3", "parent3");
-        connectGuardian(students.get(3), g3, true); // Lina
+        connectGuardian(school, students.get(3), g3, true); // Lina
 
         // G4: Father of Yousef Mahmoud (ST1005)
         Guardian g4 = createGuardian(school, "900004", "Mahmoud", "Al-Qudsi", "Businessman", "guardian4", "parent4");
-        connectGuardian(students.get(4), g4, true); // Yousef
+        connectGuardian(school, students.get(4), g4, true); // Yousef
 
         // G5: Father of Tarek Al-Khatib (ST1201)
         Guardian g5 = createGuardian(school, "900005", "Sami", "Al-Khatib", "University Professor", "guardian5", "parent5");
-        connectGuardian(students.get(8), g5, true); // Tarek
+        connectGuardian(school, students.get(8), g5, true); // Tarek
     }
 
     private Guardian createGuardian(School school, String nationalId, String first, String last, String occupation,
@@ -533,15 +545,16 @@ public class DataSeeder implements CommandLineRunner {
         guardian.setOccupation(occupation);
         guardian = guardianRepository.save(guardian);
 
-        createAuth(email1, "123456", Role.GUARDIAN, guardian.getId());
+        createAuth(school, email1, "123456", Role.GUARDIAN, guardian.getId());
         if (email2 != null && !email2.equals(email1)) {
-            createAuth(email2, "123456", Role.GUARDIAN, guardian.getId());
+            createAuth(school, email2, "123456", Role.GUARDIAN, guardian.getId());
         }
         return guardian;
     }
 
-    private void connectGuardian(Student student, Guardian guardian, boolean primary) {
+    private void connectGuardian(School school, Student student, Guardian guardian, boolean primary) {
         StudentGuardian relation = new StudentGuardian();
+        relation.setSchool(school);
         relation.setStudent(student);
         relation.setGuardian(guardian);
         relation.setPrimaryGuardian(primary);
@@ -551,7 +564,7 @@ public class DataSeeder implements CommandLineRunner {
     // ==========================================
     // 13. Attendance (سجل الحضور والغياب)
     // ==========================================
-    private void seedAttendance(List<Student> students) {
+    private void seedAttendance(School school, List<Student> students) {
         LocalDate today = LocalDate.now();
 
         for (int i = 0; i < 7; i++) {
@@ -560,6 +573,7 @@ public class DataSeeder implements CommandLineRunner {
             for (int sIdx = 0; sIdx < students.size(); sIdx++) {
                 Student student = students.get(sIdx);
                 Attendance attendance = new Attendance();
+                attendance.setSchool(school);
                 attendance.setStudent(student);
                 attendance.setAttendanceDate(date);
 
@@ -582,6 +596,7 @@ public class DataSeeder implements CommandLineRunner {
     // 14. Continuous Assessments & Results
     // ==========================================
     private void seedAssessmentsAndResults(
+            School school,
             Map<String, List<ClassSchedule>> schedules,
             Semester semester,
             Map<String, Teacher> teachers,
@@ -592,6 +607,7 @@ public class DataSeeder implements CommandLineRunner {
 
         // 1. Math Quiz 1
         Assessment mathQuiz = new Assessment();
+        mathQuiz.setSchool(school);
         mathQuiz.setClassSchedule(sched10A.get(0));
         mathQuiz.setSemester(semester);
         mathQuiz.setTeacher(teachers.get("math"));
@@ -603,12 +619,13 @@ public class DataSeeder implements CommandLineRunner {
         mathQuiz = assessmentRepository.save(mathQuiz);
 
         // Grade results for 10-A students
-        createAssessmentResult(students.get(0), mathQuiz, 19.0);
-        createAssessmentResult(students.get(1), mathQuiz, 16.5);
-        createAssessmentResult(students.get(2), mathQuiz, 18.0);
+        createAssessmentResult(school, students.get(0), mathQuiz, 19.0);
+        createAssessmentResult(school, students.get(1), mathQuiz, 16.5);
+        createAssessmentResult(school, students.get(2), mathQuiz, 18.0);
 
         // 2. Physics Lab Project
         Assessment physicsProj = new Assessment();
+        physicsProj.setSchool(school);
         physicsProj.setClassSchedule(sched10A.get(1));
         physicsProj.setSemester(semester);
         physicsProj.setTeacher(teachers.get("physics"));
@@ -619,12 +636,13 @@ public class DataSeeder implements CommandLineRunner {
         physicsProj.setAssessmentDate(LocalDate.now().minusDays(5));
         physicsProj = assessmentRepository.save(physicsProj);
 
-        createAssessmentResult(students.get(0), physicsProj, 24.0);
-        createAssessmentResult(students.get(1), physicsProj, 21.0);
-        createAssessmentResult(students.get(2), physicsProj, 23.5);
+        createAssessmentResult(school, students.get(0), physicsProj, 24.0);
+        createAssessmentResult(school, students.get(1), physicsProj, 21.0);
+        createAssessmentResult(school, students.get(2), physicsProj, 23.5);
 
         // 3. Arabic Oral Test
         Assessment arabicOral = new Assessment();
+        arabicOral.setSchool(school);
         arabicOral.setClassSchedule(sched10A.get(2));
         arabicOral.setSemester(semester);
         arabicOral.setTeacher(teachers.get("arabic"));
@@ -635,13 +653,14 @@ public class DataSeeder implements CommandLineRunner {
         arabicOral.setAssessmentDate(LocalDate.now().minusDays(3));
         arabicOral = assessmentRepository.save(arabicOral);
 
-        createAssessmentResult(students.get(0), arabicOral, 14.5);
-        createAssessmentResult(students.get(1), arabicOral, 13.0);
-        createAssessmentResult(students.get(2), arabicOral, 15.0);
+        createAssessmentResult(school, students.get(0), arabicOral, 14.5);
+        createAssessmentResult(school, students.get(1), arabicOral, 13.0);
+        createAssessmentResult(school, students.get(2), arabicOral, 15.0);
     }
 
-    private void createAssessmentResult(Student student, Assessment assessment, Double score) {
+    private void createAssessmentResult(School school, Student student, Assessment assessment, Double score) {
         AssessmentResult result = new AssessmentResult();
+        result.setSchool(school);
         result.setStudent(student);
         result.setAssessment(assessment);
         result.setScore(score);
@@ -652,6 +671,7 @@ public class DataSeeder implements CommandLineRunner {
     // 15. Official Exams & Results
     // ==========================================
     private void seedExamsAndResults(
+            School school,
             Map<String, SchoolClass> classes,
             Map<String, Subject> subjects,
             Semester semester,
@@ -659,6 +679,7 @@ public class DataSeeder implements CommandLineRunner {
 
         // Midterm Exam for Math 10 (Class 10-A)
         Exam mathExam = new Exam();
+        mathExam.setSchool(school);
         mathExam.setSchoolClass(classes.get("10A"));
         mathExam.setSubject(subjects.get("math10"));
         mathExam.setSemester(semester);
@@ -669,12 +690,13 @@ public class DataSeeder implements CommandLineRunner {
         mathExam.setDurationMinutes(90);
         mathExam = examRepository.save(mathExam);
 
-        createExamResult(mathExam, students.get(0), 96.0);
-        createExamResult(mathExam, students.get(1), 84.5);
-        createExamResult(mathExam, students.get(2), 91.0);
+        createExamResult(school, mathExam, students.get(0), 96.0);
+        createExamResult(school, mathExam, students.get(1), 84.5);
+        createExamResult(school, mathExam, students.get(2), 91.0);
 
         // Midterm Exam for Physics 10 (Class 10-A)
         Exam physicsExam = new Exam();
+        physicsExam.setSchool(school);
         physicsExam.setSchoolClass(classes.get("10A"));
         physicsExam.setSubject(subjects.get("physics10"));
         physicsExam.setSemester(semester);
@@ -685,12 +707,13 @@ public class DataSeeder implements CommandLineRunner {
         physicsExam.setDurationMinutes(90);
         physicsExam = examRepository.save(physicsExam);
 
-        createExamResult(physicsExam, students.get(0), 92.5);
-        createExamResult(physicsExam, students.get(1), 78.0);
-        createExamResult(physicsExam, students.get(2), 95.0);
+        createExamResult(school, physicsExam, students.get(0), 92.5);
+        createExamResult(school, physicsExam, students.get(1), 78.0);
+        createExamResult(school, physicsExam, students.get(2), 95.0);
 
         // Midterm Exam for Arabic 10 (Class 10-A)
         Exam arabicExam = new Exam();
+        arabicExam.setSchool(school);
         arabicExam.setSchoolClass(classes.get("10A"));
         arabicExam.setSubject(subjects.get("arabic10"));
         arabicExam.setSemester(semester);
@@ -701,13 +724,14 @@ public class DataSeeder implements CommandLineRunner {
         arabicExam.setDurationMinutes(90);
         arabicExam = examRepository.save(arabicExam);
 
-        createExamResult(arabicExam, students.get(0), 88.0);
-        createExamResult(arabicExam, students.get(1), 82.0);
-        createExamResult(arabicExam, students.get(2), 97.5);
+        createExamResult(school, arabicExam, students.get(0), 88.0);
+        createExamResult(school, arabicExam, students.get(1), 82.0);
+        createExamResult(school, arabicExam, students.get(2), 97.5);
     }
 
-    private void createExamResult(Exam exam, Student student, Double score) {
+    private void createExamResult(School school, Exam exam, Student student, Double score) {
         ExamResult er = new ExamResult();
+        er.setSchool(school);
         er.setExam(exam);
         er.setStudent(student);
         er.setScore(score);
@@ -717,14 +741,16 @@ public class DataSeeder implements CommandLineRunner {
     // ==========================================
     // 16. Warnings & Disciplinary Notes
     // ==========================================
-    private void seedWarnings(List<Student> students) {
+    private void seedWarnings(School school, List<Student> students) {
         Warning w1 = new Warning();
+        w1.setSchool(school);
         w1.setStudent(students.get(1)); // Mohammed Hassan
         w1.setWarningDate(LocalDate.now().minusDays(8));
         w1.setReason("Repeated unexcused morning tardiness during first period.");
         warningRepository.save(w1);
 
         Warning w2 = new Warning();
+        w2.setSchool(school);
         w2.setStudent(students.get(4)); // Yousef Mahmoud
         w2.setWarningDate(LocalDate.now().minusDays(4));
         w2.setReason("Failure to submit required weekly Physics laboratory assignment on time.");
@@ -847,8 +873,9 @@ public class DataSeeder implements CommandLineRunner {
     // ==========================================
     // 19. Announcements (إعلانات مدرسية)
     // ==========================================
-    private void seedAnnouncements() {
+    private void seedAnnouncements(School school) {
         createAnnouncement(
+                school,
                 "Welcome to the Academic Year 2025-2026",
                 "Dear students, parents, and faculty members: We welcome you to the new academic year filled with ambition and excellence. Please ensure adhering to school schedules and dress code.",
                 UserType.STUDENT,
@@ -857,6 +884,7 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         createAnnouncement(
+                school,
                 "First Semester Midterm Exam Schedules Released",
                 "The examination board has published the official midterm timetable. Students and parents can view schedules through their respective portal dashboards.",
                 UserType.STUDENT,
@@ -865,6 +893,7 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         createAnnouncement(
+                school,
                 "Annual Parent-Teacher Conference",
                 "We cordially invite all parents to attend the first semester parent-teacher conference on Thursday at 4:00 PM in the school auditorium to discuss student academic progress.",
                 UserType.GUARDIAN,
@@ -873,6 +902,7 @@ public class DataSeeder implements CommandLineRunner {
         );
 
         createAnnouncement(
+                school,
                 "Annual Science and Innovation Olympiad Registration",
                 "Registration is now open for students interested in participating in the annual Science, Robotics, and Mathematics Olympiad. Inquire with your science teachers.",
                 UserType.STUDENT,
@@ -881,8 +911,9 @@ public class DataSeeder implements CommandLineRunner {
         );
     }
 
-    private void createAnnouncement(String title, String content, UserType userType, AnnouncementStatus status, LocalDate date) {
+    private void createAnnouncement(School school, String title, String content, UserType userType, AnnouncementStatus status, LocalDate date) {
         Announcement a = new Announcement();
+        a.setSchool(school);
         a.setTitle(title);
         a.setContent(content);
         a.setUserType(userType);
@@ -894,8 +925,9 @@ public class DataSeeder implements CommandLineRunner {
     // ==========================================
     // Auth Helper
     // ==========================================
-    private void createAuth(String email, String password, Role role, Long refId) {
+    private void createAuth(School school, String email, String password, Role role, Long refId) {
         AuthUser user = new AuthUser();
+        user.setSchool(school);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(role);

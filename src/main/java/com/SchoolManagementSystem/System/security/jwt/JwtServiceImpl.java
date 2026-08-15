@@ -32,17 +32,25 @@ public class JwtServiceImpl implements JwtService {
     }
 
     // CREATE TOKEN
+    @Override
     public String generateToken(AuthUserDto user) {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", user.role().name());
         claims.put("refId", user.refId());
 
+        // Multi Tenant
+        claims.put("schoolId", user.schoolId());
+        claims.put("schoolCode", user.schoolCode());
+
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.email())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + 86400000)
+                )
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -84,6 +92,20 @@ public class JwtServiceImpl implements JwtService {
         } catch (JwtException e) {
             throw new JwtAuthenticationException(ErrorCode.INVALID_TOKEN);
         }
+    }
+    @Override
+    public Long extractSchoolId(String token) {
+
+        return extractAllClaims(token)
+                .get("schoolId", Long.class);
+    }
+
+
+    @Override
+    public String extractSchoolCode(String token) {
+
+        return extractAllClaims(token)
+                .get("schoolCode", String.class);
     }
 }
 

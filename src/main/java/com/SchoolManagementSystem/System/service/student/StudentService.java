@@ -16,4 +16,5 @@ public interface StudentService extends CrudService<StudentDto, Long> {
      List<SubjectNameDto> getNamesSubjectByGradeAndSemester(long id);
      List<StudentDto> getStudentsByClass_Id(Long id);
 
+    List<StudentDto> getStudentsTeacherByClassId(Long classId, Long refId);
 }

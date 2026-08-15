@@ -1,17 +1,14 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
-import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.ExamCategory;
-import com.SchoolManagementSystem.System.entity.user.Principal;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "exam")
@@ -19,7 +16,7 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exam extends BaseEntity {
+public class Exam extends SchoolEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "school_class_id")

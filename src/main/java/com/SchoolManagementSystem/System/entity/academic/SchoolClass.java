@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.System.entity.school.School;
 import com.SchoolManagementSystem.System.entity.student.Student;
@@ -29,11 +30,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SchoolClass extends BaseEntity
+public class SchoolClass extends SchoolEntity
 {
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
     @OneToMany(mappedBy = "studentSchoolClass")
     private List<Student> students;
 

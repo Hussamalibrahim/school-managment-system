@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.System.entity.enumeration.SemesterName;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject extends BaseEntity
+public class Subject extends SchoolEntity
 {
     @OneToMany(mappedBy = "subject")
     private List<TeacherSubject> teacherSubjects;

@@ -1,9 +1,9 @@
 package com.SchoolManagementSystem.System.security.jwt;
 
 
-import com.SchoolManagementSystem.System.exception.business.AuthenticationException;
 import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.exception.security.JwtAuthenticationException;
+import com.SchoolManagementSystem.System.security.UserPrincipal;
 import com.SchoolManagementSystem.System.security.service.JwtService;
 import com.SchoolManagementSystem.System.security.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.JwtException;
@@ -11,6 +11,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,24 +20,26 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
+
 
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
+
     private final JwtService jwtService;
+
     private final UserDetailsServiceImpl userDetailsService;
 
-    public JwtFilter(JwtService jwtService, UserDetailsServiceImpl uds) {
-        this.jwtService = jwtService;
-        this.userDetailsService = uds;
-    }
+
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    @NotNull HttpServletResponse response,
-                                    @NotNull FilterChain chain)
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            @NotNull HttpServletResponse response,
+            @NotNull FilterChain chain)
             throws ServletException, IOException {
-
 
         String header = request.getHeader("Authorization");
 
@@ -44,41 +47,38 @@ public class JwtFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        String token = header.substring(7);
-
-
+        String token =
+                header.substring(7);
         try {
+            String email = jwtService.extractEmail(token);
+            Long tokenSchoolId =
+                    jwtService.extractSchoolId(token);
 
-            String username = jwtService.extractEmail(token);
+            if (email != null &&
+                    SecurityContextHolder
+                            .getContext()
+                            .getAuthentication() == null) {
+                UserDetails user = userDetailsService.loadUserByUsernameAndSchool(email, tokenSchoolId);
 
-
-            if (username != null &&
-                    SecurityContextHolder.getContext().getAuthentication() == null) {
-
-
-                UserDetails user =
-                        userDetailsService.loadUserByUsername(username);
-
-
-                if (jwtService.isValid(token, user)) {
+                UserPrincipal principal = (UserPrincipal) user;
 
 
-                    UsernamePasswordAuthenticationToken auth =
-                            new UsernamePasswordAuthenticationToken(
-                                    user,
-                                    null,
-                                    user.getAuthorities()
-                            );
-
+                if (principal.getSchoolId() != null && !Objects.equals(principal.getSchoolId(), tokenSchoolId)) {
+                    throw new JwtAuthenticationException(ErrorCode.INVALID_TOKEN);
+                }
+                if(jwtService.isValid(token,user)){
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
 
                     SecurityContextHolder
                             .getContext()
-                            .setAuthentication(auth);
+                            .setAuthentication(authentication);
+
                 }
             }
         } catch (JwtException e) {
             throw new JwtAuthenticationException(ErrorCode.INVALID_TOKEN);
         }
-        chain.doFilter(request, response);
+        chain.doFilter(request,response);
     }
 }

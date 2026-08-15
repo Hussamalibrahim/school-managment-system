@@ -7,13 +7,16 @@ import com.SchoolManagementSystem.System.entity.user.Principal;
 import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
 import com.SchoolManagementSystem.System.exception.business.BusinessRuleException;
 import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
 import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.user.PrincipalMapper;
+import com.SchoolManagementSystem.System.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.System.repository.user.PrincipalRepository;
 import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.security.dto.RegisterRequest;
 import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.security.dto.AuthUserDto;
+import com.SchoolManagementSystem.System.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +33,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
     private final PrincipalRepository principalRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SchoolRepository schoolRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -42,13 +46,29 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
+    public AuthUserDto findByEmailAndSchool(String email, String schoolCode) {
+        Long schoolId = schoolRepository.findByCode(schoolCode)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND)).getId();
+
+        Optional<AuthUser> authUser = authUserRepository.findByEmailAndSchoolId(email, schoolId);
+
+        return authUser.map(AuthUserMapper::toDto)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Override
     @Transactional
     public void register(RegisterRequest request) {
 
-        if (authUserRepository.findByEmail(request.email()).isPresent()) {
-            throw new AlreadyExistsException(
-                    ErrorCode.EMAIL_ALREADY_EXISTS
-            );
+        Long schoolId = TenantContext.getSchoolId();
+
+        if (schoolId == null) {
+            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
+        }
+
+        if (authUserRepository
+                .findByEmailAndSchoolId(request.email(), schoolId).isPresent()) {
+            throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
         if (principalRepository.findByNationalId(request.nationalId()).isPresent()) {
@@ -58,8 +78,7 @@ public class AuthUserServiceImpl implements AuthUserService {
         }
 
         Principal principal = principalRepository.save(
-                PrincipalMapper.fromRegisterRequest(request)
-        );
+                PrincipalMapper.fromRegisterRequest(request));
 
         authUserRepository.save(
                 AuthUserMapper.fromRegisterRequest(
@@ -76,7 +95,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     @Transactional
     public AuthUserDto deactivateAccountByEmail(String email) {
 
-        AuthUser user = findAuthUserByEmail(email);
+        AuthUser user = findAuthUserByEmailAndSchoolId(email);
 
         return AuthUserMapper.toDto(
                 updateAccountStatus(user, false)
@@ -97,7 +116,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     @Transactional
     public AuthUserDto activateAccountByEmail(String email) {
 
-        AuthUser user = findAuthUserByEmail(email);
+        AuthUser user = findAuthUserByEmailAndSchoolId(email);
 
         return AuthUserMapper.toDto(
                 updateAccountStatus(user, true)
@@ -135,6 +154,15 @@ public class AuthUserServiceImpl implements AuthUserService {
     private AuthUser findAuthUserByEmail(String email) {
 
         return authUserRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private AuthUser findAuthUserByEmailAndSchoolId(String email) {
+        Long schoolId = TenantContext.getSchoolId();
+        if (schoolId == null) {
+            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
+        }
+        return authUserRepository.findByEmailAndSchoolId(email, schoolId)
                 .orElseThrow(() ->
                         new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }

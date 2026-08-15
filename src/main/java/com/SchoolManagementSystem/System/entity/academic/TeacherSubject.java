@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.System.entity.academic;
 
 import com.SchoolManagementSystem.System.entity.BaseEntity;
+import com.SchoolManagementSystem.System.entity.SchoolEntity;
 import com.SchoolManagementSystem.System.entity.user.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +22,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherSubject extends BaseEntity
+public class TeacherSubject extends SchoolEntity
 {
     @ManyToOne
     @JoinColumn(name = "teacher_id")

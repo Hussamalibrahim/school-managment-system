@@ -5,6 +5,7 @@ import com.SchoolManagementSystem.System.entity.AuthUser;
 import com.SchoolManagementSystem.System.entity.enumeration.Role;
 import com.SchoolManagementSystem.System.exception.business.AlreadyExistsException;
 import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
 import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.mapper.user.GuardianMapper;
 import com.SchoolManagementSystem.System.entity.user.Guardian;
@@ -14,6 +15,7 @@ import com.SchoolManagementSystem.System.security.dto.AuthRequestGuardian;
 import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.service.NationalIdValidator;
 import com.SchoolManagementSystem.System.service.user.GuardianService;
+import com.SchoolManagementSystem.System.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,8 +37,11 @@ public class GuardianServiceImpl implements GuardianService {
 
     @Override
     public void save(AuthRequestGuardian authRequestGuardian) {
-
-        if (authUserRepository.findByEmail(authRequestGuardian.email()).isPresent()) {
+        Long schoolId = TenantContext.getSchoolId();
+        if (schoolId == null) {
+            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
+        }
+        if (authUserRepository.findByEmailAndSchoolId(authRequestGuardian.email(), schoolId).isPresent()) {
             throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
 

@@ -24,6 +24,11 @@ import com.SchoolManagementSystem.System.security.AuthUserRepository;
 import com.SchoolManagementSystem.System.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.System.service.NationalIdValidator;
 import com.SchoolManagementSystem.System.service.user.PrincipalService;
+<<<<<<< HEAD
+=======
+
+import com.SchoolManagementSystem.System.tenant.TenantContext;
+>>>>>>> origin/main
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -191,8 +196,15 @@ public class PrincipalServiceImpl implements PrincipalService {
     }
 
     private void validateEmail(String email) {
-        if (authUserRepository.findByEmail(email).isPresent()) {
-            throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
+        Long schoolId = com.SchoolManagementSystem.System.tenant.TenantContext.getSchoolId();
+        if (schoolId != null) {
+            if (authUserRepository.findByEmailAndSchoolId(email, schoolId).isPresent()) {
+                throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
+            }
+        } else {
+            if (authUserRepository.findByEmail(email).isPresent()) {
+                throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
+            }
         }
     }
 }
