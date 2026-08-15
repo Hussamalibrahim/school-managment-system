@@ -103,222 +103,377 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (schoolRepository.count() > 0) {
-            log.info("Database already seeded. Skipping seeder.");
+            log.info(">>> Database already contains schools. Skipping Master Seeder.");
             return;
         }
 
-        log.info(">>> Starting Master Database Seeding for Multi-Tenant 5 Core Roles...");
+        log.info("==================================================================");
+        log.info(">>> STARTING ULTRA-RICH MASTER DATABASE SEEDING (MULTI-TENANT) <<<");
+        log.info("==================================================================");
 
-        // 1. School
-        School school = seedSchool();
+        // ==========================================
+        // TENANT 1: Al Noor International Academy (الرئيسية)
+        // ==========================================
+        School s1 = new School();
+        s1.setName("مدرسة النور الدولية النموذجية");
+        s1.setCode("al-noor-academy");
+        s1.setAddress("دمشق، المزة - الحي الدبلوماسي والتعليمي");
+        s1.setPhone("0116655440");
+        s1.setSchoolType(SchoolType.PRIVATE);
+        s1.setSemesterName(SemesterName.FIRST);
+        s1.setEducationStages(Set.of(EducationStage.ELEMENTARY, EducationStage.MIDDLE, EducationStage.HIGH));
+        s1 = schoolRepository.save(s1);
+
+        seedFullSchoolData(s1);
+
+        // ==========================================
+        // TENANT 2: Al-Amal Modern School (مدرسة الأمل الحديثة)
+        // ==========================================
+        School s2 = new School();
+        s2.setName("مدرسة الأمل الحديثة");
+        s2.setCode("al-amal-modern-school");
+        s2.setAddress("دمشق، الشعلان - شارع المتنبي");
+        s2.setPhone("0113322110");
+        s2.setSchoolType(SchoolType.PRIVATE);
+        s2.setSemesterName(SemesterName.FIRST);
+        s2.setEducationStages(Set.of(EducationStage.MIDDLE, EducationStage.HIGH));
+        s2 = schoolRepository.save(s2);
+        seedSecondarySchoolData(s2, "alamal");
+
+        // ==========================================
+        // TENANT 3: Damascus Excellence High School (ثانوية المتفوقين)
+        // ==========================================
+        School s3 = new School();
+        s3.setName("ثانوية دمشق للمتفوقين الأولى");
+        s3.setCode("damascus-excellence-high");
+        s3.setAddress("دمشق، كفرسوسة - مجمع المدارس النموذجية");
+        s3.setPhone("0112114477");
+        s3.setSchoolType(SchoolType.PUBLIC);
+        s3.setSemesterName(SemesterName.FIRST);
+        s3.setEducationStages(Set.of(EducationStage.HIGH));
+        s3 = schoolRepository.save(s3);
+        seedSecondarySchoolData(s3, "excellence");
+
+        log.info("==================================================================");
+        log.info(">>> MASTER DATABASE SEEDING COMPLETED! ALL MODULES POPULATED! <<<");
+        log.info("==================================================================");
+    }
+
+    private void seedFullSchoolData(School school) {
         TenantContext.set(school.getId(), school.getCode());
 
         try {
-            // 2. Academic Year & Semesters
-            AcademicYear academicYear = seedAcademicYear(school);
-            Semester semester1 = seedSemester(academicYear, SemesterName.FIRST, LocalDate.of(2025, 9, 1), LocalDate.of(2026, 1, 31));
-            Semester semester2 = seedSemester(academicYear, SemesterName.SECOND, LocalDate.of(2026, 2, 1), LocalDate.of(2026, 6, 30));
+            // 1. Academic Years & Semesters
+            AcademicYear yearPast = new AcademicYear();
+            yearPast.setSchool(school);
+            yearPast.setName("2024-2025");
+            yearPast.setStartDate(LocalDate.of(2024, 9, 1));
+            yearPast.setEndDate(LocalDate.of(2025, 6, 30));
+            yearPast.setCurrentYear(false);
+            academicYearRepository.save(yearPast);
 
-            // 3. Principal (مدير)
-            Principal principal = seedPrincipal(school);
+            AcademicYear yearCurrent = new AcademicYear();
+            yearCurrent.setSchool(school);
+            yearCurrent.setName("2025-2026");
+            yearCurrent.setStartDate(LocalDate.of(2025, 9, 1));
+            yearCurrent.setEndDate(LocalDate.of(2026, 6, 30));
+            yearCurrent.setCurrentYear(true);
+            yearCurrent = academicYearRepository.save(yearCurrent);
 
-            // 4. Secretary (أمين سر)
-            Secretary secretary = seedSecretary(school);
+            Semester sem1 = new Semester();
+            sem1.setSchool(school);
+            sem1.setAcademicYear(yearCurrent);
+            sem1.setSemesterName(SemesterName.FIRST);
+            sem1.setStartDate(LocalDate.of(2025, 9, 1));
+            sem1.setEndDate(LocalDate.of(2026, 1, 31));
+            sem1 = semesterRepository.save(sem1);
 
-            // 5. Librarian (أمين مكتبة)
-            Librarian librarian = seedLibrarian(school);
+            Semester sem2 = new Semester();
+            sem2.setSchool(school);
+            sem2.setAcademicYear(yearCurrent);
+            sem2.setSemesterName(SemesterName.SECOND);
+            sem2.setStartDate(LocalDate.of(2026, 2, 1));
+            sem2.setEndDate(LocalDate.of(2026, 6, 30));
+            semesterRepository.save(sem2);
 
-            // 6. Teachers (معلمون)
-            Map<String, Teacher> teachers = seedTeachers(school);
+            // 2. School Staff
+            Principal principal = createPrincipal(school, "1000001", "محمد", "الخطيب", "0991111111", "admin", "principal");
+            Secretary secretary = createSecretary(school, "1000002", "سارة", "الأحمد", "0992222222", "secretary");
+            Librarian librarian = createLibrarian(school, "1000003", "عمر", "خالد", "0993333333", "librarian");
 
-            // 7. Classes (صفوف وشعب)
-            Map<String, SchoolClass> classes = seedClasses(school);
+            // 3. Teachers (12 Teachers)
+            Map<String, Teacher> teachers = new HashMap<>();
+            teachers.put("math1", createTeacher(school, "2000001", "محمد", "صالح", "الرياضيات العامة والجبر", "teacher1", "mohammad"));
+            teachers.put("arabic", createTeacher(school, "2000002", "لينا", "أحمد", "اللغة العربية وآدابها", "teacher2", "lina"));
+            teachers.put("physics", createTeacher(school, "2000003", "خالد", "عمر", "الفيزياء والميكانيك", "teacher3", "khaled"));
+            teachers.put("english", createTeacher(school, "2000004", "نور", "علي", "اللغة الإنجليزية والأدب", "teacher4", "nour"));
+            teachers.put("chemistry", createTeacher(school, "2000005", "باسل", "القاسم", "الكيمياء العامة والعضوية", "teacher5", "basil"));
+            teachers.put("history", createTeacher(school, "2000006", "هدى", "منصور", "التاريخ والدراسات الاجتماعية", "teacher6", "huda"));
+            teachers.put("biology", createTeacher(school, "2000007", "سامر", "النجار", "علم الأحياء والعلوم الطبيعية", "teacher7", "samer"));
+            teachers.put("it", createTeacher(school, "2000008", "ريم", "الحسين", "تقنية المعلومات والبرمجة", "teacher8", "reem"));
+            teachers.put("french", createTeacher(school, "2000009", "نادين", "حداد", "اللغة الفرنسية", "teacher9", "nadine"));
+            teachers.put("math2", createTeacher(school, "2000010", "أنس", "البيطار", "الرياضيات المتقدمة والتفاضل", "teacher10", "anas"));
+            teachers.put("geography", createTeacher(school, "2000011", "فادي", "سليمان", "الجغرافيا والبيئة", "teacher11", "fadi"));
+            teachers.put("islamic", createTeacher(school, "2000012", "عبد الرحمن", "الشامي", "التربية الإسلامية والفكر", "teacher12", "abdul"));
 
-            // 8. Subjects (مواد دراسية)
-            Map<String, Subject> subjects = seedSubjects(school);
+            // 4. Classes (7 Classes)
+            Map<String, SchoolClass> classes = new HashMap<>();
+            classes.put("9A", createClass(school, GradeLevel.GRADE_9, "A", "مبنى ب - قاعة 101", 30));
+            classes.put("10A", createClass(school, GradeLevel.GRADE_10, "A", "مبنى أ - قاعة 201", 30));
+            classes.put("10B", createClass(school, GradeLevel.GRADE_10, "B", "مبنى أ - قاعة 202", 30));
+            classes.put("11A", createClass(school, GradeLevel.GRADE_11, "A", "مبنى أ - قاعة 301", 30));
+            classes.put("11B", createClass(school, GradeLevel.GRADE_11, "B", "مبنى أ - قاعة 302", 30));
+            classes.put("12A", createClass(school, GradeLevel.GRADE_12, "A", "مبنى المتفوقين - قاعة 401", 25));
+            classes.put("12B", createClass(school, GradeLevel.GRADE_12, "B", "مبنى المتفوقين - قاعة 402", 25));
 
-            // 9. Teacher-Subject Assignments
-            seedTeacherSubjects(school, teachers, subjects);
+            // 5. Subjects (18 Subjects)
+            Map<String, Subject> subs = new HashMap<>();
+            subs.put("math10", createSubject(school, "الرياضيات 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("phys10", createSubject(school, "الفيزياء 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("chem10", createSubject(school, "الكيمياء 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("bio10", createSubject(school, "علم الأحياء 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("arab10", createSubject(school, "اللغة العربية 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("eng10", createSubject(school, "اللغة الإنجليزية 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("hist10", createSubject(school, "التاريخ الحديث 10", GradeLevel.GRADE_10, SemesterName.FIRST));
+            subs.put("cs10", createSubject(school, "المعلوماتية والبرمجة 10", GradeLevel.GRADE_10, SemesterName.FIRST));
 
-            // 10. Class Schedules (جدول الحصص الأسبوعي)
-            Map<String, List<ClassSchedule>> schedules = seedClassSchedules(school, classes, teachers, subjects);
+            subs.put("math11", createSubject(school, "الرياضيات التحليلية 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+            subs.put("phys11", createSubject(school, "الفيزياء المتقدمة 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+            subs.put("chem11", createSubject(school, "الكيمياء الحركية 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+            subs.put("arab11", createSubject(school, "الأدب العربي 11", GradeLevel.GRADE_11, SemesterName.FIRST));
+            subs.put("eng11", createSubject(school, "اللغة الإنجليزية التخصصية 11", GradeLevel.GRADE_11, SemesterName.FIRST));
 
-            // 11. Students (طلاب)
-            List<Student> students = seedStudents(school, classes);
+            subs.put("math12", createSubject(school, "التحليل والرياضيات البحتة 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+            subs.put("phys12", createSubject(school, "الفيزياء النووية والكهربائية 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+            subs.put("chem12", createSubject(school, "الكيمياء العضوية 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+            subs.put("arab12", createSubject(school, "اللغة العربية والبلاغة 12", GradeLevel.GRADE_12, SemesterName.FIRST));
+            subs.put("eng12", createSubject(school, "اللغة الإنجليزية للدراسات الأكاديمية 12", GradeLevel.GRADE_12, SemesterName.FIRST));
 
-            // 12. Guardians (أولياء أمور) & Linking to Students
-            seedGuardians(school, students);
+            // 6. Teacher-Subject Assignments
+            assignTeacherSubject(school, teachers.get("math1"), subs.get("math10"));
+            assignTeacherSubject(school, teachers.get("math2"), subs.get("math11"));
+            assignTeacherSubject(school, teachers.get("math2"), subs.get("math12"));
+            assignTeacherSubject(school, teachers.get("physics"), subs.get("phys10"));
+            assignTeacherSubject(school, teachers.get("physics"), subs.get("phys11"));
+            assignTeacherSubject(school, teachers.get("physics"), subs.get("phys12"));
+            assignTeacherSubject(school, teachers.get("chemistry"), subs.get("chem10"));
+            assignTeacherSubject(school, teachers.get("chemistry"), subs.get("chem11"));
+            assignTeacherSubject(school, teachers.get("chemistry"), subs.get("chem12"));
+            assignTeacherSubject(school, teachers.get("arabic"), subs.get("arab10"));
+            assignTeacherSubject(school, teachers.get("arabic"), subs.get("arab11"));
+            assignTeacherSubject(school, teachers.get("arabic"), subs.get("arab12"));
+            assignTeacherSubject(school, teachers.get("english"), subs.get("eng10"));
+            assignTeacherSubject(school, teachers.get("english"), subs.get("eng11"));
+            assignTeacherSubject(school, teachers.get("english"), subs.get("eng12"));
+            assignTeacherSubject(school, teachers.get("biology"), subs.get("bio10"));
+            assignTeacherSubject(school, teachers.get("history"), subs.get("hist10"));
+            assignTeacherSubject(school, teachers.get("it"), subs.get("cs10"));
 
-            // 13. Attendance Records (سجل الحضور والغياب)
-            seedAttendance(school, students);
+            // 7. Full Weekly Schedules (10-A, 10-B, 11-A, 12-A)
+            List<ClassSchedule> sched10A = seedClassSchedule(school, classes.get("10A"), teachers, subs);
+            seedClassSchedule(school, classes.get("10B"), teachers, subs);
+            seedClassSchedule(school, classes.get("11A"), teachers, subs);
+            seedClassSchedule(school, classes.get("12A"), teachers, subs);
 
-            // 14. Continuous Assessments & Marks (تقييمات وواجبات)
-            seedAssessmentsAndResults(school, schedules, semester1, teachers, students);
+            // 8. Students (20 Students)
+            List<Student> students = new ArrayList<>();
+            // 10-A
+            students.add(createStudent(school, classes.get("10A"), "ST1001", "أحمد", "علي", Gender.MALE, "student1", "st1001"));
+            students.add(createStudent(school, classes.get("10A"), "ST1002", "محمد", "حسن", Gender.MALE, "student2", "st1002"));
+            students.add(createStudent(school, classes.get("10A"), "ST1003", "سارة", "عمر", Gender.FEMALE, "student3", "st1003"));
+            students.add(createStudent(school, classes.get("10A"), "ST1004", "نور", "الهدى", Gender.FEMALE, "student4", "st1004"));
+            // 10-B
+            students.add(createStudent(school, classes.get("10B"), "ST1005", "لينا", "خالد", Gender.FEMALE, "student5", "st1005"));
+            students.add(createStudent(school, classes.get("10B"), "ST1006", "يوسف", "محمود", Gender.MALE, "student6", "st1006"));
+            students.add(createStudent(school, classes.get("10B"), "ST1007", "كريم", "سامي", Gender.MALE, "student7", "st1007"));
+            students.add(createStudent(school, classes.get("10B"), "ST1008", "مريم", "إسماعيل", Gender.FEMALE, "student8", "st1008"));
+            // 11-A
+            students.add(createStudent(school, classes.get("11A"), "ST1101", "زيد", "المصري", Gender.MALE, "student9", "st1101"));
+            students.add(createStudent(school, classes.get("11A"), "ST1102", "مايا", "الحلبي", Gender.FEMALE, "student10", "st1102"));
+            students.add(createStudent(school, classes.get("11A"), "ST1103", "عمر", "العطار", Gender.MALE, "student11", "st1103"));
+            students.add(createStudent(school, classes.get("11A"), "ST1104", "رنيم", "القصار", Gender.FEMALE, "student12", "st1104"));
+            // 11-B
+            students.add(createStudent(school, classes.get("11B"), "ST1105", "فراس", "الطباع", Gender.MALE, "student13", "st1105"));
+            students.add(createStudent(school, classes.get("11B"), "ST1106", "جود", "مراد", Gender.FEMALE, "student14", "st1106"));
+            // 12-A (Baccalaureate)
+            students.add(createStudent(school, classes.get("12A"), "ST1201", "طارق", "الخطيب", Gender.MALE, "student15", "st1201"));
+            students.add(createStudent(school, classes.get("12A"), "ST1202", "سلمى", "النجار", Gender.FEMALE, "student16", "st1202"));
+            students.add(createStudent(school, classes.get("12A"), "ST1203", "حمزة", "الدقر", Gender.MALE, "student17", "st1203"));
+            students.add(createStudent(school, classes.get("12A"), "ST1204", "شهد", "الجزائري", Gender.FEMALE, "student18", "st1204"));
+            // 12-B
+            students.add(createStudent(school, classes.get("12B"), "ST1205", "بشار", "عثمان", Gender.MALE, "student19", "st1205"));
+            students.add(createStudent(school, classes.get("12B"), "ST1206", "هلا", "شمس الدين", Gender.FEMALE, "student20", "st1206"));
 
-            // 15. Official Exams & Results (امتحانات ونتائج)
-            seedExamsAndResults(school, classes, subjects, semester1, students);
+            // 9. Guardians (8 Guardians linked to students)
+            Guardian g1 = createGuardian(school, "900001", "علي", "أحمد", "مهندس مدني استشاري", "guardian1", "parent1");
+            linkGuardian(school, students.get(0), g1, true); // أحمد علي
+            linkGuardian(school, students.get(8), g1, true); // زيد المصري
 
-            // 16. Warnings & Disciplinary Notes (إنذارات وملاحظات سلوكية)
+            Guardian g2 = createGuardian(school, "900002", "منى", "إبراهيم", "طبيبة أطفال واستشارية", "guardian2", "parent2");
+            linkGuardian(school, students.get(2), g2, true); // سارة عمر
+            linkGuardian(school, students.get(11), g2, true); // رنيم القصار
+
+            Guardian g3 = createGuardian(school, "900003", "خالد", "المنصور", "مستشار قانوني ومحامٍ", "guardian3", "parent3");
+            linkGuardian(school, students.get(4), g3, true); // لينا خالد
+
+            Guardian g4 = createGuardian(school, "900004", "محمود", "القدسي", "رجل أعمال ومدير شركات", "guardian4", "parent4");
+            linkGuardian(school, students.get(5), g4, true); // يوسف محمود
+
+            Guardian g5 = createGuardian(school, "900005", "سامي", "الخطيب", "أستاذ جامعي في الهندسة", "guardian5", "parent5");
+            linkGuardian(school, students.get(14), g5, true); // طارق الخطيب
+
+            Guardian g6 = createGuardian(school, "900006", "هشام", "الحلبي", "صيدلاني وخبير أدوية", "guardian6", "parent6");
+            linkGuardian(school, students.get(9), g6, true); // مايا الحلبي
+
+            Guardian g7 = createGuardian(school, "900007", "كمال", "النجار", "خبير برمجيات وأنظمة ذكاء", "guardian7", "parent7");
+            linkGuardian(school, students.get(15), g7, true); // سلمى النجار
+
+            Guardian g8 = createGuardian(school, "900008", "عصام", "الطباع", "مهندس عمارة وتخطيط", "guardian8", "parent8");
+            linkGuardian(school, students.get(12), g8, true); // فراس الطباع
+
+            // 10. Multi-day Attendance Records (100+ records)
+            seedDetailedAttendance(school, students);
+
+            // 11. Continuous Assessments & Results
+            seedAssessments(school, sched10A, sem1, teachers, students);
+
+            // 12. Official Exams & Results
+            seedExams(school, classes, subs, sem1, students);
+
+            // 13. Warnings & Disciplinary
             seedWarnings(school, students);
 
-            // 17. Finance (رسوم، خصومات، مدفوعات)
-            seedFinance(school, academicYear, classes, students);
+            // 14. Financial System (Fees, Discounts, Student Discounts, Payments)
+            seedFinancials(school, yearCurrent, classes, students);
 
-            // 18. Library & Borrowing (مكتبة مدرسية وإعارة كتب)
-            seedLibrary(school, students);
+            // 15. Library Catalog & Borrow Records
+            seedLibraryData(school, students);
 
-            // 19. Announcements (إعلانات مدرسية)
-            seedAnnouncements(school);
+            // 16. Announcements
+            seedAnnouncementsData(school);
 
-            log.info(">>> Master Database Seeding Completed Successfully! All 5 roles are ready for testing.");
+        } finally {
+            TenantContext.clear();
+        }
+    }
+
+    private void seedSecondarySchoolData(School school, String prefix) {
+        TenantContext.set(school.getId(), school.getCode());
+
+        try {
+            AcademicYear year = new AcademicYear();
+            year.setSchool(school);
+            year.setName("2025-2026");
+            year.setStartDate(LocalDate.of(2025, 9, 1));
+            year.setEndDate(LocalDate.of(2026, 6, 30));
+            year.setCurrentYear(true);
+            year = academicYearRepository.save(year);
+
+            Semester sem = new Semester();
+            sem.setSchool(school);
+            sem.setAcademicYear(year);
+            sem.setSemesterName(SemesterName.FIRST);
+            sem.setStartDate(LocalDate.of(2025, 9, 1));
+            sem.setEndDate(LocalDate.of(2026, 1, 31));
+            semesterRepository.save(sem);
+
+            createPrincipal(school, prefix + "_101", "أحمد", "العلي", "0994444444", prefix + "_admin", prefix + "_principal");
+            createSecretary(school, prefix + "_102", "سناء", "مراد", "0995555555", prefix + "_sec");
+
+            SchoolClass c1 = createClass(school, GradeLevel.GRADE_10, "A", "القاعة 101", 30);
+            SchoolClass c2 = createClass(school, GradeLevel.GRADE_11, "A", "القاعة 201", 30);
+
+            Subject sub1 = createSubject(school, "الرياضيات العامة", GradeLevel.GRADE_10, SemesterName.FIRST);
+            Subject sub2 = createSubject(school, "الفيزياء المتقدمة", GradeLevel.GRADE_11, SemesterName.FIRST);
+
+            Teacher t1 = createTeacher(school, prefix + "_201", "ماهر", "اليوسف", "الرياضيات", prefix + "_t1", null);
+            Teacher t2 = createTeacher(school, prefix + "_202", "سعاد", "الخيمي", "الفيزياء", prefix + "_t2", null);
+
+            assignTeacherSubject(school, t1, sub1);
+            assignTeacherSubject(school, t2, sub2);
+
+            Student st1 = createStudent(school, c1, prefix.toUpperCase() + "_101", "وسيم", "الدين", Gender.MALE, prefix + "_st1", null);
+            Student st2 = createStudent(school, c2, prefix.toUpperCase() + "_201", "ديما", "الشعار", Gender.FEMALE, prefix + "_st2", null);
+
+            Guardian g = createGuardian(school, prefix + "_901", "مأمون", "الدين", "تاجر", prefix + "_g1", null);
+            linkGuardian(school, st1, g, true);
+
         } finally {
             TenantContext.clear();
         }
     }
 
     // ==========================================
-    // 1. School
+    // Helper Creation Methods
     // ==========================================
-    private School seedSchool() {
-        School school = new School();
-        school.setName("Al Noor International Academy");
-        school.setCode("al-noor-academy");
-        school.setAddress("Damascus, Mezzeh - Education District");
-        school.setPhone("0116655440");
-        school.setSchoolType(SchoolType.PRIVATE);
-        school.setSemesterName(SemesterName.FIRST);
-        school.setEducationStages(Set.of(EducationStage.ELEMENTARY, EducationStage.MIDDLE, EducationStage.HIGH));
-        return schoolRepository.save(school);
-    }
+    private Principal createPrincipal(School school, String nationalId, String first, String last, String phone, String email1, String email2) {
+        Principal p = new Principal();
+        p.setSchool(school);
+        p.setNationalId(nationalId);
+        p.setFirstName(first);
+        p.setLastName(last);
+        p.setPhone(phone);
+        p.setAddress("دمشق");
+        p.setHireDate(LocalDate.of(2018, 8, 1));
+        p = principalRepository.save(p);
 
-    // ==========================================
-    // 2. Academic Year & Semesters
-    // ==========================================
-    private AcademicYear seedAcademicYear(School school) {
-        AcademicYear year = new AcademicYear();
-        year.setSchool(school);
-        year.setName("2025-2026");
-        year.setStartDate(LocalDate.of(2025, 9, 1));
-        year.setEndDate(LocalDate.of(2026, 6, 30));
-        year.setCurrentYear(true);
-        return academicYearRepository.save(year);
-    }
-
-    private Semester seedSemester(AcademicYear academicYear, SemesterName name, LocalDate start, LocalDate end) {
-        Semester semester = new Semester();
-        semester.setSchool(academicYear.getSchool());
-        semester.setAcademicYear(academicYear);
-        semester.setSemesterName(name);
-        semester.setStartDate(start);
-        semester.setEndDate(end);
-        return semesterRepository.save(semester);
-    }
-
-    // ==========================================
-    // 3. Principal (مدير)
-    // ==========================================
-    private Principal seedPrincipal(School school) {
-        Principal principal = new Principal();
-        principal.setSchool(school);
-        principal.setNationalId("1000001");
-        principal.setFirstName("Mohammad");
-        principal.setLastName("Al-Khatib");
-        principal.setPhone("0991111111");
-        principal.setAddress("Damascus");
-        principal.setHireDate(LocalDate.of(2018, 8, 1));
-        principal = principalRepository.save(principal);
-
-        createAuth(school, "admin", "admin123", Role.PRINCIPAL, principal.getId());
-        createAuth(school, "principal", "123456", Role.PRINCIPAL, principal.getId());
-        return principal;
-    }
-
-    // ==========================================
-    // 4. Secretary (أمين سر)
-    // ==========================================
-    private Secretary seedSecretary(School school) {
-        Secretary secretary = new Secretary();
-        secretary.setSchool(school);
-        secretary.setNationalId("1000002");
-        secretary.setFirstName("Sara");
-        secretary.setLastName("Al-Ahmad");
-        secretary.setPhone("0992222222");
-        secretary.setAddress("Damascus");
-        secretary.setHireDate(LocalDate.of(2020, 9, 1));
-        secretary = secretaryRepository.save(secretary);
-
-        createAuth(school, "secretary", "123456", Role.SECRETARY, secretary.getId());
-        return secretary;
-    }
-
-    // ==========================================
-    // 5. Librarian (أمين مكتبة)
-    // ==========================================
-    private Librarian seedLibrarian(School school) {
-        Librarian librarian = new Librarian();
-        librarian.setSchool(school);
-        librarian.setNationalId("1000003");
-        librarian.setFirstName("Omar");
-        librarian.setLastName("Khaled");
-        librarian.setPhone("0993333333");
-        librarian.setAddress("Damascus");
-        librarian.setHireDate(LocalDate.of(2021, 9, 1));
-        librarian = librarianRepository.save(librarian);
-
-        createAuth(school, "librarian", "123456", Role.LIBRARIAN, librarian.getId());
-        return librarian;
-    }
-
-    // ==========================================
-    // 6. Teachers (معلمون)
-    // ==========================================
-    private Map<String, Teacher> seedTeachers(School school) {
-        Map<String, Teacher> map = new HashMap<>();
-
-        map.put("math", createTeacher(school, "2000001", "Mohammad", "Saleh", "Mathematics", "teacher1", "mohammad"));
-        map.put("arabic", createTeacher(school, "2000002", "Lina", "Ahmad", "Arabic Language", "teacher2", "lina"));
-        map.put("physics", createTeacher(school, "2000003", "Khaled", "Omar", "Physics", "teacher3", "khaled"));
-        map.put("english", createTeacher(school, "2000004", "Nour", "Ali", "English Language", "teacher4", "nour"));
-        map.put("chemistry", createTeacher(school, "2000005", "Basil", "Al-Qassem", "Chemistry", "teacher5", "basil"));
-        map.put("history", createTeacher(school, "2000006", "Huda", "Mansour", "World History", "teacher6", "huda"));
-
-        return map;
-    }
-
-    private Teacher createTeacher(School school, String nationalId, String firstName, String lastName,
-                                  String specialization, String email1, String email2) {
-        Teacher teacher = new Teacher();
-        teacher.setSchool(school);
-        teacher.setNationalId(nationalId);
-        teacher.setFirstName(firstName);
-        teacher.setLastName(lastName);
-        teacher.setPhone("099" + nationalId);
-        teacher.setAddress("Damascus");
-        teacher.setSpecialization(specialization);
-        teacher.setHireDate(LocalDate.of(2021, 9, 1));
-        teacher = teacherRepository.save(teacher);
-
-        createAuth(school, email1, "123456", Role.TEACHER, teacher.getId());
+        createAuth(school, email1, "123456", Role.PRINCIPAL, p.getId());
         if (email2 != null && !email2.equals(email1)) {
-            createAuth(school, email2, "123456", Role.TEACHER, teacher.getId());
+            createAuth(school, email2, "123456", Role.PRINCIPAL, p.getId());
         }
-        return teacher;
+        return p;
     }
 
-    // ==========================================
-    // 7. Classes (صفوف وشعب)
-    // ==========================================
-    private Map<String, SchoolClass> seedClasses(School school) {
-        Map<String, SchoolClass> map = new HashMap<>();
-        map.put("10A", createSchoolClass(school, GradeLevel.GRADE_10, "A", "Room 101", 30));
-        map.put("10B", createSchoolClass(school, GradeLevel.GRADE_10, "B", "Room 102", 30));
-        map.put("11A", createSchoolClass(school, GradeLevel.GRADE_11, "A", "Room 201", 30));
-        map.put("11B", createSchoolClass(school, GradeLevel.GRADE_11, "B", "Room 202", 30));
-        map.put("12A", createSchoolClass(school, GradeLevel.GRADE_12, "A", "Room 301", 30));
-        return map;
+    private Secretary createSecretary(School school, String nationalId, String first, String last, String phone, String email) {
+        Secretary s = new Secretary();
+        s.setSchool(school);
+        s.setNationalId(nationalId);
+        s.setFirstName(first);
+        s.setLastName(last);
+        s.setPhone(phone);
+        s.setAddress("دمشق");
+        s.setHireDate(LocalDate.of(2020, 9, 1));
+        s = secretaryRepository.save(s);
+
+        createAuth(school, email, "123456", Role.SECRETARY, s.getId());
+        return s;
     }
 
-    private SchoolClass createSchoolClass(School school, GradeLevel level, String section, String location, int capacity) {
+    private Librarian createLibrarian(School school, String nationalId, String first, String last, String phone, String email) {
+        Librarian l = new Librarian();
+        l.setSchool(school);
+        l.setNationalId(nationalId);
+        l.setFirstName(first);
+        l.setLastName(last);
+        l.setPhone(phone);
+        l.setAddress("دمشق");
+        l.setHireDate(LocalDate.of(2021, 9, 1));
+        l = librarianRepository.save(l);
+
+        createAuth(school, email, "123456", Role.LIBRARIAN, l.getId());
+        return l;
+    }
+
+    private Teacher createTeacher(School school, String nationalId, String first, String last, String spec, String email1, String email2) {
+        Teacher t = new Teacher();
+        t.setSchool(school);
+        t.setNationalId(nationalId);
+        t.setFirstName(first);
+        t.setLastName(last);
+        t.setPhone("099" + nationalId);
+        t.setAddress("دمشق");
+        t.setSpecialization(spec);
+        t.setHireDate(LocalDate.of(2021, 9, 1));
+        t = teacherRepository.save(t);
+
+        createAuth(school, email1, "123456", Role.TEACHER, t.getId());
+        if (email2 != null && !email2.equals(email1)) {
+            createAuth(school, email2, "123456", Role.TEACHER, t.getId());
+        }
+        return t;
+    }
+
+    private SchoolClass createClass(School school, GradeLevel level, String section, String location, int capacity) {
         SchoolClass sc = new SchoolClass();
         sc.setSchool(school);
         sc.setGradeLevel(level);
@@ -328,72 +483,16 @@ public class DataSeeder implements CommandLineRunner {
         return schoolClassRepository.save(sc);
     }
 
-    // ==========================================
-    // 8. Subjects (مواد دراسية)
-    // ==========================================
-    private Map<String, Subject> seedSubjects(School school) {
-        Map<String, Subject> map = new HashMap<>();
-
-        // Grade 10
-        map.put("math10", createSubject(school, "Mathematics 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("physics10", createSubject(school, "Physics 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("chemistry10", createSubject(school, "Chemistry 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("arabic10", createSubject(school, "Arabic Language 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("english10", createSubject(school, "English Language 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-        map.put("history10", createSubject(school, "World History 10", GradeLevel.GRADE_10, SemesterName.FIRST));
-
-        // Grade 11
-        map.put("math11", createSubject(school, "Advanced Mathematics 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("physics11", createSubject(school, "Physics 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("chemistry11", createSubject(school, "Chemistry 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("arabic11", createSubject(school, "Arabic Literature 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-        map.put("english11", createSubject(school, "English Literature 11", GradeLevel.GRADE_11, SemesterName.FIRST));
-
-        // Grade 12
-        map.put("math12", createSubject(school, "Calculus 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-        map.put("physics12", createSubject(school, "Modern Physics 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-        map.put("chemistry12", createSubject(school, "Organic Chemistry 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-        map.put("english12", createSubject(school, "English for Academic Studies 12", GradeLevel.GRADE_12, SemesterName.FIRST));
-
-        return map;
+    private Subject createSubject(School school, String name, GradeLevel level, SemesterName semester) {
+        Subject s = new Subject();
+        s.setSchool(school);
+        s.setName(name);
+        s.setGradeLevel(level);
+        s.setSemesterName(semester);
+        return subjectRepository.save(s);
     }
 
-    private Subject createSubject(School school, String name, GradeLevel gradeLevel, SemesterName semesterName) {
-        Subject subject = new Subject();
-        subject.setSchool(school);
-        subject.setName(name);
-        subject.setGradeLevel(gradeLevel);
-        subject.setSemesterName(semesterName);
-        return subjectRepository.save(subject);
-    }
-
-    // ==========================================
-    // 9. Teacher-Subject Assignments
-    // ==========================================
-    private void seedTeacherSubjects(School school, Map<String, Teacher> teachers, Map<String, Subject> subjects) {
-        connectTeacherSubject(school, teachers.get("math"), subjects.get("math10"));
-        connectTeacherSubject(school, teachers.get("math"), subjects.get("math11"));
-        connectTeacherSubject(school, teachers.get("math"), subjects.get("math12"));
-
-        connectTeacherSubject(school, teachers.get("physics"), subjects.get("physics10"));
-        connectTeacherSubject(school, teachers.get("physics"), subjects.get("physics11"));
-        connectTeacherSubject(school, teachers.get("physics"), subjects.get("physics12"));
-
-        connectTeacherSubject(school, teachers.get("chemistry"), subjects.get("chemistry10"));
-        connectTeacherSubject(school, teachers.get("chemistry"), subjects.get("chemistry11"));
-        connectTeacherSubject(school, teachers.get("chemistry"), subjects.get("chemistry12"));
-
-        connectTeacherSubject(school, teachers.get("arabic"), subjects.get("arabic10"));
-        connectTeacherSubject(school, teachers.get("arabic"), subjects.get("arabic11"));
-
-        connectTeacherSubject(school, teachers.get("english"), subjects.get("english10"));
-        connectTeacherSubject(school, teachers.get("english"), subjects.get("english11"));
-        connectTeacherSubject(school, teachers.get("english"), subjects.get("english12"));
-
-        connectTeacherSubject(school, teachers.get("history"), subjects.get("history10"));
-    }
-
-    private void connectTeacherSubject(School school, Teacher teacher, Subject subject) {
+    private void assignTeacherSubject(School school, Teacher teacher, Subject subject) {
         TeacherSubject ts = new TeacherSubject();
         ts.setSchool(school);
         ts.setTeacher(teacher);
@@ -401,55 +500,26 @@ public class DataSeeder implements CommandLineRunner {
         teacherSubjectRepository.save(ts);
     }
 
-    // ==========================================
-    // 10. Class Schedules (جدول الحصص)
-    // ==========================================
-    private Map<String, List<ClassSchedule>> seedClassSchedules(
-            School school,
-            Map<String, SchoolClass> classes,
-            Map<String, Teacher> teachers,
-            Map<String, Subject> subjects) {
-
-        Map<String, List<ClassSchedule>> result = new HashMap<>();
-
-        // Weekly schedule for Grade 10-A
-        List<ClassSchedule> list10A = new ArrayList<>();
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subjects.get("physics10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_3, teachers.get("arabic"), subjects.get("arabic10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("chemistry"), subjects.get("chemistry10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.TUESDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.TUESDAY, PeriodNumber.PERIOD_2, teachers.get("history"), subjects.get("history10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_1, teachers.get("physics"), subjects.get("physics10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.THURSDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subjects.get("arabic10")));
-        list10A.add(createSchedule(school, classes.get("10A"), DayOfWeek.THURSDAY, PeriodNumber.PERIOD_2, teachers.get("chemistry"), subjects.get("chemistry10")));
-        result.put("10A", list10A);
-
-        // Weekly schedule for Grade 10-B
-        List<ClassSchedule> list10B = new ArrayList<>();
-        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subjects.get("arabic10")));
-        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("math"), subjects.get("math10")));
-        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("english"), subjects.get("english10")));
-        list10B.add(createSchedule(school, classes.get("10B"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subjects.get("physics10")));
-        result.put("10B", list10B);
-
-        // Weekly schedule for Grade 11-A
-        List<ClassSchedule> list11A = new ArrayList<>();
-        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("physics"), subjects.get("physics11")));
-        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subjects.get("english11")));
-        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("math"), subjects.get("math11")));
-        list11A.add(createSchedule(school, classes.get("11A"), DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("chemistry"), subjects.get("chemistry11")));
-        result.put("11A", list11A);
-
-        return result;
+    private List<ClassSchedule> seedClassSchedule(School school, SchoolClass sc, Map<String, Teacher> teachers, Map<String, Subject> subs) {
+        List<ClassSchedule> list = new ArrayList<>();
+        list.add(createSchedule(school, sc, DayOfWeek.SUNDAY, PeriodNumber.PERIOD_1, teachers.get("math1"), subs.get("math10")));
+        list.add(createSchedule(school, sc, DayOfWeek.SUNDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subs.get("phys10")));
+        list.add(createSchedule(school, sc, DayOfWeek.SUNDAY, PeriodNumber.PERIOD_3, teachers.get("arabic"), subs.get("arab10")));
+        list.add(createSchedule(school, sc, DayOfWeek.MONDAY, PeriodNumber.PERIOD_1, teachers.get("chemistry"), subs.get("chem10")));
+        list.add(createSchedule(school, sc, DayOfWeek.MONDAY, PeriodNumber.PERIOD_2, teachers.get("english"), subs.get("eng10")));
+        list.add(createSchedule(school, sc, DayOfWeek.TUESDAY, PeriodNumber.PERIOD_1, teachers.get("biology"), subs.get("bio10")));
+        list.add(createSchedule(school, sc, DayOfWeek.TUESDAY, PeriodNumber.PERIOD_2, teachers.get("history"), subs.get("hist10")));
+        list.add(createSchedule(school, sc, DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_1, teachers.get("it"), subs.get("cs10")));
+        list.add(createSchedule(school, sc, DayOfWeek.WEDNESDAY, PeriodNumber.PERIOD_2, teachers.get("physics"), subs.get("phys10")));
+        list.add(createSchedule(school, sc, DayOfWeek.THURSDAY, PeriodNumber.PERIOD_1, teachers.get("arabic"), subs.get("arab10")));
+        list.add(createSchedule(school, sc, DayOfWeek.THURSDAY, PeriodNumber.PERIOD_2, teachers.get("math1"), subs.get("math10")));
+        return list;
     }
 
-    private ClassSchedule createSchedule(School school, SchoolClass schoolClass, DayOfWeek day, PeriodNumber period, Teacher teacher, Subject subject) {
+    private ClassSchedule createSchedule(School school, SchoolClass sc, DayOfWeek day, PeriodNumber period, Teacher teacher, Subject subject) {
         ClassSchedule cs = new ClassSchedule();
         cs.setSchool(school);
-        cs.setSchoolClass(schoolClass);
+        cs.setSchoolClass(sc);
         cs.setDayOfWeek(day);
         cs.setPeriodNumber(period);
         cs.setTeacher(teacher);
@@ -457,279 +527,203 @@ public class DataSeeder implements CommandLineRunner {
         return classScheduleRepository.save(cs);
     }
 
-    // ==========================================
-    // 11. Students (طلاب)
-    // ==========================================
-    private List<Student> seedStudents(School school, Map<String, SchoolClass> classes) {
-        List<Student> list = new ArrayList<>();
+    private Student createStudent(School school, SchoolClass sc, String reg, String first, String last, Gender gender, String email1, String email2) {
+        Student st = new Student();
+        st.setSchool(school);
+        st.setStudentSchoolClass(sc);
+        st.setRegistrationNumber(reg);
+        st.setFirstName(first);
+        st.setLastName(last);
+        st.setGender(gender);
+        st.setGradeLevel(sc.getGradeLevel());
+        st.setDateOfBirth(LocalDate.of(2008, 5, 20));
+        st.setAddress("دمشق");
+        st.setPhone("099" + reg);
+        st.setEnrollmentDate(LocalDate.of(2025, 9, 1));
+        st = studentRepository.save(st);
 
-        // Grade 10-A
-        list.add(createStudent(school, classes.get("10A"), "ST1001", "Ahmad", "Ali", Gender.MALE, "student1", "st1001"));
-        list.add(createStudent(school, classes.get("10A"), "ST1002", "Mohammed", "Hassan", Gender.MALE, "student2", "st1002"));
-        list.add(createStudent(school, classes.get("10A"), "ST1003", "Sara", "Omar", Gender.FEMALE, "student3", "st1003"));
-
-        // Grade 10-B
-        list.add(createStudent(school, classes.get("10B"), "ST1004", "Lina", "Khaled", Gender.FEMALE, "student4", "st1004"));
-        list.add(createStudent(school, classes.get("10B"), "ST1005", "Yousef", "Mahmoud", Gender.MALE, "student5", "st1005"));
-        list.add(createStudent(school, classes.get("10B"), "ST1006", "Karim", "Sami", Gender.MALE, "student6", "st1006"));
-
-        // Grade 11-A
-        list.add(createStudent(school, classes.get("11A"), "ST1101", "Zaid", "Al-Masri", Gender.MALE, "student7", "st1101"));
-        list.add(createStudent(school, classes.get("11A"), "ST1102", "Maya", "Al-Halabi", Gender.FEMALE, "student8", "st1102"));
-
-        // Grade 12-A
-        list.add(createStudent(school, classes.get("12A"), "ST1201", "Tarek", "Al-Khatib", Gender.MALE, "student9", "st1201"));
-        list.add(createStudent(school, classes.get("12A"), "ST1202", "Salma", "Al-Najjar", Gender.FEMALE, "student10", "st1202"));
-
-        return list;
-    }
-
-    private Student createStudent(School school, SchoolClass schoolClass, String reg, String first, String last,
-                                  Gender gender, String email1, String email2) {
-        Student student = new Student();
-        student.setSchool(school);
-        student.setStudentSchoolClass(schoolClass);
-        student.setRegistrationNumber(reg);
-        student.setFirstName(first);
-        student.setLastName(last);
-        student.setGender(gender);
-        student.setGradeLevel(schoolClass.getGradeLevel());
-        student.setDateOfBirth(LocalDate.of(2009, 4, 15));
-        student.setAddress("Damascus");
-        student.setPhone("099" + reg);
-        student.setEnrollmentDate(LocalDate.of(2025, 9, 1));
-        student = studentRepository.save(student);
-
-        createAuth(school, email1, "123456", Role.STUDENT, student.getId());
+        createAuth(school, email1, "123456", Role.STUDENT, st.getId());
         if (email2 != null && !email2.equals(email1)) {
-            createAuth(school, email2, "123456", Role.STUDENT, student.getId());
+            createAuth(school, email2, "123456", Role.STUDENT, st.getId());
         }
-        return student;
+        return st;
     }
 
-    // ==========================================
-    // 12. Guardians (أولياء أمور)
-    // ==========================================
-    private void seedGuardians(School school, List<Student> students) {
-        // G1: Father of Ahmad Ali (ST1001) & Zaid Al-Masri (ST1101)
-        Guardian g1 = createGuardian(school, "900001", "Ali", "Ahmad", "Civil Engineer", "guardian1", "parent1");
-        connectGuardian(school, students.get(0), g1, true); // Ahmad
-        connectGuardian(school, students.get(6), g1, true); // Zaid
+    private Guardian createGuardian(School school, String nationalId, String first, String last, String occupation, String email1, String email2) {
+        Guardian g = new Guardian();
+        g.setSchool(school);
+        g.setNationalId(nationalId);
+        g.setFirstName(first);
+        g.setLastName(last);
+        g.setPhone("098" + nationalId);
+        g.setAddress("دمشق");
+        g.setOccupation(occupation);
+        g = guardianRepository.save(g);
 
-        // G2: Mother of Sara Omar (ST1003)
-        Guardian g2 = createGuardian(school, "900002", "Mona", "Ibrahim", "Pediatrician", "guardian2", "parent2");
-        connectGuardian(school, students.get(2), g2, true); // Sara
-
-        // G3: Father of Lina Khaled (ST1004)
-        Guardian g3 = createGuardian(school, "900003", "Khaled", "Al-Mansoor", "Legal Consultant", "guardian3", "parent3");
-        connectGuardian(school, students.get(3), g3, true); // Lina
-
-        // G4: Father of Yousef Mahmoud (ST1005)
-        Guardian g4 = createGuardian(school, "900004", "Mahmoud", "Al-Qudsi", "Businessman", "guardian4", "parent4");
-        connectGuardian(school, students.get(4), g4, true); // Yousef
-
-        // G5: Father of Tarek Al-Khatib (ST1201)
-        Guardian g5 = createGuardian(school, "900005", "Sami", "Al-Khatib", "University Professor", "guardian5", "parent5");
-        connectGuardian(school, students.get(8), g5, true); // Tarek
-    }
-
-    private Guardian createGuardian(School school, String nationalId, String first, String last, String occupation,
-                                    String email1, String email2) {
-        Guardian guardian = new Guardian();
-        guardian.setSchool(school);
-        guardian.setNationalId(nationalId);
-        guardian.setFirstName(first);
-        guardian.setLastName(last);
-        guardian.setPhone("098" + nationalId);
-        guardian.setAddress("Damascus");
-        guardian.setOccupation(occupation);
-        guardian = guardianRepository.save(guardian);
-
-        createAuth(school, email1, "123456", Role.GUARDIAN, guardian.getId());
+        createAuth(school, email1, "123456", Role.GUARDIAN, g.getId());
         if (email2 != null && !email2.equals(email1)) {
-            createAuth(school, email2, "123456", Role.GUARDIAN, guardian.getId());
+            createAuth(school, email2, "123456", Role.GUARDIAN, g.getId());
         }
-        return guardian;
+        return g;
     }
 
-    private void connectGuardian(School school, Student student, Guardian guardian, boolean primary) {
-        StudentGuardian relation = new StudentGuardian();
-        relation.setSchool(school);
-        relation.setStudent(student);
-        relation.setGuardian(guardian);
-        relation.setPrimaryGuardian(primary);
-        studentGuardianRepository.save(relation);
+    private void linkGuardian(School school, Student student, Guardian guardian, boolean primary) {
+        StudentGuardian sg = new StudentGuardian();
+        sg.setSchool(school);
+        sg.setStudent(student);
+        sg.setGuardian(guardian);
+        sg.setPrimaryGuardian(primary);
+        studentGuardianRepository.save(sg);
     }
 
-    // ==========================================
-    // 13. Attendance (سجل الحضور والغياب)
-    // ==========================================
-    private void seedAttendance(School school, List<Student> students) {
+    private void seedDetailedAttendance(School school, List<Student> students) {
         LocalDate today = LocalDate.now();
-
-        for (int i = 0; i < 7; i++) {
-            LocalDate date = today.minusDays(i);
-
+        for (int day = 0; day < 10; day++) {
+            LocalDate date = today.minusDays(day);
             for (int sIdx = 0; sIdx < students.size(); sIdx++) {
                 Student student = students.get(sIdx);
-                Attendance attendance = new Attendance();
-                attendance.setSchool(school);
-                attendance.setStudent(student);
-                attendance.setAttendanceDate(date);
+                Attendance a = new Attendance();
+                a.setSchool(school);
+                a.setStudent(student);
+                a.setAttendanceDate(date);
 
-                if (i == 1 && sIdx == 1) {
-                    attendance.setAttendanceStatus(AttendanceStatus.ABSENT);
-                } else if (i == 3 && sIdx == 3) {
-                    attendance.setAttendanceStatus(AttendanceStatus.LATE);
-                } else if (i == 5 && sIdx == 4) {
-                    attendance.setAttendanceStatus(AttendanceStatus.EXCUSED);
+                if (day == 1 && sIdx == 1) {
+                    a.setAttendanceStatus(AttendanceStatus.ABSENT);
+                } else if (day == 2 && sIdx == 5) {
+                    a.setAttendanceStatus(AttendanceStatus.LATE);
+                } else if (day == 4 && sIdx == 7) {
+                    a.setAttendanceStatus(AttendanceStatus.EXCUSED);
+                } else if (day == 6 && sIdx == 3) {
+                    a.setAttendanceStatus(AttendanceStatus.ABSENT);
                 } else {
-                    attendance.setAttendanceStatus(AttendanceStatus.PRESENT);
+                    a.setAttendanceStatus(AttendanceStatus.PRESENT);
                 }
-
-                attendanceRepository.save(attendance);
+                attendanceRepository.save(a);
             }
         }
     }
 
-    // ==========================================
-    // 14. Continuous Assessments & Results
-    // ==========================================
-    private void seedAssessmentsAndResults(
-            School school,
-            Map<String, List<ClassSchedule>> schedules,
-            Semester semester,
-            Map<String, Teacher> teachers,
-            List<Student> students) {
-
-        List<ClassSchedule> sched10A = schedules.get("10A");
-        if (sched10A == null || sched10A.isEmpty()) return;
+    private void seedAssessments(School school, List<ClassSchedule> sched, Semester sem, Map<String, Teacher> teachers, List<Student> students) {
+        if (sched == null || sched.isEmpty()) return;
 
         // 1. Math Quiz 1
-        Assessment mathQuiz = new Assessment();
-        mathQuiz.setSchool(school);
-        mathQuiz.setClassSchedule(sched10A.get(0));
-        mathQuiz.setSemester(semester);
-        mathQuiz.setTeacher(teachers.get("math"));
-        mathQuiz.setName("Algebra & Functions Quiz");
-        mathQuiz.setCategory(ContinuousCategory.QUIZ);
-        mathQuiz.setMaxScore(20.0);
-        mathQuiz.setWeight(10.0);
-        mathQuiz.setAssessmentDate(LocalDate.now().minusDays(10));
-        mathQuiz = assessmentRepository.save(mathQuiz);
+        Assessment a1 = new Assessment();
+        a1.setSchool(school);
+        a1.setClassSchedule(sched.get(0));
+        a1.setSemester(sem);
+        a1.setTeacher(teachers.get("math1"));
+        a1.setName("مذاكرة الجبر والدوال الرياضية الأولى");
+        a1.setCategory(ContinuousCategory.QUIZ);
+        a1.setMaxScore(20.0);
+        a1.setWeight(10.0);
+        a1.setAssessmentDate(LocalDate.now().minusDays(14));
+        a1 = assessmentRepository.save(a1);
 
-        // Grade results for 10-A students
-        createAssessmentResult(school, students.get(0), mathQuiz, 19.0);
-        createAssessmentResult(school, students.get(1), mathQuiz, 16.5);
-        createAssessmentResult(school, students.get(2), mathQuiz, 18.0);
+        for (int i = 0; i < 4; i++) {
+            createAssessmentScore(school, students.get(i), a1, 17.5 + (i * 0.5));
+        }
 
-        // 2. Physics Lab Project
-        Assessment physicsProj = new Assessment();
-        physicsProj.setSchool(school);
-        physicsProj.setClassSchedule(sched10A.get(1));
-        physicsProj.setSemester(semester);
-        physicsProj.setTeacher(teachers.get("physics"));
-        physicsProj.setName("Mechanics Lab Experiment Report");
-        physicsProj.setCategory(ContinuousCategory.PROJECT);
-        physicsProj.setMaxScore(25.0);
-        physicsProj.setWeight(15.0);
-        physicsProj.setAssessmentDate(LocalDate.now().minusDays(5));
-        physicsProj = assessmentRepository.save(physicsProj);
+        // 2. Physics Lab Experiment
+        Assessment a2 = new Assessment();
+        a2.setSchool(school);
+        a2.setClassSchedule(sched.get(1));
+        a2.setSemester(sem);
+        a2.setTeacher(teachers.get("physics"));
+        a2.setName("تقرير التجربة المخبرية في الميكانيك");
+        a2.setCategory(ContinuousCategory.PROJECT);
+        a2.setMaxScore(25.0);
+        a2.setWeight(15.0);
+        a2.setAssessmentDate(LocalDate.now().minusDays(8));
+        a2 = assessmentRepository.save(a2);
 
-        createAssessmentResult(school, students.get(0), physicsProj, 24.0);
-        createAssessmentResult(school, students.get(1), physicsProj, 21.0);
-        createAssessmentResult(school, students.get(2), physicsProj, 23.5);
+        for (int i = 0; i < 4; i++) {
+            createAssessmentScore(school, students.get(i), a2, 22.0 + (i * 0.7));
+        }
 
-        // 3. Arabic Oral Test
-        Assessment arabicOral = new Assessment();
-        arabicOral.setSchool(school);
-        arabicOral.setClassSchedule(sched10A.get(2));
-        arabicOral.setSemester(semester);
-        arabicOral.setTeacher(teachers.get("arabic"));
-        arabicOral.setName("Grammar & Poetry Recitation");
-        arabicOral.setCategory(ContinuousCategory.ORAL_TEST);
-        arabicOral.setMaxScore(15.0);
-        arabicOral.setWeight(10.0);
-        arabicOral.setAssessmentDate(LocalDate.now().minusDays(3));
-        arabicOral = assessmentRepository.save(arabicOral);
+        // 3. Arabic Poetry Recitation
+        Assessment a3 = new Assessment();
+        a3.setSchool(school);
+        a3.setClassSchedule(sched.get(2));
+        a3.setSemester(sem);
+        a3.setTeacher(teachers.get("arabic"));
+        a3.setName("اختبار الإلقاء الشعري والقواعد النحوية");
+        a3.setCategory(ContinuousCategory.ORAL_TEST);
+        a3.setMaxScore(15.0);
+        a3.setWeight(10.0);
+        a3.setAssessmentDate(LocalDate.now().minusDays(4));
+        a3 = assessmentRepository.save(a3);
 
-        createAssessmentResult(school, students.get(0), arabicOral, 14.5);
-        createAssessmentResult(school, students.get(1), arabicOral, 13.0);
-        createAssessmentResult(school, students.get(2), arabicOral, 15.0);
+        for (int i = 0; i < 4; i++) {
+            createAssessmentScore(school, students.get(i), a3, 14.0 + (i * 0.2));
+        }
     }
 
-    private void createAssessmentResult(School school, Student student, Assessment assessment, Double score) {
-        AssessmentResult result = new AssessmentResult();
-        result.setSchool(school);
-        result.setStudent(student);
-        result.setAssessment(assessment);
-        result.setScore(score);
-        assessmentResultRepository.save(result);
+    private void createAssessmentScore(School school, Student student, Assessment assessment, Double score) {
+        AssessmentResult ar = new AssessmentResult();
+        ar.setSchool(school);
+        ar.setStudent(student);
+        ar.setAssessment(assessment);
+        ar.setScore(Math.min(score, assessment.getMaxScore()));
+        assessmentResultRepository.save(ar);
     }
 
-    // ==========================================
-    // 15. Official Exams & Results
-    // ==========================================
-    private void seedExamsAndResults(
-            School school,
-            Map<String, SchoolClass> classes,
-            Map<String, Subject> subjects,
-            Semester semester,
-            List<Student> students) {
+    private void seedExams(School school, Map<String, SchoolClass> classes, Map<String, Subject> subs, Semester sem, List<Student> students) {
+        // Midterm Exam: Mathematics
+        Exam eMath = new Exam();
+        eMath.setSchool(school);
+        eMath.setSchoolClass(classes.get("10A"));
+        eMath.setSubject(subs.get("math10"));
+        eMath.setSemester(sem);
+        eMath.setCategory(ExamCategory.MIDTERM);
+        eMath.setMaxScore(100.0);
+        eMath.setWeight(40.0);
+        eMath.setExamDateTime(LocalDateTime.now().minusDays(18).withHour(9).withMinute(0));
+        eMath.setDurationMinutes(90);
+        eMath = examRepository.save(eMath);
 
-        // Midterm Exam for Math 10 (Class 10-A)
-        Exam mathExam = new Exam();
-        mathExam.setSchool(school);
-        mathExam.setSchoolClass(classes.get("10A"));
-        mathExam.setSubject(subjects.get("math10"));
-        mathExam.setSemester(semester);
-        mathExam.setCategory(ExamCategory.MIDTERM);
-        mathExam.setMaxScore(100.0);
-        mathExam.setWeight(40.0);
-        mathExam.setExamDateTime(LocalDateTime.now().minusDays(15).withHour(9).withMinute(0));
-        mathExam.setDurationMinutes(90);
-        mathExam = examRepository.save(mathExam);
+        createExamScore(school, eMath, students.get(0), 96.5);
+        createExamScore(school, eMath, students.get(1), 88.0);
+        createExamScore(school, eMath, students.get(2), 94.0);
+        createExamScore(school, eMath, students.get(3), 91.5);
 
-        createExamResult(school, mathExam, students.get(0), 96.0);
-        createExamResult(school, mathExam, students.get(1), 84.5);
-        createExamResult(school, mathExam, students.get(2), 91.0);
+        // Midterm Exam: Physics
+        Exam ePhys = new Exam();
+        ePhys.setSchool(school);
+        ePhys.setSchoolClass(classes.get("10A"));
+        ePhys.setSubject(subs.get("phys10"));
+        ePhys.setSemester(sem);
+        ePhys.setCategory(ExamCategory.MIDTERM);
+        ePhys.setMaxScore(100.0);
+        ePhys.setWeight(40.0);
+        ePhys.setExamDateTime(LocalDateTime.now().minusDays(15).withHour(10).withMinute(30));
+        ePhys.setDurationMinutes(90);
+        ePhys = examRepository.save(ePhys);
 
-        // Midterm Exam for Physics 10 (Class 10-A)
-        Exam physicsExam = new Exam();
-        physicsExam.setSchool(school);
-        physicsExam.setSchoolClass(classes.get("10A"));
-        physicsExam.setSubject(subjects.get("physics10"));
-        physicsExam.setSemester(semester);
-        physicsExam.setCategory(ExamCategory.MIDTERM);
-        physicsExam.setMaxScore(100.0);
-        physicsExam.setWeight(40.0);
-        physicsExam.setExamDateTime(LocalDateTime.now().minusDays(12).withHour(10).withMinute(30));
-        physicsExam.setDurationMinutes(90);
-        physicsExam = examRepository.save(physicsExam);
+        createExamScore(school, ePhys, students.get(0), 93.0);
+        createExamScore(school, ePhys, students.get(1), 82.5);
+        createExamScore(school, ePhys, students.get(2), 98.0);
+        createExamScore(school, ePhys, students.get(3), 89.0);
 
-        createExamResult(school, physicsExam, students.get(0), 92.5);
-        createExamResult(school, physicsExam, students.get(1), 78.0);
-        createExamResult(school, physicsExam, students.get(2), 95.0);
+        // Midterm Exam: Arabic
+        Exam eArab = new Exam();
+        eArab.setSchool(school);
+        eArab.setSchoolClass(classes.get("10A"));
+        eArab.setSubject(subs.get("arab10"));
+        eArab.setSemester(sem);
+        eArab.setCategory(ExamCategory.MIDTERM);
+        eArab.setMaxScore(100.0);
+        eArab.setWeight(40.0);
+        eArab.setExamDateTime(LocalDateTime.now().minusDays(12).withHour(9).withMinute(0));
+        eArab.setDurationMinutes(90);
+        eArab = examRepository.save(eArab);
 
-        // Midterm Exam for Arabic 10 (Class 10-A)
-        Exam arabicExam = new Exam();
-        arabicExam.setSchool(school);
-        arabicExam.setSchoolClass(classes.get("10A"));
-        arabicExam.setSubject(subjects.get("arabic10"));
-        arabicExam.setSemester(semester);
-        arabicExam.setCategory(ExamCategory.MIDTERM);
-        arabicExam.setMaxScore(100.0);
-        arabicExam.setWeight(40.0);
-        arabicExam.setExamDateTime(LocalDateTime.now().minusDays(10).withHour(9).withMinute(0));
-        arabicExam.setDurationMinutes(90);
-        arabicExam = examRepository.save(arabicExam);
-
-        createExamResult(school, arabicExam, students.get(0), 88.0);
-        createExamResult(school, arabicExam, students.get(1), 82.0);
-        createExamResult(school, arabicExam, students.get(2), 97.5);
+        createExamScore(school, eArab, students.get(0), 90.0);
+        createExamScore(school, eArab, students.get(1), 85.0);
+        createExamScore(school, eArab, students.get(2), 97.0);
+        createExamScore(school, eArab, students.get(3), 92.0);
     }
 
-    private void createExamResult(School school, Exam exam, Student student, Double score) {
+    private void createExamScore(School school, Exam exam, Student student, Double score) {
         ExamResult er = new ExamResult();
         er.setSchool(school);
         er.setExam(exam);
@@ -738,84 +732,90 @@ public class DataSeeder implements CommandLineRunner {
         examResultRepository.save(er);
     }
 
-    // ==========================================
-    // 16. Warnings & Disciplinary Notes
-    // ==========================================
     private void seedWarnings(School school, List<Student> students) {
         Warning w1 = new Warning();
         w1.setSchool(school);
-        w1.setStudent(students.get(1)); // Mohammed Hassan
-        w1.setWarningDate(LocalDate.now().minusDays(8));
-        w1.setReason("Repeated unexcused morning tardiness during first period.");
+        w1.setStudent(students.get(1)); // محمد حسن
+        w1.setWarningDate(LocalDate.now().minusDays(10));
+        w1.setReason("تكرار التأخر الصباحي غير المبرر عن طابور الصباح والحصة الأولى.");
         warningRepository.save(w1);
 
         Warning w2 = new Warning();
         w2.setSchool(school);
-        w2.setStudent(students.get(4)); // Yousef Mahmoud
-        w2.setWarningDate(LocalDate.now().minusDays(4));
-        w2.setReason("Failure to submit required weekly Physics laboratory assignment on time.");
+        w2.setStudent(students.get(5)); // يوسف محمود
+        w2.setWarningDate(LocalDate.now().minusDays(5));
+        w2.setReason("عدم تسليم مشروع المختبر العلمي للفيزياء في الموعد المحدد.");
         warningRepository.save(w2);
+
+        Warning w3 = new Warning();
+        w3.setSchool(school);
+        w3.setStudent(students.get(12)); // فراس الطباع
+        w3.setWarningDate(LocalDate.now().minusDays(2));
+        w3.setReason("استخدام الهاتف المحمول داخل الحصة الدراسية بدون إذن المعلم.");
+        warningRepository.save(w3);
     }
 
-    // ==========================================
-    // 17. Finance (رسوم، خصومات، مدفوعات)
-    // ==========================================
-    private void seedFinance(
-            School school,
-            AcademicYear academicYear,
-            Map<String, SchoolClass> classes,
-            List<Student> students) {
-
+    private void seedFinancials(School school, AcademicYear year, Map<String, SchoolClass> classes, List<Student> students) {
         // Fee Types
-        FeeType tuitionType = createFeeType("Annual Tuition Fee");
-        FeeType busType = createFeeType("Transportation Bus Service");
-        FeeType labType = createFeeType("Science & Computer Lab Fee");
+        FeeType ftTuition = new FeeType();
+        ftTuition.setName("القسط الدراسي السنوي الأساسي");
+        ftTuition = feeTypeRepository.save(ftTuition);
+
+        FeeType ftBus = new FeeType();
+        ftBus.setName("اشتراك خدمة النقل المدرسي (الباص)");
+        ftBus = feeTypeRepository.save(ftBus);
+
+        FeeType ftLab = new FeeType();
+        ftLab.setName("رسوم المختبرات العلمية والحاسوب");
+        ftLab = feeTypeRepository.save(ftLab);
 
         // Class Fees
-        createClassFee(classes.get("10A"), academicYear, tuitionType, 3500.0);
-        createClassFee(classes.get("10A"), academicYear, labType, 300.0);
-        createClassFee(classes.get("11A"), academicYear, tuitionType, 4000.0);
-        createClassFee(classes.get("12A"), academicYear, tuitionType, 4500.0);
+        createClassFee(classes.get("10A"), year, ftTuition, 3500.0);
+        createClassFee(classes.get("10A"), year, ftLab, 350.0);
+        createClassFee(classes.get("11A"), year, ftTuition, 4000.0);
+        createClassFee(classes.get("12A"), year, ftTuition, 4500.0);
 
         // Discounts
-        Discount excellenceDiscount = createDiscount("Academic Excellence Merit Scholarship", 15.0, "Top 5% GPA in previous academic year");
-        Discount siblingDiscount = createDiscount("Sibling Family Discount", 10.0, "Enrolled with more than one sibling in school");
+        Discount d1 = new Discount();
+        d1.setName("منحة التفوق الدراسي والأكاديمي");
+        d1.setPercentage(15.0);
+        d1.setReason("الترتيب ضمن أوائل المدرسة في العام السابق");
+        d1 = discountRepository.save(d1);
 
-        // Assign discount to Ahmad Ali (ST1001)
+        Discount d2 = new Discount();
+        d2.setName("حسم الإخوة والعائلة");
+        d2.setPercentage(10.0);
+        d2.setReason("تسجيل أكثر من طالب من نفس الأسرة");
+        d2 = discountRepository.save(d2);
+
+        // Assign Discounts
         StudentDiscount sd1 = new StudentDiscount();
-        sd1.setStudent(students.get(0));
-        sd1.setDiscount(excellenceDiscount);
+        sd1.setStudent(students.get(0)); // أحمد علي
+        sd1.setDiscount(d1);
         studentDiscountRepository.save(sd1);
 
+        StudentDiscount sd2 = new StudentDiscount();
+        sd2.setStudent(students.get(8)); // زيد المصري
+        sd2.setDiscount(d2);
+        studentDiscountRepository.save(sd2);
+
         // Payments
-        createPayment(students.get(0), 1500.0, LocalDate.of(2025, 9, 5), "Tuition Installment #1 - Receipt 10421");
-        createPayment(students.get(0), 1000.0, LocalDate.of(2025, 11, 10), "Tuition Installment #2 - Receipt 10892");
-        createPayment(students.get(1), 1800.0, LocalDate.of(2025, 9, 6), "Tuition & Lab Fee Payment - Receipt 10455");
-        createPayment(students.get(2), 2000.0, LocalDate.of(2025, 9, 8), "First Semester Full Payment - Receipt 10512");
-        createPayment(students.get(6), 1500.0, LocalDate.of(2025, 9, 12), "Tuition Installment #1 - Receipt 10633");
+        createPayment(students.get(0), 1750.0, LocalDate.of(2025, 9, 5), "الدفعة الأولى من القسط السنوي - سند قبض رقم 10421");
+        createPayment(students.get(0), 1000.0, LocalDate.of(2025, 11, 10), "الدفعة الثانية من القسط السنوي - سند قبض رقم 10892");
+        createPayment(students.get(1), 1900.0, LocalDate.of(2025, 9, 6), "القسط الأول مع رسوم المختبر - سند قبض رقم 10455");
+        createPayment(students.get(2), 2000.0, LocalDate.of(2025, 9, 8), "تسديد كامل الفصل الأول - سند قبض رقم 10512");
+        createPayment(students.get(4), 1800.0, LocalDate.of(2025, 9, 10), "دفعة تسجيل أولى - سند قبض رقم 10590");
+        createPayment(students.get(8), 1600.0, LocalDate.of(2025, 9, 12), "القسط الأول مع حسم الإخوة - سند قبض رقم 10633");
+        createPayment(students.get(14), 2250.0, LocalDate.of(2025, 9, 15), "دفعة البكالوريا الأولى - سند قبض رقم 10740");
     }
 
-    private FeeType createFeeType(String name) {
-        FeeType ft = new FeeType();
-        ft.setName(name);
-        return feeTypeRepository.save(ft);
-    }
-
-    private void createClassFee(SchoolClass sc, AcademicYear ay, FeeType ft, Double amount) {
+    private void createClassFee(SchoolClass sc, AcademicYear year, FeeType type, Double amount) {
         ClassFee cf = new ClassFee();
         cf.setSchoolClass(sc);
-        cf.setAcademicYear(ay);
-        cf.setFeeType(ft);
+        cf.setAcademicYear(year);
+        cf.setFeeType(type);
         cf.setAmount(amount);
         classFeeRepository.save(cf);
-    }
-
-    private Discount createDiscount(String name, Double percentage, String reason) {
-        Discount d = new Discount();
-        d.setName(name);
-        d.setPercentage(percentage);
-        d.setReason(reason);
-        return discountRepository.save(d);
     }
 
     private void createPayment(Student student, Double amount, LocalDate date, String notes) {
@@ -827,36 +827,43 @@ public class DataSeeder implements CommandLineRunner {
         paymentRepository.save(p);
     }
 
-    // ==========================================
-    // 18. Library & Books (مكتبة مدرسية)
-    // ==========================================
-    private void seedLibrary(School school, List<Student> students) {
-        Library library = new Library();
-        library.setSchool(school);
-        library = libraryRepository.save(library);
+    private void seedLibraryData(School school, List<Student> students) {
+        Library lib = new Library();
+        lib.setSchool(school);
+        lib = libraryRepository.save(lib);
 
-        LibraryBook b1 = createBook(library, "Calculus: Early Transcendentals", "James Stewart", "978-1285741550", "Mathematics", "Comprehensive guide to differential and integral calculus.");
-        LibraryBook b2 = createBook(library, "Fundamentals of Physics", "David Halliday", "978-1118230718", "Physics", "Standard university & advanced high school physics textbook.");
-        LibraryBook b3 = createBook(library, "Clean Code: A Handbook of Agile Craftsmanship", "Robert C. Martin", "978-0132350884", "Computer Science", "Essential principles of writing clean, maintainable software.");
-        LibraryBook b4 = createBook(library, "The Old Man and the Sea", "Ernest Hemingway", "978-0684801223", "Literature", "Nobel prize winning classic literature novel.");
+        LibraryBook b1 = createBook(lib, "حساب التفاضل والتكامل المتقدم (Calculus)", "جيمس ستيوارت", "978-1285741550", "الرياضيات", "المرجع الشامل في التحليل والرياضيات الجامعية.");
+        LibraryBook b2 = createBook(lib, "أساسيات الفيزياء العامة (Halliday & Resnick)", "ديفيد هاليداي", "978-1118230718", "الفيزياء", "الكتاب المرجعي الكلاسيكي في الميكانيك والكهرباء والضوء.");
+        LibraryBook b3 = createBook(lib, "الكيمياء العضوية التركيبية", "روبرت موريسون", "978-0136436690", "الكيمياء", "مرجع أساسي في التفاعلات العضوية والمركبات الكيميائية.");
+        LibraryBook b4 = createBook(lib, "مقدمة في الخوارزميات وهياكل البيانات", "توماس كورمن", "978-0262033848", "المعلوماتية", "أهم مرجع عالمي في تحليل الخوارزميات وهندسة البرمجيات.");
+        LibraryBook b5 = createBook(lib, "ديوان المتنبي مع الشرح والتحليل", "أبو الطيب المتنبي", "978-9953880123", "الأدب العربي", "روائع الشعر العربي الكلاسيكي ودراسات بلاغية.");
+        LibraryBook b6 = createBook(lib, "تاريخ الحضارات والنهضة الإنسانية", "ول ديورانت", "978-9953250412", "التاريخ", "موسوعة تاريخية شاملة لتطور الفكر البشري.");
 
         // Borrow Records
-        Borrow borrow1 = new Borrow();
-        borrow1.setStudent(students.get(0)); // Ahmad
-        borrow1.setBook(b1);
-        borrow1.setBorrowDate(LocalDate.now().minusDays(14));
-        borrow1.setDueDate(LocalDate.now().plusDays(14));
-        borrow1.setStatus(BorrowStatus.BORROWED);
-        borrowRepository.save(borrow1);
+        Borrow br1 = new Borrow();
+        br1.setStudent(students.get(0)); // أحمد علي
+        br1.setBook(b1);
+        br1.setBorrowDate(LocalDate.now().minusDays(14));
+        br1.setDueDate(LocalDate.now().plusDays(14));
+        br1.setStatus(BorrowStatus.BORROWED);
+        borrowRepository.save(br1);
 
-        Borrow borrow2 = new Borrow();
-        borrow2.setStudent(students.get(2)); // Sara
-        borrow2.setBook(b4);
-        borrow2.setBorrowDate(LocalDate.now().minusDays(20));
-        borrow2.setDueDate(LocalDate.now().minusDays(6));
-        borrow2.setReturnDate(LocalDate.now().minusDays(7));
-        borrow2.setStatus(BorrowStatus.RETURNED);
-        borrowRepository.save(borrow2);
+        Borrow br2 = new Borrow();
+        br2.setStudent(students.get(2)); // سارة عمر
+        br2.setBook(b5);
+        br2.setBorrowDate(LocalDate.now().minusDays(20));
+        br2.setDueDate(LocalDate.now().minusDays(6));
+        br2.setReturnDate(LocalDate.now().minusDays(7));
+        br2.setStatus(BorrowStatus.RETURNED);
+        borrowRepository.save(br2);
+
+        Borrow br3 = new Borrow();
+        br3.setStudent(students.get(8)); // زيد المصري
+        br3.setBook(b4);
+        br3.setBorrowDate(LocalDate.now().minusDays(25));
+        br3.setDueDate(LocalDate.now().minusDays(5));
+        br3.setStatus(BorrowStatus.LATE);
+        borrowRepository.save(br3);
     }
 
     private LibraryBook createBook(Library lib, String title, String author, String isbn, String cat, String desc) {
@@ -870,69 +877,63 @@ public class DataSeeder implements CommandLineRunner {
         return libraryBookRepository.save(b);
     }
 
-    // ==========================================
-    // 19. Announcements (إعلانات مدرسية)
-    // ==========================================
-    private void seedAnnouncements(School school) {
+    private void seedAnnouncementsData(School school) {
         createAnnouncement(
                 school,
-                "Welcome to the Academic Year 2025-2026",
-                "Dear students, parents, and faculty members: We welcome you to the new academic year filled with ambition and excellence. Please ensure adhering to school schedules and dress code.",
+                "افتتاح العام الدراسي 2025-2026 والترحيب بالطلبة الجدد",
+                "ترحب إدارة المدرسة بجميع أبنائنا الطلبة وأولياء الأمور الكرام في عام دراسي واعد بالتميز والنجاح. يرجى الالتزام بالزي المدرسي ومواعيد الحصص المقررة.",
                 UserType.STUDENT,
                 AnnouncementStatus.PUBLISHED,
-                LocalDate.now().minusDays(20)
+                LocalDate.now().minusDays(25)
         );
 
         createAnnouncement(
                 school,
-                "First Semester Midterm Exam Schedules Released",
-                "The examination board has published the official midterm timetable. Students and parents can view schedules through their respective portal dashboards.",
+                "صدور الجداول الرسمية لامتحانات منتصف الفصل الدراسي الأول",
+                "تم اعتماد ونشر جدول امتحانات منتصف الفصل الأول لكافة المراحل والصفوف، ويمكن للطلبة وأولياء الأمور الاطلاع عليها من خلال التطبيق.",
                 UserType.STUDENT,
                 AnnouncementStatus.PUBLISHED,
-                LocalDate.now().minusDays(14)
+                LocalDate.now().minusDays(16)
         );
 
         createAnnouncement(
                 school,
-                "Annual Parent-Teacher Conference",
-                "We cordially invite all parents to attend the first semester parent-teacher conference on Thursday at 4:00 PM in the school auditorium to discuss student academic progress.",
+                "دعوة لحضور الاجتماع الدوري الأول لأولياء الأمور",
+                "يسر إدارة المدرسة دعوة السادة أولياء الأمور لحضور اللقاء التربوي الأول مع الكادر التدريسي لمناقشة المستوى الأكاديمي للطلبة يوم الخميس القادم الساعة 4:00 عصراً.",
                 UserType.GUARDIAN,
                 AnnouncementStatus.PUBLISHED,
-                LocalDate.now().minusDays(7)
+                LocalDate.now().minusDays(9)
         );
 
         createAnnouncement(
                 school,
-                "Annual Science and Innovation Olympiad Registration",
-                "Registration is now open for students interested in participating in the annual Science, Robotics, and Mathematics Olympiad. Inquire with your science teachers.",
+                "فتح باب التسجيل في أولمبياد العلوم والروبوت والرياضيات",
+                "نعلن عن بدء التسجيل في المسابقة السنوية للابتكار العلمي والبرمجة والروبوت لطلبة المرحلتين الإعدادية والثانوية. للمشاركة يرجى مراجعة معلم المعلوماتية.",
                 UserType.STUDENT,
                 AnnouncementStatus.PUBLISHED,
-                LocalDate.now().minusDays(2)
+                LocalDate.now().minusDays(3)
         );
     }
 
-    private void createAnnouncement(School school, String title, String content, UserType userType, AnnouncementStatus status, LocalDate date) {
+    private void createAnnouncement(School school, String title, String content, UserType type, AnnouncementStatus status, LocalDate date) {
         Announcement a = new Announcement();
         a.setSchool(school);
         a.setTitle(title);
         a.setContent(content);
-        a.setUserType(userType);
+        a.setUserType(type);
         a.setStatus(status);
         a.setPublishDate(date);
         announcementRepository.save(a);
     }
 
-    // ==========================================
-    // Auth Helper
-    // ==========================================
     private void createAuth(School school, String email, String password, Role role, Long refId) {
-        AuthUser user = new AuthUser();
-        user.setSchool(school);
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(role);
-        user.setRefId(refId);
-        user.setEnabled(true);
-        authUserRepository.save(user);
+        AuthUser u = new AuthUser();
+        u.setSchool(school);
+        u.setEmail(email);
+        u.setPassword(passwordEncoder.encode(password));
+        u.setRole(role);
+        u.setRefId(refId);
+        u.setEnabled(true);
+        authUserRepository.save(u);
     }
 }

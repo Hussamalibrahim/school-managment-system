@@ -1,9 +1,6 @@
 package com.SchoolManagementSystem.System.tenant;
 
-
 import com.SchoolManagementSystem.System.entity.school.School;
-import com.SchoolManagementSystem.System.exception.business.NotFoundException;
-import com.SchoolManagementSystem.System.exception.model.ErrorCode;
 import com.SchoolManagementSystem.System.repository.school.SchoolRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,40 +22,33 @@ public class TenantFilter extends OncePerRequestFilter {
     private final SchoolRepository schoolRepository;
     private final TenantHibernateFilter tenantHibernateFilter;
 
-
     @Override
     protected void doFilterInternal(
             @NotNull HttpServletRequest request,
             @NotNull HttpServletResponse response,
             @NotNull FilterChain chain) throws ServletException, IOException {
 
-        String path = request.getRequestURI();
+        String schoolCode = tenantResolver.resolveSchoolCode(request);
+        boolean filterEnabled = false;
 
-        if(path.equals("/api/auth/register")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-
-            String schoolCode = tenantResolver.resolveSchoolCode(request);
-            if(schoolCode != null){
-                School school = schoolRepository.findByCode(schoolCode)
-                        .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));
-
-                TenantContext.setSchoolId(school.getId());
-
+        if (schoolCode != null) {
+            School school = schoolRepository.findByCode(schoolCode).orElse(null);
+            if (school != null) {
+                TenantContext.set(school.getId(), school.getCode());
                 hibernateTenantFilter.enable();
                 tenantHibernateFilter.enable();
+                filterEnabled = true;
             }
+        }
+
         try {
-            chain.doFilter(
-                    request,
-                    response
-            );
+            chain.doFilter(request, response);
         } finally {
-            hibernateTenantFilter.disable();
-            tenantHibernateFilter.disable();
-            TenantContext.clear();
+            if (filterEnabled) {
+                hibernateTenantFilter.disable();
+                tenantHibernateFilter.disable();
+                TenantContext.clear();
+            }
         }
     }
 }

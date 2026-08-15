@@ -45,8 +45,10 @@ public class SecurityConfig {
                         // =================== Public Endpoints ===================
                         .requestMatchers("/api/auth/login", "/api/*/auth/login").permitAll()
                         .requestMatchers("/api/auth/register", "/api/*/auth/register", "/api/auth/principle-register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/school/**", "/api/*/school/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/school/**", "/api/*/school/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/schools", "/api/schools/**", "/api/school/**", "/api/*/school/**", "/api/*/schools/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/schools", "/api/schools/**", "/api/school/**", "/api/*/school/**", "/api/*/schools/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/schools/**", "/api/school/**", "/api/*/school/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/schools/**", "/api/school/**", "/api/*/school/**").permitAll()
 
                         // =================== Account Activation/Deactivation ===================
                         .requestMatchers("/api/auth/deactivate-account", "/api/*/auth/deactivate-account").hasRole("PRINCIPAL")
