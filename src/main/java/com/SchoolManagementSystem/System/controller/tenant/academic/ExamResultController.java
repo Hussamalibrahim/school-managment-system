@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import com.SchoolManagementSystem.System.exception.business.ValidationException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+import com.SchoolManagementSystem.System.service.student.StudentGuardianService;
+
 @RestController
 @RequestMapping("/exam-results")
 @RequiredArgsConstructor
 public class ExamResultController {
 
     private final ExamResultService examResultService;
+    private final StudentGuardianService studentGuardianService;
 
     @PostMapping
     @PreAuthorize("hasRole('TEACHER')")
@@ -61,11 +66,46 @@ public class ExamResultController {
         examResultService.delete(id, user);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
     public ResponseEntity<List<ExamResultDto>> getAll() {
         return ResponseEntity.ok(
                 examResultService.getAll()
+        );
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<List<ExamResultDto>> getMyResults(
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
+        return ResponseEntity.ok(
+                examResultService.getStudentResults(user.getRefId())
+        );
+    }
+
+    @GetMapping("/guardian/student/{studentId}")
+    @PreAuthorize("hasRole('GUARDIAN')")
+    public ResponseEntity<List<ExamResultDto>> getStudentResultsForGuardian(
+            @PathVariable Long studentId,
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
+        if (!studentGuardianService.isStudentBelongsToGuardian(studentId, user.getRefId())) {
+            throw new ValidationException(ErrorCode.UNAUTHENTICATED);
+        }
+        return ResponseEntity.ok(
+                examResultService.getStudentResults(studentId)
+        );
+    }
+
+    @GetMapping("/student/{studentId}")
+    @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY','TEACHER')")
+    public ResponseEntity<List<ExamResultDto>> getStudentResults(
+            @PathVariable Long studentId
+    ) {
+        return ResponseEntity.ok(
+                examResultService.getStudentResults(studentId)
         );
     }
 }

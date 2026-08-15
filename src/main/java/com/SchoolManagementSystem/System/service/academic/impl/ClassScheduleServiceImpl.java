@@ -169,14 +169,21 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     }
 
     @Override
-    public List<ClassScheduleDto> getMySchedule(UserPrincipal user) {
-        Student student = studentRepository.findById(user.getRefId())
-                .orElseThrow(()-> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
+    @Transactional(readOnly = true)
+    public List<ClassScheduleDto> getByStudent(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
+        if (student.getStudentSchoolClass() == null) {
+            return List.of();
+        }
 
-        return classSchedulesRepo.findClassScheduleBySchoolClass(student.getStudentSchoolClass())
-                .stream()
-                .map(ClassScheduleMapper::toDto).toList();
+        return getBySchoolClass(student.getStudentSchoolClass().getId());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClassScheduleDto> getMySchedule(UserPrincipal user) {
+        return getByStudent(user.getRefId());
+    }
 }

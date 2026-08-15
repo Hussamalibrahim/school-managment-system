@@ -15,7 +15,6 @@ public interface ClassScheduleService {
     List<StudentDto> getStudentsByTeacher(Long teacherId);
     List<ClassScheduleDto> addExtraPeriod(Long classId, DayOfWeek day);
     ClassScheduleDto assignTeacher(Long scheduleId, Long teacherId, Long subjectId);
-
+    List<ClassScheduleDto> getByStudent(Long studentId);
     List<ClassScheduleDto> getMySchedule(UserPrincipal user);
-
 }

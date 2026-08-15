@@ -15,7 +15,8 @@ public final class PaymentMapper {
                 payment.getDeletedAt(),
                 payment.getAmount(),
                 payment.getPaymentDate(),
-                payment.getNotes()
+                payment.getNotes(),
+                payment.getStudent() != null ? payment.getStudent().getId() : null
         );
     }
 

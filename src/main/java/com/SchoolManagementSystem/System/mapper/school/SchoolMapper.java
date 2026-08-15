@@ -19,6 +19,7 @@ public final class SchoolMapper {
                 school.getDeletedAt(),
 
                 school.getName(),
+                school.getCode(),
                 school.getAddress(),
                 school.getPhone(),
                 school.getLogoPath(),
@@ -39,6 +40,7 @@ public final class SchoolMapper {
         school.setDeletedAt(dto.deletedAt());
 
         school.setName(dto.name());
+        school.setCode(dto.code());
         school.setAddress(dto.address());
         school.setPhone(dto.phone());
         school.setLogoPath(dto.logoPath());
@@ -48,13 +50,13 @@ public final class SchoolMapper {
 
         return school;
     }
-    public static void fromDefineSchool(DefineSchool dto, School school) {
 
+    public static void fromDefineSchool(DefineSchool dto, School school) {
         school.setName(dto.name());
         school.setEducationStages(dto.educationStages());
         school.setSchoolType(dto.schoolType());
-
     }
+
     public static void updateEntity(updateSchoolInfo dto, School school) {
         school.setAddress(dto.address());
         school.setPhone(dto.phone());

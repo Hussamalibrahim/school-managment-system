@@ -9,6 +9,14 @@ import java.time.LocalDateTime;
 /**
  * DTO for {@link Payment}
  */
-public record PaymentDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-                         Double amount, LocalDate paymentDate, String notes) implements Serializable {
+public record PaymentDto(
+        Long id,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        LocalDateTime deletedAt,
+        Double amount,
+        LocalDate paymentDate,
+        String notes,
+        Long studentId
+) implements Serializable {
 }

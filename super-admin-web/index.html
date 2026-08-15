@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة مدير النظام العام | Super Admin</title>
+    <meta name="description" content="لوحة تحكم بسيطة لمدير النظام العام لإدارة المدارس والـ Multi-Tenancy">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i data-lucide="shield"></i>
+                </div>
+                <div>
+                    <h1 class="brand-title">لوحة مدير النظام العام</h1>
+                    <span class="brand-subtitle">إدارة منصة المدارس المتعددة (Multi-Tenancy)</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="server-status" id="server-status" title="حالة الاتصال بالباكيند">
+                    <span class="dot" id="status-dot"></span>
+                    <span id="status-text">جاري الاتصال...</span>
+                </div>
+                <button class="btn-primary" id="btn-open-add-modal">
+                    <i data-lucide="plus"></i>
+                    <span>إضافة مدرسة جديدة</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Simple KPI Cards -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon purple"><i data-lucide="building"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">إجمالي المدارس (Tenants)</span>
+                    <span class="stat-number" id="stat-total">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon blue"><i data-lucide="award"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">مدارس خاصة</span>
+                    <span class="stat-number" id="stat-private">0</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green"><i data-lucide="landmark"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">مدارس عامة / حكومية</span>
+                    <span class="stat-number" id="stat-public">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schools Management Card -->
+        <section class="main-card">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">قائمة المدارس المسجلة في السحابة</h2>
+                    <p class="card-subtitle">استعراض المدارس مع رموز الـ Tenant ونسخها بضغطة زر</p>
+                </div>
+                <div class="search-wrapper">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="search-input" placeholder="ابحث باسم المدرسة أو الكود...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="simple-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>اسم المدرسة</th>
+                            <th>كود المستأجر (Tenant Code)</th>
+                            <th>النوع</th>
+                            <th>المراحل الدراسية</th>
+                            <th>الهاتف / العنوان</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="schools-table-body">
+                        <tr>
+                            <td colspan="7" class="loading-row">
+                                <i data-lucide="loader-2" class="spin"></i> جاري تحميل المدارس من السيرفر...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Quick Tenant Test Section -->
+        <section class="main-card" style="margin-top: 24px;">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">فحص واجهة أي مستأجر (Quick Tenant API Test)</h2>
+                    <p class="card-subtitle">اختبار وصول البيانات وعزلها حسب كود المدرسة المحدد</p>
+                </div>
+            </div>
+            <div class="tenant-test-row">
+                <select id="select-test-school" class="form-control">
+                    <option value="">-- اختر مدرسة لتجربتها --</option>
+                </select>
+                <button class="btn-secondary" id="btn-test-tenant">
+                    <i data-lucide="zap"></i>
+                    <span>فحص رابط المدرسة</span>
+                </button>
+            </div>
+            <div id="test-result-box" class="test-result-box" style="display: none;">
+                <div class="test-result-header">
+                    <span id="test-route-text">Route: /api/{code}/...</span>
+                    <span id="test-status-badge" class="badge">200 OK</span>
+                </div>
+                <pre id="test-json-output"><code>{}</code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Add New School -->
+    <div class="modal" id="add-school-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">تسجيل مدرسة جديدة (New Tenant)</h3>
+                <button class="btn-close" id="btn-close-add-modal"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-add-school">
+                <div class="form-group">
+                    <label class="form-label">اسم المدرسة</label>
+                    <input type="text" id="add-name" class="form-control" placeholder="مثال: مدرسة الأمل النموذجية" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">نوع المدرسة</label>
+                        <select id="add-type" class="form-control" required>
+                            <option value="PRIVATE">مدرسة خاصة</option>
+                            <option value="PUBLIC">مدرسة عامة / حكومية</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">المراحل التعليمية</label>
+                        <div class="stages-checkboxes">
+                            <label><input type="checkbox" name="stage" value="ELEMENTARY" checked> ابتدائي</label>
+                            <label><input type="checkbox" name="stage" value="MIDDLE" checked> إعدادي</label>
+                            <label><input type="checkbox" name="stage" value="HIGH" checked> ثانوي</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">اسم مدير المدرسة الأول</label>
+                        <input type="text" id="add-first-name" class="form-control" placeholder="الاسم الأول" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الكنية</label>
+                        <input type="text" id="add-last-name" class="form-control" placeholder="اسم العائلة" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">الرقم الوطني / الهوية</label>
+                        <input type="text" id="add-national-id" class="form-control" placeholder="01020304050" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">البريد الإلكتروني للدخول</label>
+                        <input type="email" id="add-email" class="form-control" placeholder="principal@alamal.edu" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور الابتدائية</label>
+                    <input type="password" id="add-password" class="form-control" value="123456" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="btn-cancel-add">إلغاء</button>
+                    <button type="submit" class="btn-primary" id="btn-submit-school">
+                        <i data-lucide="check"></i>
+                        <span>حفظ وتسجيل المدرسة</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Edit School Info -->
+    <div class="modal" id="edit-school-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">تعديل بيانات المدرسة</h3>
+                <button class="btn-close" id="btn-close-edit-modal"><i data-lucide="x"></i></button>
+            </div>
+            <form id="form-edit-school">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label class="form-label">اسم المدرسة</label>
+                    <input type="text" id="edit-name" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">رقم الهاتف</label>
+                    <input type="text" id="edit-phone" class="form-control" placeholder="011...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">العنوان والموقع</label>
+                    <input type="text" id="edit-address" class="form-control" placeholder="دمشق...">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="btn-cancel-edit">إلغاء</button>
+                    <button type="submit" class="btn-primary">
+                        <i data-lucide="save"></i>
+                        <span>حفظ التعديلات</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-box" id="toast-box"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -11,16 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import com.SchoolManagementSystem.System.entity.student.Student;
+import com.SchoolManagementSystem.System.repository.student.StudentRepository;
+import com.SchoolManagementSystem.System.exception.business.NotFoundException;
+import com.SchoolManagementSystem.System.exception.model.ErrorCode;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class WarningServiceImpl implements WarningService {
 
     private final WarningRepository repository;
+    private final StudentRepository studentRepository;
 
     @Override
     public WarningDto save(WarningDto dto) {
         Warning warning = WarningMapper.toEntity(dto);
+        if (dto.studentId() != null) {
+            Student student = studentRepository.findById(dto.studentId())
+                    .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
+            warning.setStudent(student);
+        }
         warning = repository.save(warning);
         return WarningMapper.toDto(warning);
     }
@@ -55,5 +66,17 @@ public class WarningServiceImpl implements WarningService {
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<WarningDto> getWarningsByStudentId(Long studentId) {
+        if (!studentRepository.existsById(studentId)) {
+            throw new NotFoundException(ErrorCode.STUDENT_NOT_FOUND);
+        }
+        return repository.findByStudentId(studentId)
+                .stream()
+                .map(WarningMapper::toDto)
+                .toList();
     }
 }

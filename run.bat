@@ -1,9 +1,9 @@
 @echo off
 
 echo ==========================================
-echo Starting School Management System...
+echo Starting School Management System (No Docker)...
 echo ==========================================
 
-docker compose up --build
+call mvnw.cmd spring-boot:run
 
 pause

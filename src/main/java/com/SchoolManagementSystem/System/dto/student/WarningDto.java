@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
  * DTO for {@link Warning}
  */
 public record WarningDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
-                         LocalDate warningDate, String reason) implements Serializable {
+                         Long studentId, LocalDate warningDate, String reason) implements Serializable {
 }
