@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "b3e9b1d9-8137-4d6b-b461-12c8b0e8c8a1",
+		"name": "Library API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"librarian@example.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						}
+					}
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Libraries",
+			"item": [
+				{
+					"name": "Get Libraries",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/libraries", "host": ["{{base_url}}"], "path": ["api", "libraries"]}
+					}
+				},
+				{
+					"name": "Create Library",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Main Library\",\n    \"location\": \"Building A\"\n}",
+							"options": {"raw": {"language": "json"}}
+						},
+						"url": {"raw": "{{base_url}}/api/libraries", "host": ["{{base_url}}"], "path": ["api", "libraries"]}
+					}
+				},
+				{
+					"name": "Get Library",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/libraries/1", "host": ["{{base_url}}"], "path": ["api", "libraries", "1"]}
+					}
+				},
+				{
+					"name": "Update Library",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Library\"\n}",
+							"options": {"raw": {"language": "json"}}
+						},
+						"url": {"raw": "{{base_url}}/api/libraries/1", "host": ["{{base_url}}"], "path": ["api", "libraries", "1"]}
+					}
+				},
+				{
+					"name": "Delete Library",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/libraries/1", "host": ["{{base_url}}"], "path": ["api", "libraries", "1"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Get Books",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/books", "host": ["{{base_url}}"], "path": ["api", "books"]}
+					}
+				},
+				{
+					"name": "Create Book",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New Book\",\n    \"author\": \"John Doe\",\n    \"isbn\": \"1234567890\",\n    \"library_id\": 1,\n    \"total_copies\": 5\n}",
+							"options": {"raw": {"language": "json"}}
+						},
+						"url": {"raw": "{{base_url}}/api/books", "host": ["{{base_url}}"], "path": ["api", "books"]}
+					}
+				},
+				{
+					"name": "Get Book",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/books/1", "host": ["{{base_url}}"], "path": ["api", "books", "1"]}
+					}
+				},
+				{
+					"name": "Update Book",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Book\"\n}",
+							"options": {"raw": {"language": "json"}}
+						},
+						"url": {"raw": "{{base_url}}/api/books/1", "host": ["{{base_url}}"], "path": ["api", "books", "1"]}
+					}
+				},
+				{
+					"name": "Delete Book",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/books/1", "host": ["{{base_url}}"], "path": ["api", "books", "1"]}
+					}
+				},
+				{
+					"name": "Upload Cover",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cover",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {"raw": "{{base_url}}/api/books/1/upload-cover", "host": ["{{base_url}}"], "path": ["api", "books", "1", "upload-cover"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "Search Students",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {
+							"raw": "{{base_url}}/api/students/search?query=John",
+							"host": ["{{base_url}}"],
+							"path": ["api", "students", "search"],
+							"query": [{"key": "query", "value": "John"}]
+						}
+					}
+				},
+				{
+					"name": "Get Student",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/students/1", "host": ["{{base_url}}"], "path": ["api", "students", "1"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "Get Reservations",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reservations", "host": ["{{base_url}}"], "path": ["api", "reservations"]}
+					}
+				},
+				{
+					"name": "Create Reservation",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 1,\n    \"student_id\": 1\n}",
+							"options": {"raw": {"language": "json"}}
+						},
+						"url": {"raw": "{{base_url}}/api/reservations", "host": ["{{base_url}}"], "path": ["api", "reservations"]}
+					}
+				},
+				{
+					"name": "Fulfill Reservation",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reservations/1/fulfill", "host": ["{{base_url}}"], "path": ["api", "reservations", "1", "fulfill"]}
+					}
+				},
+				{
+					"name": "Cancel Reservation",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reservations/1/cancel", "host": ["{{base_url}}"], "path": ["api", "reservations", "1", "cancel"]}
+					}
+				},
+				{
+					"name": "Pending Reservations",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reservations/pending", "host": ["{{base_url}}"], "path": ["api", "reservations", "pending"]}
+					}
+				},
+				{
+					"name": "Student Reservations",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reservations/student/1", "host": ["{{base_url}}"], "path": ["api", "reservations", "student", "1"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Borrows",
+			"item": [
+				{
+					"name": "Get Borrows",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/borrows", "host": ["{{base_url}}"], "path": ["api", "borrows"]}
+					}
+				},
+				{
+					"name": "Borrow Book",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"book_id\": 1,\n    \"student_id\": 1,\n    \"due_date\": \"2023-12-31\"\n}",
+							"options": {"raw": {"language": "json"}}
+						},
+						"url": {"raw": "{{base_url}}/api/borrows", "host": ["{{base_url}}"], "path": ["api", "borrows"]}
+					}
+				},
+				{
+					"name": "Return Book",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/borrows/1/return", "host": ["{{base_url}}"], "path": ["api", "borrows", "1", "return"]}
+					}
+				},
+				{
+					"name": "Active Borrows",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/borrows/active", "host": ["{{base_url}}"], "path": ["api", "borrows", "active"]}
+					}
+				},
+				{
+					"name": "Returned Borrows",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/borrows/returned", "host": ["{{base_url}}"], "path": ["api", "borrows", "returned"]}
+					}
+				},
+				{
+					"name": "Overdue Borrows",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/borrows/overdue", "host": ["{{base_url}}"], "path": ["api", "borrows", "overdue"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Books Report",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reports/books", "host": ["{{base_url}}"], "path": ["api", "reports", "books"]}
+					}
+				},
+				{
+					"name": "Most Borrowed Books",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reports/most-borrowed-books", "host": ["{{base_url}}"], "path": ["api", "reports", "most-borrowed-books"]}
+					}
+				},
+				{
+					"name": "Currently Borrowed",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reports/currently-borrowed", "host": ["{{base_url}}"], "path": ["api", "reports", "currently-borrowed"]}
+					}
+				},
+				{
+					"name": "Overdue Books",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reports/overdue-books", "host": ["{{base_url}}"], "path": ["api", "reports", "overdue-books"]}
+					}
+				},
+				{
+					"name": "Student History",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reports/student-history/1", "host": ["{{base_url}}"], "path": ["api", "reports", "student-history", "1"]}
+					}
+				},
+				{
+					"name": "Reservation Stats",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}", "type": "text"}],
+						"url": {"raw": "{{base_url}}/api/reports/reservation-stats", "host": ["{{base_url}}"], "path": ["api", "reports", "reservation-stats"]}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

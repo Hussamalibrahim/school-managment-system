@@ -1,0 +1,50 @@
+package com.SchoolManagementSystem.system.mapper.user;
+
+import com.SchoolManagementSystem.system.dto.user.TeacherDto;
+import com.SchoolManagementSystem.system.entity.user.Teacher;
+
+public final class TeacherMapper {
+
+    private TeacherMapper() {
+    }
+
+    public static TeacherDto toDto(Teacher teacher) {
+        return new TeacherDto(
+                teacher.getId(),
+                teacher.getCreatedAt(),
+                teacher.getUpdatedAt(),
+                teacher.getDeletedAt(),
+                teacher.getNationalId(),
+                teacher.getFirstName(),
+                teacher.getLastName(),
+                teacher.getPhone(),
+                teacher.getAddress(),
+                teacher.getHireDate(),
+                teacher.getSpecialization()
+        );
+    }
+
+    public static Teacher toEntity(TeacherDto dto) {
+        Teacher teacher = new Teacher();
+
+        teacher.setNationalId(dto.nationalId());
+        teacher.setFirstName(dto.firstName());
+        teacher.setLastName(dto.lastName());
+        teacher.setPhone(dto.phone());
+        teacher.setAddress(dto.address());
+        teacher.setHireDate(dto.hireDate());
+        teacher.setSpecialization(dto.specialization());
+
+        return teacher;
+    }
+
+    public static void updateEntity(Teacher teacher, TeacherDto dto) {
+        teacher.setNationalId(dto.nationalId());
+        teacher.setFirstName(dto.firstName());
+        teacher.setLastName(dto.lastName());
+        teacher.setPhone(dto.phone());
+        teacher.setAddress(dto.address());
+        teacher.setHireDate(dto.hireDate());
+        teacher.setSpecialization(dto.specialization());
+    }
+}

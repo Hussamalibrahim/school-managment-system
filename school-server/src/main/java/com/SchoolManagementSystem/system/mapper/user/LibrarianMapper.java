@@ -1,0 +1,38 @@
+package com.SchoolManagementSystem.system.mapper.user;
+
+import com.SchoolManagementSystem.system.dto.user.LibrarianDto;
+import com.SchoolManagementSystem.system.entity.user.Librarian;
+
+public final class LibrarianMapper {
+
+     private LibrarianMapper() {
+     }
+
+     public static LibrarianDto toDto(Librarian librarian) {
+          return new LibrarianDto(
+                  librarian.getId(),
+                  librarian.getNationalId(),
+                  librarian.getFirstName(),
+                  librarian.getLastName(),
+                  librarian.getPhone(),
+                  librarian.getAddress(),
+                  librarian.getHireDate(),
+                  librarian.getCreatedAt(),
+                  librarian.getUpdatedAt(),
+                  librarian.getDeletedAt()
+          );
+     }
+
+     public static Librarian toEntity(LibrarianDto dto) {
+          Librarian librarian = new Librarian();
+
+          librarian.setNationalId(dto.nationalId());
+          librarian.setFirstName(dto.firstName());
+          librarian.setLastName(dto.lastName());
+          librarian.setPhone(dto.phone());
+          librarian.setAddress(dto.address());
+          librarian.setHireDate(dto.hireDate());
+
+          return librarian;
+     }
+}

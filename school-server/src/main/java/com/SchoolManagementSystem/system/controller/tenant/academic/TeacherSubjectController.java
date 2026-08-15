@@ -1,0 +1,45 @@
+package com.SchoolManagementSystem.system.controller.tenant.academic;
+
+import com.SchoolManagementSystem.system.dto.academic.SubjectDto;
+import com.SchoolManagementSystem.system.dto.academic.TeacherSubjectDto;
+import com.SchoolManagementSystem.system.dto.user.TeacherDto;
+import com.SchoolManagementSystem.system.service.academic.TeacherSubjectService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/teacher-subjects")
+public class TeacherSubjectController {
+
+    private final TeacherSubjectService teacherSubjectService;
+
+
+    @PostMapping("/assign/{teacherId}/{subjectId}")
+    public ResponseEntity<TeacherSubjectDto> connect(
+            @PathVariable Long teacherId,
+            @PathVariable Long subjectId) {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(teacherSubjectService.connectTeacherToSubject(teacherId, subjectId));
+    }
+    @GetMapping("/{teacherId}")
+    public ResponseEntity<List<SubjectDto>> getSubjectByTeacher(
+            @PathVariable Long teacherId) {
+
+        return ResponseEntity
+                .ok(teacherSubjectService.getSubjectByTeacherId(teacherId));
+    }
+    @GetMapping("/teach-subject/{subjectId}")
+    public ResponseEntity<List<TeacherDto>> getSubjectTeacher(
+            @PathVariable Long subjectId) {
+
+        return ResponseEntity
+                .ok(teacherSubjectService.getTeacherBySubjectId(subjectId));
+    }
+}

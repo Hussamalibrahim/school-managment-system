@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+          - id: school-service
+            uri: lb://school-service
+            predicates:
+              - Path=/api/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}

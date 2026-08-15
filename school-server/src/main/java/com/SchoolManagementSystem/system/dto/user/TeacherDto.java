@@ -1,0 +1,16 @@
+package com.SchoolManagementSystem.system.dto.user;
+
+import com.SchoolManagementSystem.system.entity.user.Teacher;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * DTO for {@link Teacher}
+ */
+public record TeacherDto(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt,
+                         String nationalId, String firstName, String lastName, String phone,
+                         String address, LocalDate hireDate,
+                         String specialization) implements Serializable {
+}

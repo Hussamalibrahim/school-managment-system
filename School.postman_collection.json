@@ -1,0 +1,3756 @@
+{
+  "info": {
+    "_postman_id": "72340a11-4fb3-4b0d-be48-4e26730a1914",
+    "name": "School",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42475676",
+    "_collection_link": "https://go.postman.co/collection/42475676-72340a11-4fb3-4b0d-be48-4e26730a1914?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "guardians",
+      "item": [
+        {
+          "name": "get-all",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/guardians",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "guardians"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/guardians/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "guardians",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/guardians/2",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "guardians",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/guardians/me",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "guardians",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "attendance",
+      "item": [
+        {
+          "name": "save-list-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"attendanceDate\": \"2026-07-22\",\r\n  \"students\": [\r\n    {\r\n      \"studentId\": 1,\r\n      \"attendanceStatus\": \"PRESENT\"\r\n    },\r\n    {\r\n      \"studentId\": 2,\r\n      \"attendanceStatus\": \"ABSENT\"\r\n    },\r\n    {\r\n      \"studentId\": 3,\r\n      \"attendanceStatus\": \"LATE\"\r\n    },\r\n    {\r\n      \"studentId\": 4,\r\n      \"attendanceStatus\": \"EXCUSED\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/attendance",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-all",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-student-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/student/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "student",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "save-one",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n  \"studentId\": 1,\r\n  \"attendanceDate\": \"2026-09-15\",\r\n  \"attendanceStatus\": \"PRESENT\" \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/attendance/test",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics-of-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/student/1/statistics",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "student",
+                "1",
+                "statistics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "search-for -student-who-exceeded-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/exceeded?status=PRESENT&limit=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "exceeded"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PRESENT"
+                },
+                {
+                  "key": "limit",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "guardian-see-one-student-exceeded",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/guardian/student/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "guardian",
+                "student",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "guardian-see-all-student-exceeded",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/attendance/guardian",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "attendance",
+                "guardian"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "student",
+      "item": [
+        {
+          "name": "getAll",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/students",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getById",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/students/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"registrationNumber\": \"ST001\",\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"gender\": \"Male\",\r\n  \"dateOfBirth\": \"2010-05-15\",\r\n  \"address\": \"Aleppo\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2024-09-01\",\r\n  \"phone\": \"0988888888\",\r\n  \"notes\": \"Updated\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/students/4",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/students/5",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "assignClass",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/students/1/assign-class/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "1",
+                "assign-class",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/students/me",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-subject",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/students/me-subject",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "me-subject"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me-attendance",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/students/me-attendance",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "students",
+                "me-attendance"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "staff",
+      "item": [
+        {
+          "name": "principal",
+          "item": [
+            {
+              "name": "deactivate",
+              "item": [
+                {
+                  "name": "byEmail",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authorization_secret}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base-url}}/{{school-name}}/auth/deactivate-account/by-email?email=aliss@test.com",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "{{school-name}}",
+                        "auth",
+                        "deactivate-account",
+                        "by-email"
+                      ],
+                      "query": [
+                        {
+                          "key": "email",
+                          "value": "aliss@test.com"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "By-id-and-type",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authorization_secret}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base-url}}/{{school-name}}/auth/deactivate-account/by-user?userId=1&userType=SECRETARY",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "{{school-name}}",
+                        "auth",
+                        "deactivate-account",
+                        "by-user"
+                      ],
+                      "query": [
+                        {
+                          "key": "userId",
+                          "value": "1"
+                        },
+                        {
+                          "key": "userType",
+                          "value": "SECRETARY"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "activate",
+              "item": [
+                {
+                  "name": "byEmail",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_secret_0w1u}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base-url}}/{{school-name}}/auth/activate-account/by-email?email=aliss@test.com",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "{{school-name}}",
+                        "auth",
+                        "activate-account",
+                        "by-email"
+                      ],
+                      "query": [
+                        {
+                          "key": "email",
+                          "value": "aliss@test.com"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "By-id-and-type",
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authorization_secret}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept-Language",
+                        "value": "ar",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base-url}}/{{school-name}}/auth/activate-account/by-user?userId=1&userType=SECRETARY",
+                      "host": [
+                        "{{base-url}}"
+                      ],
+                      "path": [
+                        "{{school-name}}",
+                        "auth",
+                        "activate-account",
+                        "by-user"
+                      ],
+                      "query": [
+                        {
+                          "key": "userId",
+                          "value": "1"
+                        },
+                        {
+                          "key": "userType",
+                          "value": "SECRETARY"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "create-teacher",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"role\": \"TEACHER\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"Ts-1031\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hassan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"0999999999\",\r\n  \"email\": \"alii@dtest.com\",// unique, requied\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\",\r\n  \"specialization\": \"Math\"\r\n}\r\n// prinipel only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base-url}}/sera/principal/create-user",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "sera",
+                    "principal",
+                    "create-user"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "create-secertary",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"role\": \"SECRETARY\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"T-SECRETARY\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hasssan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"09999999w99\",\r\n  \"email\": \"SECRETARY2@test.com\",// unique\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\"\r\n}\r\n// prinipel only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base-url}}/sera/principal/create-user",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "sera",
+                    "principal",
+                    "create-user"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "me-profile",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/principal/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "principal",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "teacher",
+          "item": [
+            {
+              "name": "me-info",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// teacher only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/teacher/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Teacher-students",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// teacher only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/teacher/my-students",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher",
+                    "my-students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "teacher-schedule",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/schedules/teacher/3",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "schedules",
+                    "teacher",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/teacher",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "my-schedule",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// teacher only"
+                },
+                "url": {
+                  "raw": "{{test-school}}/teacher/my-schedule",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher",
+                    "my-schedule"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "my-students",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// teacher only"
+                },
+                "url": {
+                  "raw": "{{test-school}}/teacher/my-students",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher",
+                    "my-students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-student-by-teacher-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/teacher/teacher/1/students",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher",
+                    "teacher",
+                    "1",
+                    "students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "teacher-of-subject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/teacher-subjects/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher-subjects",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "subject-of-teacher",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/teacher-subjects/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher-subjects",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "secretary",
+          "item": [
+            {
+              "name": "addStudent",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"registrationNumber\": \"S-student1\",\r\n  \"firstName\": \"student1\",\r\n  \"lastName\": \"Ahmed\",\r\n  \"phone\": \"0790000000\",\r\n  \"email\": \"student1@test.com\",// unique\r\n  \"gender\": \"MALE\",\r\n  \"gradeLevel\": \"GRADE_7\",\r\n  \"dateOfBirth\": \"2010-05-10\",\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"enrollmentDate\": \"2026-01-01\",\r\n  \"notes\": \"Good student\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/secretary/student",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "secretary",
+                    "student"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "addGuardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nationalId\": \"123\",// unique\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"07911121111\",\r\n  \"email\": \"guiardian2@test.com\",// unique\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"occupation\": \"Engineer\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/secretary/guardian",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "secretary",
+                    "guardian"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "connect-guardaid-to-student",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/student/3/guardian/2?primaryGuardian=false",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "student",
+                    "3",
+                    "guardian",
+                    "2"
+                  ],
+                  "query": [
+                    {
+                      "key": "primaryGuardian",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-guardian-by-student",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/student/3",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "student",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-student-by-guardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/guardian/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "guardian",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-guardians-without-students",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/guardians-without-students",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "guardians-without-students"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-students-without-guardians",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/students-without-guardians",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "students-without-guardians"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "change-primary-guardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/student/3/primary-guardian/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "student",
+                    "3",
+                    "primary-guardian",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "remove-relation",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/student-guardian/student/3/guardian/2",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "student-guardian",
+                    "student",
+                    "3",
+                    "guardian",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "academic",
+      "item": [
+        {
+          "name": "subjects",
+          "item": [
+            {
+              "name": "add-subjects",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Math7\",\r\n  \"gradeLevel\" :\"GRADE_7\",\r\n  \"semester\": \"FIRST\"\r\n}\r\n// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/subjects",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "subjects"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "deleteSubject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/subjects/3",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "subjects",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update-subject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"schoolId\": 1,\r\n  \"name\": \"Math\",\r\n  \"description\": \"Mathematics subject\"\r\n}\r\n\r\n// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/subjects/3",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "subjects",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-all-subject",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/subjects",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "subjects"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-subject-by-id",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/subjects/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "subjects",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "class-schedule",
+          "item": [
+            {
+              "name": "get-class-schedule",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// all have access",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/schedules/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "schedules",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-all-schedule",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// all have accses",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/schedules",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "schedules"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "add-extra-peroid",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/schedules/class/1/extra-period/FRIDAY",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "schedules",
+                    "class",
+                    "1",
+                    "extra-period",
+                    "FRIDAY"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "assign-teacher-to-schedule",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/schedules/1/assign?teacherId=1&subjectId=1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "schedules",
+                    "1",
+                    "assign"
+                  ],
+                  "query": [
+                    {
+                      "key": "teacherId",
+                      "value": "1"
+                    },
+                    {
+                      "key": "subjectId",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-teacher-schedule",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/schedules/teacher/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "schedules",
+                    "teacher",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "class",
+          "item": [
+            {
+              "name": "get-all-class",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/classes",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "classes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "add-class",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"gradeLevel\": \"GRADE_8\",\r\n  \"section\": \"A\",\r\n  \"location\": \"Building A - Floor 1\",\r\n  \"capacity\": 30\r\n}\r\n// principal only",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/classes",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "classes"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-student-exist-in-class",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/classes/student/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "classes",
+                    "student",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "connect-teacher-to-subject",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0uw0}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/teacher-subjects/connect/1/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "teacher-subjects",
+                "connect",
+                "1",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n//   \"email\": \"SECRETARY2@test.com\",\r\n  \"email\": \"student1@test.com\", \r\n//   \"email\": \"secretary\", \r\n//   \"email\" : \"guiardian2@test.com\",\r\n  \"password\": \"1234\"\r\n}\r\n// created by principal",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/auth/login",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "principal-loggin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"principal5@gmail.com\",\r\n  \"password\": \"123456\"\r\n}\r\n// Created by system",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/{{school-name}}/auth/login",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "{{school-name}}",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"firstName\": \"principal\",\r\n  \"lastName\": \"principal\",\r\n  \"email\": \"principal5@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"nationalId\": \"1234658s52A\",\r\n  \"schoolName\": \"sera\",\r\n  \"educationStages\": [\"ELEMENTARY\",\"MIDDLE\"],\r\n  \"schoolType\": \"PUBLIC\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/auth/register",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "student-log",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"st1003\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/{{school-name}}/auth/login",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "{{school-name}}",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "school",
+      "item": [
+        {
+          "name": "define-school",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{  \r\n  \"name\": \"school name\",\r\n  \"schoolType\": \"PUBLIC\", // [PUBLIC, PRIVATE]\r\n  \"educationStages\": [\"ELEMENTARY\",\"MIDDLE\"]// ELEMENTARY, MIDDLE, HIGH\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/school/define-school",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "school",
+                "define-school"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"edit the name\",\r\n    \"address\": \"Syria Daraa\",\r\n    \"phone\": \"0984646\",\r\n    \"logoPath\": \"any where\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/school/2",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "school",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/school/2",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "school",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "file",
+      "item": [
+        {
+          "name": "upload",
+          "item": [
+            {
+              "name": "file-to-student",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "request",
+                      "value": "{\n  \"studentId\": 1,\n  \"fileType\": \"PROFILE_IMAGE\"\n}",
+                      "type": "text",
+                      "uuid": "aa128a68-de69-4dd9-832c-71a8d1d9cf9d",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "0ceafa5c-7596-446e-8637-cb5027ba19c0",
+                      "contentType": "image/png",
+                      "src": "/D:/University/بنيان 1/نظري/3erk6ksyhcpf1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{test-school}}/files/upload/student",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "files",
+                    "upload",
+                    "student"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "file-to-guardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "request",
+                      "value": "{\n  \"guardianId\": 1,\n  \"fileType\": \"IMAGE\"\n}",
+                      "type": "text",
+                      "uuid": "aa128a68-de69-4dd9-832c-71a8d1d9cf9d",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "0ceafa5c-7596-446e-8637-cb5027ba19c0",
+                      "contentType": "image/png",
+                      "src": "/D:/University/بنيان 1/نظري/3erk6ksyhcpf1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{test-school}}/files/upload/guardian",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "files",
+                    "upload",
+                    "guardian"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "file-to-user",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_0yzh}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "request",
+                      "value": "{\n  \"employeeId\": 1,\n  \"employeeType\": \"TEACHER\",\n  \"fileType\": \"IMAGE\"\n}",
+                      "type": "text",
+                      "uuid": "aa128a68-de69-4dd9-832c-71a8d1d9cf9d",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "0ceafa5c-7596-446e-8637-cb5027ba19c0",
+                      "contentType": "image/png",
+                      "src": "/D:/University/بنيان 1/نظري/3erk6ksyhcpf1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{test-school}}/files/upload/user",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "files",
+                    "upload",
+                    "user"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "get-file-by-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0yzh}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/files/3",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "files",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "see-file-owner",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_0yzh}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/files/owner?ownerType=STUDENT&ownerId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "files",
+                "owner"
+              ],
+              "query": [
+                {
+                  "key": "ownerType",
+                  "value": "STUDENT"
+                },
+                {
+                  "key": "ownerId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "download-file",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{json_web_token_1auz}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/files/download/3",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "files",
+                "download",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-file",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_1auz}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/files/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "files",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "assessments",
+      "item": [
+        {
+          "name": "result",
+          "item": [
+            {
+              "name": "save-results",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"assessmentId\": 1,\r\n  \"results\": [\r\n    {\r\n      \"studentId\": 3,\r\n      \"score\": 9.0\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/assessment-results",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"assessmentId\": 1,\r\n  \"results\": [{\r\n      \"studentId\": 3,\r\n      \"score\": 11.0\r\n    }] \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/assessment-results",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-id",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/assessment-results/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-result-for-guardian",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/assessment-results/guardian/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results",
+                    "guardian",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "student-(me-result)",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/assessment-results/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "result-for-one-sudent-guardian",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/assessment-results/guardian/student/3",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results",
+                    "guardian",
+                    "student",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "New Request",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": ""
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "create-continues-Quiz",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"classScheduleId\": 1,\r\n  \"name\": \"Quiz 1\",\r\n  \"category\": \"QUIZ\",\r\n  \"maxScore\": 20,\r\n  \"weight\": 10,\r\n  \"assessmentDate\": \"2026-01-19\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/assessments",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-assessments",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{test-school}}/assessments/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{test-school}}/assessments",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-teacher-assessments",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/assessments/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "for-teacher-to-get-his-assessments",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/assessments/me",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-assessments-by-teacher-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/assessments/teacher/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "teacher",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-assessments-by-subject-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/assessments/subject/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "subject",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-assessments-by-class-id-and-semester",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/assessments/class/1?semesterId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "class",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "semesterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-assessments-by-teacher-subject-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/assessments/class/1?semesterId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "assessments",
+                "class",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "semesterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "semester",
+      "item": [
+        {
+          "name": "create-semester",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"semesterName\": \"FIRST\",\r\n  \"startDate\": \"2026-06-05\",\r\n  \"endDate\": \"2026-09-05\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/semesters",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "semesters"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "exam",
+      "item": [
+        {
+          "name": "result",
+          "item": [
+            {
+              "name": "get-all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/exam-results",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/exam-results/4",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "create result",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"examId\": 6,\r\n  \"results\": [\r\n    {\r\n      \"studentId\": 3,\r\n      \"score\": 18\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/exam-results",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-all-result-for-exam",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/exam-results/exam?examId=6",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results",
+                    "exam"
+                  ],
+                  "query": [
+                    {
+                      "key": "examId",
+                      "value": "6"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete-exam-result",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/exam-results/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "create-exam",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"schoolClassId\": 1,\r\n  \"subjectId\": 4,\r\n  \"category\": \"FINAL\",\r\n  \"maxScore\": 40,\r\n  \"weight\": 40,\r\n  \"examDateTime\": \"2026-07-30T05:00:00\",\r\n  \"durationMinutes\": 90\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/exams",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-exam",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"schoolClassId\": 1,\r\n  \"subjectId\": 3,\r\n  \"category\": \"FINAL\",\r\n  \"maxScore\": 40,\r\n  \"weight\": 40,\r\n  \"examDateTime\": \"2026-07-30T09:00:00\",\r\n  \"durationMinutes\": 90\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/exams/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{test-school}}/exams/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{test-school}}/exams/2",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-all",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/exams",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-class-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/exams/class?classId=1&semesterName=FIRST",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams",
+                "class"
+              ],
+              "query": [
+                {
+                  "key": "classId",
+                  "value": "1"
+                },
+                {
+                  "key": "semesterName",
+                  "value": "FIRST"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-subject-Exam",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/exams/subject?subjectId=1&semesterName=FIRST",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams",
+                "subject"
+              ],
+              "query": [
+                {
+                  "key": "subjectId",
+                  "value": "1"
+                },
+                {
+                  "key": "semesterName",
+                  "value": "FIRST"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-exam-for-class",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/exams/teacher?classId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "exams",
+                "teacher"
+              ],
+              "query": [
+                {
+                  "key": "classId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "supabase_service_role_api_key_0yzh",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1auz",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_1auz",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0w1u",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_0uw0",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1dv1",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_1dv1",
+      "secret": true
+    },
+    {
+      "key": "supabase_service_role_api_key_11cg",
+      "secret": true
+    },
+    {
+      "key": "base-url",
+      "value": ""
+    },
+    {
+      "key": "school-name",
+      "value": ""
+    },
+    {
+      "key": "test-school",
+      "value": ""
+    }
+  ]
+}
