@@ -41,7 +41,7 @@ The project follows a **Microservices Architecture** pattern:
 ---
 
 ## Technologies
-
+![school-management-system.png](reports/school-management-system.png)
 ### Backend
 
 - Java 17

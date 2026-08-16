@@ -17,10 +17,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AcademicYear extends SchoolEntity
 {
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
-
     @Column(name = "name", nullable = false)
     private String name;
 
