@@ -33,9 +33,9 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain chain) throws ServletException, IOException {
 
         String gateway = request.getHeader("X-GATEWAY");
-        logger.info("Gateway header value: {}"+ gateway);
-        logger.info("Gateway header value: {}"+ gatewayKey);
-        if(!gatewayKey.equals(gateway)) {
+        logger.info("Gateway header value: {}" + gateway);
+        logger.info("Gateway header value: {}" + gatewayKey);
+        if (!gatewayKey.equals(gateway)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -44,22 +44,22 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
         String role = request.getHeader("X-ROLE");
         String schoolId = request.getHeader("X-SCHOOL-ID");
 
-        if(userId != null && role != null){
+        if (userId != null && role != null && schoolId != null) {
             TenantContext.setSchoolId(Long.parseLong(schoolId));
             UserPrincipal principal = new UserPrincipal(Long.parseLong(userId), role, Long.parseLong(schoolId));
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            principal,
-                            null,
-                            List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+                    principal,
+                    null,
+                    principal.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);}
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         try {
 
-            chain.doFilter(request,response);
+            chain.doFilter(request, response);
 
-        }
-        finally {
+        } finally {
 
             TenantContext.clear();
             SecurityContextHolder.clearContext();

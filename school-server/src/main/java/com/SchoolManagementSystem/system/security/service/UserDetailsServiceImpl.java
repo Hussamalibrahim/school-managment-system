@@ -27,10 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         throw new ValidationException(ErrorCode.USE_TENANT_LOGIN);
     }
 
-    public UserDetails loadUserByUsernameAndSchool(
-            String email,
-            String schoolCode) {
-
+    public UserDetails loadUserByUsernameAndSchool(String email, String schoolCode) {
 
         School school = schoolRepository.findByCode(schoolCode)
                         .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));
@@ -45,9 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new UserPrincipal(user);
     }
-    public UserDetails loadUserByUsernameAndSchool(
-            String email,
-            Long schoolId) {
+    public UserDetails loadUserByUsernameAndSchool(String email, Long schoolId) {
 
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));

@@ -3,12 +3,15 @@ package com.SchoolManagementSystem.system.controller.tenant.user;
 import com.SchoolManagementSystem.system.dto.academic.ClassScheduleDto;
 import com.SchoolManagementSystem.system.dto.academic.SchoolClassDto;
 import com.SchoolManagementSystem.system.dto.student.StudentDto;
+import com.SchoolManagementSystem.system.dto.student.WarningDto;
+import com.SchoolManagementSystem.system.dto.student.request.CreateWarningDto;
 import com.SchoolManagementSystem.system.dto.user.TeacherDto;
 import com.SchoolManagementSystem.system.security.UserPrincipal;
 import com.SchoolManagementSystem.system.service.academic.AssessmentService;
 import com.SchoolManagementSystem.system.service.academic.ClassScheduleService;
 import com.SchoolManagementSystem.system.service.academic.SchoolClassService;
 import com.SchoolManagementSystem.system.service.student.StudentService;
+import com.SchoolManagementSystem.system.service.student.WarningService;
 import com.SchoolManagementSystem.system.service.user.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,4 +67,6 @@ public class TeacherController {
     {
         return ResponseEntity.ok(teacherService.getAll());
     }
+
+
 }

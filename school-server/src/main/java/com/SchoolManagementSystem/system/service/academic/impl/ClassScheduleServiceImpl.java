@@ -132,18 +132,14 @@ public class ClassScheduleServiceImpl implements ClassScheduleService {
     @Transactional
     public ClassScheduleDto assignTeacher(Long scheduleId, Long teacherId, Long subjectId) {
 
-        ClassSchedule schedule =
-                classSchedulesRepo.findById(scheduleId)
+        ClassSchedule schedule = classSchedulesRepo.findById(scheduleId)
                         .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_SCHEDULE_NOT_FOUND));
 
-        Teacher teacher =
-                teacherRepository.findById(teacherId)
+        Teacher teacher = teacherRepository.findById(teacherId)
                         .orElseThrow(() -> new NotFoundException(ErrorCode.TEACHER_NOT_FOUND));
 
         if (!teacherSubjectRepository.existsByTeacherIdAndSubjectId(teacherId, subjectId)) {
-            throw new ValidationException(
-                    ErrorCode.TEACHER_DOES_NOT_TEACH_SUBJECT
-            );
+            throw new ValidationException(ErrorCode.TEACHER_DOES_NOT_TEACH_SUBJECT);
         }
         if (classSchedulesRepo.existsByTeacherIdAndDayOfWeekAndPeriodNumberAndIdNot(
                 teacherId,

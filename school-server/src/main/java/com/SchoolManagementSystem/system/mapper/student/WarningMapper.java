@@ -12,11 +12,13 @@ public final class WarningMapper {
 
         return new WarningDto(
                 warning.getId(),
+                warning.getStudent() != null ? warning.getStudent().getSchool().getId() : null,
+                warning.getReason(),
+                warning.getMessage(),
+                warning.getWarningDate(),
                 warning.getCreatedAt(),
                 warning.getUpdatedAt(),
-                warning.getDeletedAt(),
-                warning.getWarningDate(),
-                warning.getReason()
+                warning.getDeletedAt()
         );
     }
 
@@ -26,11 +28,13 @@ public final class WarningMapper {
         Warning warning = new Warning();
 
         warning.setId(dto.id());
+        warning.setReason(dto.reason());
+        warning.setWarningDate(dto.warningDate());
+        warning.setMessage(dto.message());
+        warning.setWarningDate(dto.warningDate());
         warning.setCreatedAt(dto.createdAt());
         warning.setUpdatedAt(dto.updatedAt());
         warning.setDeletedAt(dto.deletedAt());
-        warning.setWarningDate(dto.warningDate());
-        warning.setReason(dto.reason());
 
         return warning;
     }

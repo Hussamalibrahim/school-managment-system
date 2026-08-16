@@ -12,82 +12,121 @@ import java.util.List;
 public class UserPrincipal implements UserDetails {
 
     private AuthUser authUser;
-    private Long refId;
-    private String role;
-    private Long schoolId;
-    public UserPrincipal(
-            Long refId,
-            String role,
-            Long schoolId){
 
+    private final Long refId;
+    private final String role;
+    private final Long schoolId;
+
+    public UserPrincipal(Long refId, String role, Long schoolId) {
         this.refId = refId;
         this.role = role;
         this.schoolId = schoolId;
-
-    } public UserPrincipal(
-            AuthUser authUser){
-        this.authUser = authUser;
     }
+
+    public UserPrincipal(AuthUser authUser) {
+        this.authUser = authUser;
+        this.refId = authUser.getRefId();
+        this.role = authUser.getRole().name();
+        this.schoolId = authUser.getSchool() != null ? authUser.getSchool().getId() : null;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(
-                new SimpleGrantedAuthority("ROLE_" + authUser.getRole().name())
-        );
+        return List.of(new SimpleGrantedAuthority("ROLE_" + getRole().name()));
     }
+
 
     @Override
     public String getPassword() {
+        if (authUser == null) {
+            return null;
+        }
         return authUser.getPassword();
     }
 
-    public Long getSchoolId(){
-        return authUser.getSchool() != null
-                ? authUser.getSchool().getId()
-                : null;
-    }
 
-    public String getSchoolCode(){
-        return authUser.getSchool() != null
-                ? authUser.getSchool().getCode()
-                : null;
-    }
     @Override
     public String getUsername() {
+
+        if (authUser == null) {
+            return String.valueOf(refId);
+        }
+
         return authUser.getEmail();
     }
 
-    public Long getRefId() {
-        return authUser.getRefId();
+
+    public Long getSchoolId() {
+
+        if (authUser != null) {
+            return authUser.getSchool() != null ? authUser.getSchool().getId() : null;
+        }
+
+        return schoolId;
     }
+
+
+    public String getSchoolCode() {
+
+        if (authUser == null) {
+            return null;
+        }
+        return authUser.getSchool() != null ? authUser.getSchool().getCode() : null;
+    }
+
+
+    public Long getRefId() {
+
+        if (authUser != null) {
+            return authUser.getRefId();
+        }
+
+        return refId;
+    }
+
+
+    public Role getRole() {
+
+        if (authUser != null) {
+            return authUser.getRole();
+        }
+
+        return Role.valueOf(role);
+    }
+
+
+    public boolean hasRole(String role) {
+
+        return getRole()
+                .name()
+                .equalsIgnoreCase(role);
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
 
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+
     @Override
     public boolean isEnabled() {
+        if (authUser == null) {
+            return true;
+        }
         return Boolean.TRUE.equals(authUser.getEnabled());
-    }
-
-    public Role getRole() {
-        return authUser.getRole();
-    }
-
-
-
-    public boolean hasRole(String role) {
-        return authUser.getRole().name().equalsIgnoreCase(role);
     }
 }

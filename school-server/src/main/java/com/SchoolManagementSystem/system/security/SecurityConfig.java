@@ -176,6 +176,12 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/*/assessment-results/**")
                                 .hasAnyRole("TEACHER", "PRINCIPAL")
 
+                                .requestMatchers(HttpMethod.POST, "/api/*/warnings").hasRole("TEACHER")
+                                .requestMatchers(HttpMethod.GET, "/api/*/warnings/my-children").hasRole("GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/*/warnings/statistics").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/*/warnings/*").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/warnings/*").hasRole("PRINCIPAL")
+
 
                                 .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/guardian/me")
                                 .hasRole("GUARDIAN")

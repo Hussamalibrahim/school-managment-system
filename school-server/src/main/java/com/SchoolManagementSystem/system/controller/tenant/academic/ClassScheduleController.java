@@ -32,7 +32,8 @@ public class ClassScheduleController {
     }
 
     @PostMapping("/class/{classId}/extra-period/{day}")
-    public ResponseEntity<List<ClassScheduleDto>> addExtraPeriod(@PathVariable Long classId, @PathVariable DayOfWeek day) {
+    public ResponseEntity<List<ClassScheduleDto>> addExtraPeriod(
+            @PathVariable Long classId, @PathVariable DayOfWeek day) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(classScheduleService.addExtraPeriod(classId, day));
