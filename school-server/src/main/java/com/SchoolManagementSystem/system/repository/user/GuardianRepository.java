@@ -15,4 +15,6 @@ public interface GuardianRepository extends JpaRepository<Guardian, Long>
     boolean existsByNationalIdAndIdNot(String nationalId, Long id);
 
     boolean existsByNationalId(String nationalId);
+
+    long countBySchoolId(Long schoolId);
 }

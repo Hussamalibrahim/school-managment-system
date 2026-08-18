@@ -1,52 +1,22 @@
-package com.SchoolManagementSystem.system.security.controller;
+package com.SchoolManagementSystem.system.controller.admin;
 
-import com.SchoolManagementSystem.system.entity.enumeration.UserType;
-import com.SchoolManagementSystem.system.security.auth.TenantAuthenticationToken;
-import com.SchoolManagementSystem.system.security.dto.AuthRequest;
-import com.SchoolManagementSystem.system.security.dto.AuthResponse;
-import com.SchoolManagementSystem.system.security.dto.AuthUserDto;
-import com.SchoolManagementSystem.system.security.service.AuthUserService;
-import com.SchoolManagementSystem.system.security.service.JwtService;
+import com.SchoolManagementSystem.system.dto.auth.request.AdminLoginRequest;
+import com.SchoolManagementSystem.system.dto.auth.response.AdminAuthResponse;
+import com.SchoolManagementSystem.system.service.auth.AdminAuthService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/admin/auth")
 @RequiredArgsConstructor
 public class AdminAuthController {
 
-    private final AuthenticationManager authManager;
-    private final AuthUserService authUserService;
-    private final JwtService jwtService;
+    private final AdminAuthService adminAuthService;
 
     @PostMapping("/login")
-    public AuthResponse login(
-            @RequestBody AuthRequest request) {
+    public ResponseEntity<AdminAuthResponse> login(@RequestBody AdminLoginRequest request) {
 
-        authManager.authenticate(
-                new TenantAuthenticationToken(
-                        request.email(),
-                        request.password(),
-                        null
-                )
-        );
-
-        AuthUserDto user =
-                authUserService.findByEmailAndSchool(
-                        request.email(),
-                        null);
-
-        String token = jwtService.generateToken(user);
-
-        return new AuthResponse(
-                token,
-                user.role().name(),
-                null,
-                null);
+        return ResponseEntity.ok(adminAuthService.login(request));
     }
 }

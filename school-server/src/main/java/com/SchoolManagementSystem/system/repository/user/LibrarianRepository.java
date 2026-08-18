@@ -12,4 +12,6 @@ public interface LibrarianRepository extends JpaRepository<Librarian, Long>
     Optional<Librarian> findByNationalId(String nationalId);
 
     boolean existsByNationalId(String nationalId);
+
+    long countBySchoolId(Long schoolId);
 }

@@ -1,4 +1,8 @@
 package com.SchoolManagementSystem.system.dto.communication;
 
-public class NotificationTopicsDto {
+import com.SchoolManagementSystem.system.dto.communication.respones.NotificationTopicDto;
+
+import java.util.List;
+
+public record NotificationTopicsDto(List<NotificationTopicDto> topics) {
 }

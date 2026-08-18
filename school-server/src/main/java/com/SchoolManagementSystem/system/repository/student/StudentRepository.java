@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.system.repository.student;
 
+import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.system.entity.enumeration.WarningReason;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -46,4 +47,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findStudentsByWarningReason(
             @Param("reason") WarningReason reason
     );
+
+    long countBySchoolId(Long schoolId);
+
+    List<Student> findByGradeLevel(GradeLevel gradeLevel);
 }

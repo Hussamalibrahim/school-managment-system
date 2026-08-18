@@ -1,4 +1,11 @@
 package com.SchoolManagementSystem.system.dto.communication.respones;
 
-public class NotificationTopicDto {
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public record NotificationTopicDto(
+        Long id,
+        String title,
+        String content,
+        LocalDateTime getCreatedAt) {
 }

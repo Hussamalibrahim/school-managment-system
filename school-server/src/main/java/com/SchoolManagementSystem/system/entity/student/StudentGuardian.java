@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.entity.student;
 
-import com.SchoolManagementSystem.system.entity.SchoolEntity;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import com.SchoolManagementSystem.system.entity.user.Guardian;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

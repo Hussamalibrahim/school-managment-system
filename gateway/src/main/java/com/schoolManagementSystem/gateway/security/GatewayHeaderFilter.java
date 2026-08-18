@@ -34,7 +34,6 @@ public class GatewayHeaderFilter implements GlobalFilter {
                         .build();
 
         log.info("Added X-GATEWAY header with value: {}", gatewayKey);
-        log.info("Added X-GATEWAY header with value: {}", modified.toString());
         return chain.filter(modified);
     }
 }

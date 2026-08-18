@@ -42,4 +42,9 @@ public class JwtService {
     public Long getSchoolId(String token) {
         return extractClaims(token).get("schoolId", Long.class);
     }
+
+    public boolean isAdminToken(String token) {
+        Boolean admin = extractClaims(token).get("admin", Boolean.class);
+        return Boolean.TRUE.equals(admin);
+    }
 }

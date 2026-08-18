@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.system.mapper.academic;
 
 import com.SchoolManagementSystem.system.dto.academic.SemesterDto;
+import com.SchoolManagementSystem.system.dto.academic.request.SemesterUpdateRequest;
 import com.SchoolManagementSystem.system.entity.academic.Semester;
 
 public final class SemesterMapper {
@@ -34,7 +35,7 @@ public final class SemesterMapper {
 
         return semester;
     }
-    public static void updateEntity(Semester semester, SemesterDto dto) {
+    public static void updateEntity(Semester semester, SemesterUpdateRequest dto) {
 
         semester.setSemesterName(dto.semesterName());
         semester.setStartDate(dto.startDate());

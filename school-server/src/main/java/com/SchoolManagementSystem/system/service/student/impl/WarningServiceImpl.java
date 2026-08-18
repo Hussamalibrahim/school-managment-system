@@ -16,6 +16,7 @@ import com.SchoolManagementSystem.system.repository.academic.ClassScheduleReposi
 import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.repository.student.WarningRepository;
+import com.SchoolManagementSystem.system.service.communication.impl.WarningNotificationServiceImpl;
 import com.SchoolManagementSystem.system.service.student.WarningService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,12 +34,12 @@ public class WarningServiceImpl implements WarningService {
     private final StudentRepository studentRepository;
     private final ClassScheduleRepository classScheduleRepository;
     private final StudentGuardianRepository studentGuardianRepository;
+    private final WarningNotificationServiceImpl warningNotificationService;
 
+    //TODO should remove it
     @Override
     public WarningDto save(WarningDto dto) {
-        Warning warning = WarningMapper.toEntity(dto);
-        warning = warningRepository.save(warning);
-        return WarningMapper.toDto(warning);
+        return null;
     }
 
     @Override
@@ -97,7 +98,11 @@ public class WarningServiceImpl implements WarningService {
         warning.setMessage(dto.message());
         warning.setWarningDate(LocalDate.now());
 
-        return WarningMapper.toDto(warningRepository.save(warning));
+        Warning savedWarning = warningRepository.save(warning);
+
+        warningNotificationService.sendWarningNotification(student, dto.message());
+
+        return WarningMapper.toDto(savedWarning);
     }
 
     @Override
@@ -120,7 +125,8 @@ public class WarningServiceImpl implements WarningService {
                     return new GuardianStudentWarningsDto(
                             student.getId(),
                             student.getFirstName() + " " + student.getLastName(),
-                            warnings);}).toList();
+                            warnings);
+                }).toList();
     }
 
     @Override

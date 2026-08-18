@@ -1,6 +1,4 @@
-package com.SchoolManagementSystem.system.security.controller;
-
-
+package com.SchoolManagementSystem.system.controller.publicController;
 
 import com.SchoolManagementSystem.system.dto.school.request.SchoolRegisterRequest;
 import com.SchoolManagementSystem.system.service.school.SchoolService;
@@ -26,5 +24,4 @@ public class PublicController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
-
 }

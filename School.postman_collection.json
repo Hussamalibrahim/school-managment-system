@@ -120,6 +120,34 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "me-kids",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/guardians/me-kids",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "guardians",
+                "me-kids"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -533,13 +561,13 @@
               }
             },
             "url": {
-              "raw": "{{test-school}}/students/1",
+              "raw": "{{test-school}}/students/3",
               "host": [
                 "{{test-school}}"
               ],
               "path": [
                 "students",
-                "1"
+                "3"
               ]
             }
           },
@@ -606,15 +634,15 @@
             "method": "PUT",
             "header": [],
             "url": {
-              "raw": "{{test-school}}/students/1/assign-class/1",
+              "raw": "{{test-school}}/students/3/assign-class/3",
               "host": [
                 "{{test-school}}"
               ],
               "path": [
                 "students",
-                "1",
+                "3",
                 "assign-class",
-                "1"
+                "3"
               ]
             }
           },
@@ -916,7 +944,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"role\": \"TEACHER\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"Ts-1031\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hassan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"0999999999\",\r\n  \"email\": \"alii@dtest.com\",// unique, requied\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\",\r\n  \"specialization\": \"Math\"\r\n}\r\n// prinipel only",
+                  "raw": "{\r\n  \"role\": \"TEACHER\", // PRINCIPAL,SECRETARY,LIBRARIAN,TEACHER,STUDENT,GUARDIAN\r\n  \"nationalId\": \"Tes-1031\",// unique\r\n  \"firstName\": \"Ali\",\r\n  \"lastName\": \"Hassan\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"0999999999\",\r\n  \"email\": \"teacher@test.com\",// unique, requied\r\n  \"address\": \"Damascus\",\r\n  \"hireDate\": \"2024-01-01\",\r\n  \"specialization\": \"Math\"\r\n}\r\n// prinipel only",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -924,12 +952,11 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base-url}}/sera/principal/create-user",
+                  "raw": "{{test-school}}/principal/create-user",
                   "host": [
-                    "{{base-url}}"
+                    "{{test-school}}"
                   ],
                   "path": [
-                    "sera",
                     "principal",
                     "create-user"
                   ]
@@ -1377,7 +1404,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"nationalId\": \"123\",// unique\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"07911121111\",\r\n  \"email\": \"guiardian2@test.com\",// unique\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"occupation\": \"Engineer\"\r\n}",
+                  "raw": "{\r\n  \"nationalId\": \"12231223\",// unique\r\n  \"firstName\": \"Mohammad\",\r\n  \"lastName\": \"Ali\",\r\n  \"phone\": \"0791121221111\",\r\n  \"email\": \"guiardian8@test.com\",// unique\r\n  \"address\": \"Amman\",\r\n  \"status\": \"ACTIVE\",\r\n  \"occupation\": \"Engineer\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1422,7 +1449,7 @@
                   }
                 },
                 "url": {
-                  "raw": "{{test-school}}/student-guardian/student/3/guardian/2?primaryGuardian=false",
+                  "raw": "{{test-school}}/student-guardian/student/3/guardian/8?primaryGuardian=false",
                   "host": [
                     "{{test-school}}"
                   ],
@@ -1431,7 +1458,7 @@
                     "student",
                     "3",
                     "guardian",
-                    "2"
+                    "8"
                   ],
                   "query": [
                     {
@@ -1658,7 +1685,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"Math7\",\r\n  \"gradeLevel\" :\"GRADE_7\",\r\n  \"semester\": \"FIRST\"\r\n}\r\n// principal only",
+                  "raw": "{\r\n  \"name\": \"Math7\",\r\n  \"gradeLevel\" :\"GRADE_7\",\r\n  \"semesterName\": \"FIRST\"\r\n}\r\n// principal only",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1991,7 +2018,7 @@
                   }
                 },
                 "url": {
-                  "raw": "{{test-school}}/schedules/1/assign?teacherId=1&subjectId=1",
+                  "raw": "{{test-school}}/schedules/1/assign?teacherId=9&subjectId=5",
                   "host": [
                     "{{test-school}}"
                   ],
@@ -2003,11 +2030,11 @@
                   "query": [
                     {
                       "key": "teacherId",
-                      "value": "1"
+                      "value": "9"
                     },
                     {
                       "key": "subjectId",
-                      "value": "1"
+                      "value": "5"
                     }
                   ]
                 }
@@ -2127,14 +2154,238 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{test-school}}/classes/student/1",
+                  "raw": "{{test-school}}/classes/student/2",
                   "host": [
                     "{{test-school}}"
                   ],
                   "path": [
                     "classes",
                     "student",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "teacher-subject",
+          "item": [
+            {
+              "name": "get-the-subject-that0teacher-teach",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/teacher-subjects/5",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher-subjects",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "assign-teacher-to-subject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/teacher-subjects/assign/9/5",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher-subjects",
+                    "assign",
+                    "9",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-teacher-subject",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/teacher-subjects/teach-subject/8",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "teacher-subjects",
+                    "teach-subject",
+                    "8"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "academic year",
+          "item": [
+            {
+              "name": "create academic year",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \r\n  \"name\": \"Test\",\r\n  \"startDate\": \"2026-06-05\",\r\n  \"endDate\": \"2026-06-04\",\r\n  \"currentYear\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/academic-year",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "academic-year"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get by id",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/academic-year/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "academic-year",
                     "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get all",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept-Language",
+                    "value": "ar",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{test-school}}/academic-year",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "academic-year"
                   ]
                 }
               },
@@ -2178,13 +2429,13 @@
       "name": "auth",
       "item": [
         {
-          "name": "login",
+          "name": "secretary-login",
           "request": {
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n//   \"email\": \"SECRETARY2@test.com\",\r\n  \"email\": \"student1@test.com\", \r\n//   \"email\": \"secretary\", \r\n//   \"email\" : \"guiardian2@test.com\",\r\n  \"password\": \"1234\"\r\n}\r\n// created by principal",
+              "raw": "{\r\n  \"email\": \"SECRETARY2@test.com\",\r\n  \"password\": \"1234\"\r\n}\r\n// created by principal",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2219,12 +2470,11 @@
               }
             },
             "url": {
-              "raw": "{{base-url}}/{{school-name}}/auth/login",
+              "raw": "{{test-school}}/auth/login",
               "host": [
-                "{{base-url}}"
+                "{{test-school}}"
               ],
               "path": [
-                "{{school-name}}",
                 "auth",
                 "login"
               ]
@@ -2245,7 +2495,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"firstName\": \"principal\",\r\n  \"lastName\": \"principal\",\r\n  \"email\": \"principal5@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"nationalId\": \"1234658s52A\",\r\n  \"schoolName\": \"sera\",\r\n  \"educationStages\": [\"ELEMENTARY\",\"MIDDLE\"],\r\n  \"schoolType\": \"PUBLIC\"\r\n}",
+              "raw": "{\r\n  \"firstName\": \"principal\",\r\n  \"lastName\": \"principal\",\r\n  \"email\": \"principal6@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"nationalId\": \"12346581s52A\",\r\n  \"schoolName\": \"nour\",\r\n  \"educationStages\": [\"ELEMENTARY\",\"MIDDLE\"],\r\n  \"schoolType\": \"PUBLIC\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2272,7 +2522,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"email\": \"st1003\",\r\n  \"password\": \"123456\"\r\n}",
+              "raw": "{\r\n  \"email\": \"student1@test.com\", \r\n  \"password\": \"1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2280,12 +2530,99 @@
               }
             },
             "url": {
-              "raw": "{{base-url}}/{{school-name}}/auth/login",
+              "raw": "{{test-school}}/auth/login",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "teacher-log",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"teacher@test.com\",\r\n  \"password\": \"1234\"\r\n}\r\n// created by principal",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/auth/login",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "guardian-log",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"guiardian7@test.com\", \r\n  \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/auth/login",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"admin@system.com\",\r\n    \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/admin/auth/login",
               "host": [
                 "{{base-url}}"
               ],
               "path": [
-                "{{school-name}}",
+                "admin",
                 "auth",
                 "login"
               ]
@@ -2298,33 +2635,6 @@
     {
       "name": "school",
       "item": [
-        {
-          "name": "define-school",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{  \r\n  \"name\": \"school name\",\r\n  \"schoolType\": \"PUBLIC\", // [PUBLIC, PRIVATE]\r\n  \"educationStages\": [\"ELEMENTARY\",\"MIDDLE\"]// ELEMENTARY, MIDDLE, HIGH\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{test-school}}/school/define-school",
-              "host": [
-                "{{test-school}}"
-              ],
-              "path": [
-                "school",
-                "define-school"
-              ]
-            }
-          },
-          "response": []
-        },
         {
           "name": "update",
           "request": {
@@ -2363,7 +2673,7 @@
           "response": []
         },
         {
-          "name": "get-by-id",
+          "name": "get-by-url",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -2380,13 +2690,66 @@
               }
             },
             "url": {
-              "raw": "{{test-school}}/school/2",
+              "raw": "{{base-url}}/{{school-name}}/school",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "{{school-name}}",
+                "school"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "available-grades",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"SECRETARY2@test.com\",\r\n  \"password\": \"1234\"\r\n}\r\n// created by principal"
+            },
+            "url": {
+              "raw": "{{test-school}}/school/available-grades",
               "host": [
                 "{{test-school}}"
               ],
               "path": [
                 "school",
-                "2"
+                "available-grades"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/school/statistics",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "school",
+                "statistics"
               ]
             }
           },
@@ -3213,7 +3576,7 @@
                 }
               ]
             },
-            "method": "POST",
+            "method": "PUT",
             "header": [],
             "body": {
               "mode": "raw",
@@ -3225,11 +3588,52 @@
               }
             },
             "url": {
-              "raw": "{{test-school}}/semesters",
+              "raw": "{{test-school}}/semesters/academic-year/1",
               "host": [
                 "{{test-school}}"
               ],
               "path": [
+                "semesters",
+                "academic-year",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n  \"first\": { \r\n    \"semesterName\": \"FIRST\",\r\n    \"startDate\": \"2026-06-05\",\r\n    \"endDate\": \"2026-09-05\"\r\n  },\r\n  \"second\": {\r\n     \"semesterName\": \"SECOND\",\r\n    \"startDate\": \"2026-10-05\",\r\n    \"endDate\": \"2026-11-05\"\r\n  }  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/semesters/academic-year/1/semesters",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "semesters",
+                "academic-year",
+                "1",
                 "semesters"
               ]
             }
@@ -3681,6 +4085,1431 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "warnings",
+      "item": [
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentId\": 3,\r\n  \"reason\": \"BEHAVIOR\",\r\n  \"message\": \"BAD BEHAVIOR\"//nullable\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/warnings",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "warnings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/warnings/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "warnings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-all-wornings",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/warnings",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "warnings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_seyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUFJJTkNJUEFMIiwic2Nob29sSWQiOjEzLCJyZWZJZCI6Nywic2Nob29sQ29kZSI6InNlcmEiLCJzdWIiOiJwcmluY2lwYWw1QGdtYWlsLmNvbSIsImlhdCI6MTc4Njg2ODgxNSwiZXhwIjoxNzg2OTU1MjE1fQ.7QDiGRZGzToNFEjYxsih3rXWzTtDH-01kBec4CfCIAsecret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/warnings/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "warnings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "for-guardian-to get-his-student-warnings",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/warnings/my-children",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "warnings",
+                "my-children"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/warnings/statistics?reason=BEHAVIOR&count=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "warnings",
+                "statistics"
+              ],
+              "query": [
+                {
+                  "key": "reason",
+                  "value": "BEHAVIOR"
+                },
+                {
+                  "key": "count",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin",
+      "item": [
+        {
+          "name": "statistics",
+          "item": [
+            {
+              "name": "statistics",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_10aw}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admin/statistics",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "statistics"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "statistics-school",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_10aw}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admin/statistics/schools",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "statistics",
+                    "schools"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "statistics-school-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{supabase_service_role_api_key_10aw}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base-url}}/admin/statistics/1",
+                  "host": [
+                    "{{base-url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "statistics",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "all-schools",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_10aw}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/admin/school-requests",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "school-requests"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "approve-school",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_10aw}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/admin/school-requests/1/approve",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "school-requests",
+                "1",
+                "approve"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-pending",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_10aw}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/admin/school-requests/pending",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "school-requests",
+                "pending"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_10aw}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/admin/school-requests/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "school-requests",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reject-school",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{supabase_service_role_api_key_10aw}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"reason\": \"School information is incomplete\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/admin/school-requests/1/reject",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "admin",
+                "school-requests",
+                "1",
+                "reject"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "announcement",
+      "item": [
+        {
+          "name": "get-me-topic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/announcements/me-topics",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements",
+                "me-topics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-topic-on-student",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"تنبيه\",\r\n    \"content\": \"تم تسجيل غياب الطالب.\",\r\n    \"targetType\": \"STUDENT\",\r\n    \"targetRole\": null,\r\n    \"targetId\": 15,\r\n    \"publishedAt\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/announcements",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-topic-for-all",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authorization_secret}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"عطلة\",\r\n    \"content\": \"غداً عطلة رسمية.\",\r\n    \"targetType\": \"ALL\",\r\n    \"targetRole\": null,\r\n    \"targetId\": null,\r\n    \"publishedAt\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/announcements",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-topic-for-guardians",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"اجتماع أولياء الأمور\",\r\n    \"content\": \"يوجد اجتماع يوم الخميس.\",\r\n    \"targetType\": \"ROLE\",\r\n    \"targetRole\": \"GUARDIAN\",\r\n    \"targetId\": null,\r\n    \"publishedAt\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/announcements",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-topic-for-teachers",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"اجتماع المعلمين\",\r\n    \"content\": \"الاجتماع الساعة 10.\",\r\n    \"targetType\": \"ROLE\",\r\n    \"targetRole\": \"TEACHER\",\r\n    \"targetId\": null,\r\n    \"publishedAt\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/announcements",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-by-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/announcements/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/announcements/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/announcements",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "announcements"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "finance",
+      "item": [
+        {
+          "name": "payment",
+          "item": [
+            {
+              "name": "get-payment-by-Id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/payments/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "payments",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-payment-by-receipt-number",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/payments/receipt/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "payments",
+                    "receipt",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "save",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/1/payments",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "1",
+                    "payments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-student-fees",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/student/1/payments",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "student",
+                    "1",
+                    "payments"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "discount",
+          "item": [
+            {
+              "name": "create",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"خصم أخوة\",\r\n    \"discountType\": \"PERCENTAGE\",\r\n    \"value\": 20,\r\n    \"reason\": \"وجود أكثر من طالب\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/fees/1/discount",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "1",
+                    "discount"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/15/discount",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "15",
+                    "discount"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/discount",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "discount"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/15/discount",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "15",
+                    "discount"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "donations",
+          "item": [
+            {
+              "name": "guardian-donation",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"amount\": 500.00,\r\n    \"paymentMethod\": \"CASH\",\r\n    \"notes\": \"تبرع للكفالة التعليمية\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/donations/campaign/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donations",
+                    "campaign",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "guardian-me-donation",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/donations/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donations",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "donation-campaigns",
+          "item": [
+            {
+              "name": "post",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"كفالة تعليمية\",\r\n    \"description\": \"توفير المستلزمات المدرسية للطلاب المحتاجين\",\r\n    \"targetAmount\": 10000,\r\n    \"startDate\": \"2026-09-01\",\r\n    \"endDate\": \"2026-12-31\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/donation-campaigns",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donation-campaigns"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "by-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/donation-campaigns/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donation-campaigns",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "put",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"كفالة تعليمية\",\r\n    \"description\": \"توفير المستلزمات المدرسية للطلاب المحتاجين\",\r\n    \"targetAmount\": 10000,\r\n    \"startDate\": \"2026-09-01\",\r\n    \"endDate\": \"2026-12-31\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/donation-campaigns/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donation-campaigns",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/donation-campaigns",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donation-campaigns"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/donation-campaigns/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donation-campaigns",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "details-of-donations",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/donation-campaigns/1/donation",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "donation-campaigns",
+                    "1",
+                    "donation"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "fee-structures",
+          "item": [
+            {
+              "name": "create-fee-for-semester-and-grade",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"feeName\": \"class\",\r\n    \"semesterId\": 2, // FIRST, SECOND\r\n    \"gradeLevel\": \"GRADE_1\",// check school grades {{test-school}}/school/available-grades\r\n    \"feeType\": \"TUITION\",// TUITION,BUS,SCHOOL_COOPERATION,RENEWAL,REGISTRATION,BOOKS,UNIFORM,OTHER\r\n    \"amount\": 1100,\r\n    \"dueDate\": \"2026-09-15\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/fee-structures",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-semester-id-and-grade",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fee-structures/semester/1/grade/GRADE_1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures",
+                    "semester",
+                    "1",
+                    "grade",
+                    "GRADE_1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fee-structures/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-all",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fee-structures",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "edit-fees",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fee-structures/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-semester-name-and-grade-current-year",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fee-structures/current-year/semester/FIRST/grade/GRADE_1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures",
+                    "current-year",
+                    "semester",
+                    "FIRST",
+                    "grade",
+                    "GRADE_1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "fee",
+          "item": [
+            {
+              "name": "save-payment-procces",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"amount\": 300,\r\n    \"paymentMethod\": \"CASH\",\r\n    \"notes\": \"الدفعة الأولى\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{test-school}}/fees/1/payments",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "1",
+                    "payments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fee-structures/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fee-structures",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "student-fess",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/student/1/payments",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "student",
+                    "1",
+                    "payments"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get-by-id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/payments/1",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "payments",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "for guardian to see his sons fees",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authorization_secret}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/fees/guardian/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "fees",
+                    "guardian",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
     }
   ],
   "event": [
@@ -3709,36 +5538,28 @@
   ],
   "variable": [
     {
-      "key": "supabase_service_role_api_key_0yzh",
-      "secret": true
+      "key": "supabase_service_role_api_key_0yzh"
     },
     {
-      "key": "json_web_token_1auz",
-      "secret": true
+      "key": "json_web_token_1auz"
     },
     {
-      "key": "auth_secret_1auz",
-      "secret": true
+      "key": "auth_secret_1auz"
     },
     {
-      "key": "json_web_token_0w1u",
-      "secret": true
+      "key": "json_web_token_0w1u"
     },
     {
-      "key": "supabase_service_role_api_key_0uw0",
-      "secret": true
+      "key": "supabase_service_role_api_key_0uw0"
     },
     {
-      "key": "json_web_token_1dv1",
-      "secret": true
+      "key": "json_web_token_1dv1"
     },
     {
-      "key": "supabase_service_role_api_key_1dv1",
-      "secret": true
+      "key": "supabase_service_role_api_key_1dv1"
     },
     {
-      "key": "supabase_service_role_api_key_11cg",
-      "secret": true
+      "key": "supabase_service_role_api_key_11cg"
     },
     {
       "key": "base-url",
@@ -3751,6 +5572,9 @@
     {
       "key": "test-school",
       "value": ""
+    },
+    {
+      "key": "supabase_service_role_api_key_10aw"
     }
   ]
 }

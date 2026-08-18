@@ -3,7 +3,7 @@ package com.SchoolManagementSystem.system.service.student;
 
 import com.SchoolManagementSystem.system.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.system.dto.student.StudentDto;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestStudent;
+import com.SchoolManagementSystem.system.dto.student.request.AuthRequestStudent;
 import com.SchoolManagementSystem.system.service.CrudService;
 
 import java.util.List;

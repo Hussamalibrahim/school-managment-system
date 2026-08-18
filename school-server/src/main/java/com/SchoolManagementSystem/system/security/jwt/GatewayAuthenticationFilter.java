@@ -32,6 +32,14 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
+
+        String admin = request.getHeader("X-ADMIN");
+
+        if ("true".equals(admin)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String gateway = request.getHeader("X-GATEWAY");
         logger.info("Gateway header value: {}" + gateway);
         logger.info("Gateway header value: {}" + gatewayKey);
@@ -56,7 +64,6 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         try {
-
             chain.doFilter(request, response);
 
         } finally {

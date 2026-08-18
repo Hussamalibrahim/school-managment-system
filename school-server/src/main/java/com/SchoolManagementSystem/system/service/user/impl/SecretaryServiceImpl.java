@@ -8,8 +8,8 @@ import com.SchoolManagementSystem.system.exception.business.AlreadyExistsExcepti
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.user.SecretaryMapper;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.user.SecretaryRepository;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
 import com.SchoolManagementSystem.system.service.NationalIdValidator;
 import com.SchoolManagementSystem.system.service.user.SecretaryService;
 

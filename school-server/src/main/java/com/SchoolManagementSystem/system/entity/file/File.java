@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.entity.file;
 
-import com.SchoolManagementSystem.system.entity.SchoolEntity;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import com.SchoolManagementSystem.system.entity.enumeration.FileOwnerType;
 import com.SchoolManagementSystem.system.entity.enumeration.FileType;
 import com.SchoolManagementSystem.system.entity.enumeration.UserType;

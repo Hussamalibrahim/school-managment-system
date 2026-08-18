@@ -1,7 +1,7 @@
-package com.SchoolManagementSystem.system.entity;
+package com.SchoolManagementSystem.system.entity.school;
 
 
-import com.SchoolManagementSystem.system.entity.school.School;
+import com.SchoolManagementSystem.system.entity.BaseEntity;
 import com.SchoolManagementSystem.system.tenant.TenantEntityListener;
 import jakarta.persistence.*;
 import lombok.Getter;

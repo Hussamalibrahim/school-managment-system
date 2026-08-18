@@ -2,7 +2,9 @@ package com.SchoolManagementSystem.system.service.student.impl;
 
 import com.SchoolManagementSystem.system.dto.academic.request.SubjectNameDto;
 import com.SchoolManagementSystem.system.dto.student.StudentDto;
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.dto.student.request.AuthRequestStudent;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
+import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.system.exception.business.AlreadyExistsException;
@@ -10,18 +12,19 @@ import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.academic.SubjectMapper;
+import com.SchoolManagementSystem.system.mapper.auth.AuthUserMapper;
 import com.SchoolManagementSystem.system.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.system.entity.student.Student;
 import com.SchoolManagementSystem.system.repository.academic.ClassScheduleRepository;
 import com.SchoolManagementSystem.system.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.system.repository.academic.SubjectRepository;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
+import com.SchoolManagementSystem.system.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
-import com.SchoolManagementSystem.system.repository.user.TeacherRepository;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestStudent;
-import com.SchoolManagementSystem.system.security.mapper.AuthUserMapper;
+import com.SchoolManagementSystem.system.service.finance.FeeService;
 import com.SchoolManagementSystem.system.service.student.StudentService;
 import com.SchoolManagementSystem.system.tenant.TenantContext;
+import com.SchoolManagementSystem.system.utils.GradeLevelUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 import com.SchoolManagementSystem.system.entity.academic.SchoolClass;
 
@@ -41,15 +45,15 @@ public class StudentServiceImpl implements StudentService {
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final StudentRepository studentRepository;
+    private final SchoolRepository schoolRepository;
     private final SchoolClassRepository schoolClassRepository;
     private final SubjectRepository subjectRepository;
-    private final TeacherRepository teacherRepository;
     private final ClassScheduleRepository classScheduleRepo;
+    private final FeeService feeService;
 
     @Override
     @Transactional
-    public StudentDto assignClass(Long studentId, Long classId)
-    {
+    public StudentDto assignClass(Long studentId, Long classId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
@@ -65,13 +69,17 @@ public class StudentServiceImpl implements StudentService {
     public void save(AuthRequestStudent request) {
         Long schoolId = TenantContext.getSchoolId();
 
-        if (schoolId == null) {
-            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
-        }
+        Set<GradeLevel> gradeLevelSet =  GradeLevelUtil.getByStages(
+                schoolRepository.findById(schoolId)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND))
+                        .getEducationStages());
+
         if (authUserRepository.findByEmailAndSchoolId(request.email(), schoolId).isPresent()) {
             throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
-
+        if (!gradeLevelSet.contains(request.gradeLevel())) {
+            throw new ValidationException(ErrorCode.GRADE_LEVEL_NOT_AVAILABLE);
+        }
         if(studentRepository.findByRegistrationNumber(request.registrationNumber()).isPresent()){
 
             throw new AlreadyExistsException(
@@ -82,12 +90,15 @@ public class StudentServiceImpl implements StudentService {
 
         Student savedStudent = studentRepository.save(student);
 
-        AuthUser authUser =
-                AuthUserMapper.fromRegisterRequest(
+        AuthUser authUser = AuthUserMapper.fromRegisterRequest(
                         request.email(),
                         passwordEncoder.encode("1234"),
                         savedStudent.getId(),
                         Role.STUDENT);
+
+
+        //TODO should have fees before add student
+        feeService.createFeesForStudent(student);
 
         authUserRepository.save(authUser);
     }

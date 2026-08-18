@@ -22,3 +22,4 @@ Thumbs.db
 
 # Docker volumes
 data/
+school-server/src/main/resources/firebase/service-account.json

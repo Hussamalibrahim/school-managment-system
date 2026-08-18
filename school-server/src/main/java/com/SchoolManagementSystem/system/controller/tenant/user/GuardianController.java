@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.system.controller.tenant.user;
 
+import com.SchoolManagementSystem.system.dto.student.StudentDto;
 import com.SchoolManagementSystem.system.dto.user.GuardianDto;
 import com.SchoolManagementSystem.system.security.UserPrincipal;
 import com.SchoolManagementSystem.system.service.user.GuardianService;
@@ -42,6 +43,11 @@ public class GuardianController {
     public ResponseEntity<GuardianDto> me(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
         return ResponseEntity.ok(guardianService.getById(userPrincipal.getRefId()));
+    }
+    @GetMapping("/me-kids")
+    public ResponseEntity<List<StudentDto>> meKids(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        return ResponseEntity.ok(guardianService.getStudentGuardian(userPrincipal.getRefId()));
     }
 
 }

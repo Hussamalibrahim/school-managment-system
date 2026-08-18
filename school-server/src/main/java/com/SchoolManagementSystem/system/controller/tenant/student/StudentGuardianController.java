@@ -40,8 +40,7 @@ public class StudentGuardianController {
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<GuardianDto>> getStudentGuardians(
-            @PathVariable Long studentId) {
+    public ResponseEntity<List<GuardianDto>> getStudentGuardians(@PathVariable Long studentId) {
 
         return ResponseEntity.ok(studentGuardianService.getStudentGuardians(studentId));
     }

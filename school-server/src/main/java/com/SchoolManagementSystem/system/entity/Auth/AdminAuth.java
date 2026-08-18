@@ -1,5 +1,6 @@
-package com.SchoolManagementSystem.system.entity;
+package com.SchoolManagementSystem.system.entity.Auth;
 
+import com.SchoolManagementSystem.system.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.system.dto.auth;
+package com.SchoolManagementSystem.system.dto.auth.request;
 
 public record RegisterRequest(
         String firstName,

@@ -12,4 +12,6 @@ public interface SecretaryRepository extends JpaRepository<Secretary, Long>
     Optional<Secretary> findByNationalId(String nationalId);
 
     boolean existsByNationalId(String nationalId);
+
+    long countBySchoolId(Long schoolId);
 }

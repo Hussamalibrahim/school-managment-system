@@ -5,9 +5,9 @@ import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 
 import java.time.LocalDate;
 
-public final class SemesterValidDate {
+public final class ValidDate {
 
-    public static void validateSemesterDates(LocalDate firstStart, LocalDate firstEnd, LocalDate secondStart, LocalDate secondEnd) {
+    public static void validateDates(LocalDate firstStart, LocalDate firstEnd, LocalDate secondStart, LocalDate secondEnd) {
 
         if (firstStart == null || firstEnd == null || secondStart == null || secondEnd == null) {
 
@@ -20,7 +20,7 @@ public final class SemesterValidDate {
             throw new ValidationException(ErrorCode.SEMESTERS_OVERLAP);
         }
     }
-    public static void validateSemesterDates(LocalDate firstStart, LocalDate firstEnd) {
+    public static void validateDates(LocalDate firstStart, LocalDate firstEnd) {
 
         if (firstStart == null || firstEnd == null) {
             throw new ValidationException(ErrorCode.INVALID_SEMESTER_DATES);

@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.config;
 
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.system.entity.academic.Subject;
 import com.SchoolManagementSystem.system.entity.academic.TeacherSubject;
@@ -13,13 +13,12 @@ import com.SchoolManagementSystem.system.entity.user.*;
 import com.SchoolManagementSystem.system.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.system.repository.academic.SubjectRepository;
 import com.SchoolManagementSystem.system.repository.academic.TeacherSubjectRepository;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.system.repository.student.AttendanceRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.repository.user.*;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
-import com.SchoolManagementSystem.system.service.academic.SchoolClassService;
 import com.SchoolManagementSystem.system.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +47,6 @@ public class DataSeeder implements CommandLineRunner {
     private final AuthUserRepository authUserRepository;
     private final SubjectRepository subjectRepository;
     private final SchoolClassRepository schoolClassRepository;
-    private final SchoolClassService schoolClassService;
     private final TeacherSubjectRepository teacherSubjectRepository;
     private final PasswordEncoder passwordEncoder;
     private final StudentRepository studentRepository;
@@ -739,7 +737,7 @@ public class DataSeeder implements CommandLineRunner {
                 true
         );
 
-        if(authUserRepository
+        if (authUserRepository
                 .findByEmailAndSchoolId(
                         email,
                         school.getId()

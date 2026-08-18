@@ -1,11 +1,11 @@
 package com.SchoolManagementSystem.system.security.controller;
 
+import com.SchoolManagementSystem.system.dto.auth.request.AuthRequest;
+import com.SchoolManagementSystem.system.dto.auth.AuthUserDto;
+import com.SchoolManagementSystem.system.dto.auth.response.AuthResponse;
 import com.SchoolManagementSystem.system.entity.enumeration.UserType;
 import com.SchoolManagementSystem.system.security.auth.TenantAuthenticationToken;
-import com.SchoolManagementSystem.system.security.dto.AuthRequest;
-import com.SchoolManagementSystem.system.security.dto.AuthResponse;
-import com.SchoolManagementSystem.system.security.dto.AuthUserDto;
-import com.SchoolManagementSystem.system.security.service.AuthUserService;
+import com.SchoolManagementSystem.system.service.auth.AuthUserService;
 import com.SchoolManagementSystem.system.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,37 +18,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/{schoolCode}/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class UsersAuthController {
 
-    private final AuthenticationManager authManager;
     private final AuthUserService authUserService;
-    private final JwtService jwtService;
 
     @PostMapping("/login")
-    public AuthResponse login(
-            @PathVariable String schoolCode,
-            @RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@PathVariable String schoolCode, @RequestBody AuthRequest request) {
 
-        authManager.authenticate(
-                new TenantAuthenticationToken(
-                        request.email(),
-                        request.password(),
-                        schoolCode
-                )
-        );
-
-        AuthUserDto user =
-                authUserService.findByEmailAndSchool(
-                        request.email(),
-                        schoolCode);
-
-        String token = jwtService.generateToken(user);
-
-        return new AuthResponse(
-                token,
-                user.role().name(),
-                user.refId(),
-                user.schoolId());
+        return ResponseEntity.status(HttpStatus.OK).body(authUserService.login(schoolCode, request));
     }
 
     @GetMapping("/deactivate-account/by-user")

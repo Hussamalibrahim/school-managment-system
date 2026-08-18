@@ -1,5 +1,6 @@
-package com.SchoolManagementSystem.system.entity;
+package com.SchoolManagementSystem.system.entity.Auth;
 
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.Getter;

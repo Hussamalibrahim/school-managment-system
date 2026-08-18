@@ -1,8 +1,8 @@
 package com.SchoolManagementSystem.system.security.jwt;
 
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.exception.security.JwtAuthenticationException;
-import com.SchoolManagementSystem.system.security.dto.AuthUserDto;
 import com.SchoolManagementSystem.system.security.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -31,24 +31,22 @@ public class JwtServiceImpl implements JwtService {
 
     // CREATE TOKEN
     @Override
-    public String generateToken(AuthUserDto user) {
+    public String generateToken(AuthUser user) {
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.role().name());
-        claims.put("refId", user.refId());
+        claims.put("role", user.getRole().name());
+        claims.put("refId", user.getRefId());
 
         // Multi Tenant
-        claims.put("schoolId", user.schoolId());
-        claims.put("schoolCode", user.schoolCode());
+        claims.put("schoolId", user.getSchool().getId());
+        claims.put("schoolCode", user.getSchool().getCode());
 
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.email())
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + 86400000)
-                )
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

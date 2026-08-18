@@ -1,9 +1,9 @@
 package com.SchoolManagementSystem.system.controller.tenant.user;
 
+import com.SchoolManagementSystem.system.dto.student.request.AuthRequestStudent;
 import com.SchoolManagementSystem.system.dto.user.SecretaryDto;
+import com.SchoolManagementSystem.system.dto.user.request.AuthRequestGuardian;
 import com.SchoolManagementSystem.system.security.UserPrincipal;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestGuardian;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestStudent;
 import com.SchoolManagementSystem.system.service.student.StudentGuardianService;
 import com.SchoolManagementSystem.system.service.student.StudentService;
 import com.SchoolManagementSystem.system.service.user.GuardianService;

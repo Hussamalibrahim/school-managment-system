@@ -1,4 +1,11 @@
 package com.SchoolManagementSystem.system.dto.admin;
 
-public class AdminStatisticsDto {
+import com.SchoolManagementSystem.system.dto.school.SchoolStatistics;
+import com.SchoolManagementSystem.system.dto.school.UserStatistics;
+
+public record AdminStatisticsDto(
+        SchoolStatistics schools,
+        RequestStatistics requests,
+        UserStatistics users
+) {
 }

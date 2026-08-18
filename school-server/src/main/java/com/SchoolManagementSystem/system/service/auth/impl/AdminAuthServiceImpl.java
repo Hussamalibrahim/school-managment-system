@@ -8,13 +8,14 @@ import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.repository.auth.AdminAuthRepository;
 import com.SchoolManagementSystem.system.security.jwt.AdminJwtService;
+import com.SchoolManagementSystem.system.service.auth.AdminAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AdminAuthService {
+public class AdminAuthServiceImpl implements AdminAuthService {
 
     private final AdminAuthRepository adminAuthRepository;
     private final PasswordEncoder passwordEncoder;

@@ -1,20 +1,23 @@
 package com.SchoolManagementSystem.system.service.user.impl;
 
+import com.SchoolManagementSystem.system.dto.student.StudentDto;
 import com.SchoolManagementSystem.system.dto.user.GuardianDto;
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.dto.user.request.AuthRequestGuardian;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.student.StudentGuardian;
 import com.SchoolManagementSystem.system.exception.business.AlreadyExistsException;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
+import com.SchoolManagementSystem.system.mapper.auth.AuthUserMapper;
+import com.SchoolManagementSystem.system.mapper.student.StudentGuardianMapper;
+import com.SchoolManagementSystem.system.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.system.mapper.user.GuardianMapper;
 import com.SchoolManagementSystem.system.entity.user.Guardian;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.user.GuardianRepository;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestGuardian;
-import com.SchoolManagementSystem.system.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.system.service.NationalIdValidator;
 import com.SchoolManagementSystem.system.service.user.GuardianService;
 import com.SchoolManagementSystem.system.tenant.TenantContext;
@@ -121,5 +124,14 @@ public class GuardianServiceImpl implements GuardianService {
     @Override
     public GuardianDto save(GuardianDto dto) {
         return null;
+    }
+
+    @Override
+    public List<StudentDto> getStudentGuardian(Long refId) {
+
+        return studentGuardianRepository.findByGuardianId(refId).stream()
+                .map(StudentGuardian::getStudent)
+                .map(StudentMapper::toDto)
+                .toList();
     }
 }

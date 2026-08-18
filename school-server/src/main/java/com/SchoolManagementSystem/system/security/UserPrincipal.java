@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.security;
 
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

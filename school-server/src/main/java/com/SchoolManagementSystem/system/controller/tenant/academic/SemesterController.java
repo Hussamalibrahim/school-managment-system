@@ -1,17 +1,30 @@
 package com.SchoolManagementSystem.system.controller.tenant.academic;
 
-import com.SchoolManagementSystem.system.controller.BaseCrudController;
-import com.SchoolManagementSystem.system.dto.academic.SemesterDto;
+import com.SchoolManagementSystem.system.dto.academic.request.SemesterUpdateRequest;
+import com.SchoolManagementSystem.system.dto.academic.request.UpdateTwoSemesterRequest;
+import com.SchoolManagementSystem.system.dto.finance.response.FeeStructureDto;
+import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
+import com.SchoolManagementSystem.system.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.system.service.academic.SemesterService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/semesters")
-public class SemesterController extends BaseCrudController<SemesterDto> {
+@RequiredArgsConstructor
+public class SemesterController {
 
-    public SemesterController(SemesterService service) {
-        super(service);
+    private final SemesterService semesterService;
+
+    @PutMapping("/academic-year/{academicYearId}")
+    public void updateSemester(@PathVariable Long academicYearId, @RequestBody SemesterUpdateRequest semesterUpdateRequest) {
+        semesterService.updateSemester(academicYearId, semesterUpdateRequest);
     }
-
+    @PutMapping("/academic-year/{academicYearId}/semesters")
+    public void updateSemester(@PathVariable Long academicYearId, @RequestBody UpdateTwoSemesterRequest updateTwoSemesterRequest) {
+        semesterService.updateTwoSemester(academicYearId, updateTwoSemesterRequest);
+    }
 }

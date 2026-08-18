@@ -1,8 +1,8 @@
 package com.SchoolManagementSystem.system.mapper.user;
 
+import com.SchoolManagementSystem.system.dto.auth.request.RegisterRequest;
 import com.SchoolManagementSystem.system.dto.user.PrincipalDto;
 import com.SchoolManagementSystem.system.entity.user.Principal;
-import com.SchoolManagementSystem.system.security.dto.RegisterRequest;
 
 public final class PrincipalMapper {
 

@@ -1,11 +1,11 @@
 package com.SchoolManagementSystem.system.security.service;
 
-import com.SchoolManagementSystem.system.security.dto.AuthUserDto;
+import com.SchoolManagementSystem.system.dto.auth.AuthUserDto;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import org.springframework.security.core.userdetails.UserDetails;
-//TODO   there no use for this after Microservice
 
 public interface JwtService {
-    String generateToken(AuthUserDto user);
+    String generateToken(AuthUser user);
 
     String extractEmail(String token);
 

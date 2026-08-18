@@ -1,9 +1,9 @@
 package com.SchoolManagementSystem.system.mapper.user;
 
 
+import com.SchoolManagementSystem.system.dto.user.request.AuthRequestGuardian;
 import com.SchoolManagementSystem.system.entity.user.Guardian;
 import com.SchoolManagementSystem.system.dto.user.GuardianDto;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestGuardian;
 
 
 public final class GuardianMapper {

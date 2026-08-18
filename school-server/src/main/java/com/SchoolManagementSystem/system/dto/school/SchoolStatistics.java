@@ -1,4 +1,8 @@
 package com.SchoolManagementSystem.system.dto.school;
 
-public class SchoolStatistics {
+public record SchoolStatistics(
+        long total,
+        long enabled,
+        long disabled
+) {
 }

@@ -1,28 +1,34 @@
 package com.SchoolManagementSystem.system.service.school.impl;
 
-import com.SchoolManagementSystem.system.dto.request.DefineSchool;
 import com.SchoolManagementSystem.system.dto.request.updateSchoolInfo;
 import com.SchoolManagementSystem.system.dto.school.SchoolDto;
 import com.SchoolManagementSystem.system.dto.school.request.SchoolRegisterRequest;
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
+import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
+import com.SchoolManagementSystem.system.entity.enumeration.SchoolRequestStatus;
+import com.SchoolManagementSystem.system.entity.school.SchoolRequest;
 import com.SchoolManagementSystem.system.entity.user.Principal;
 import com.SchoolManagementSystem.system.exception.business.AlreadyExistsException;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.school.SchoolMapper;
 import com.SchoolManagementSystem.system.entity.school.School;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.school.SchoolRepository;
+import com.SchoolManagementSystem.system.repository.school.SchoolRequestRepository;
 import com.SchoolManagementSystem.system.repository.user.PrincipalRepository;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
 import com.SchoolManagementSystem.system.service.school.SchoolService;
+import com.SchoolManagementSystem.system.tenant.TenantContext;
 import com.SchoolManagementSystem.system.utils.CodeNameUtil;
+import com.SchoolManagementSystem.system.utils.GradeLevelUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +38,7 @@ public class SchoolServiceImpl implements SchoolService {
     private final PasswordEncoder passwordEncoder;
     private final AuthUserRepository authUserRepository;
     private final PrincipalRepository principalRepository;
+    private final SchoolRequestRepository schoolRequestRepository;
 
     //TODO Need to be removed
     @Override
@@ -72,16 +79,6 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     @Transactional
-    public void defineSchool(DefineSchool defineSchool) {
-        School school = new School();
-
-        SchoolMapper.fromDefineSchool(defineSchool, school);
-
-        schoolRepository.save(school);
-    }
-
-    @Override
-    @Transactional
     public SchoolDto update(Long id, updateSchoolInfo dto) {
         School school = schoolRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));
@@ -94,7 +91,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     @Transactional
     public void register(SchoolRegisterRequest request) {
-        if (schoolRepository.existsByName(request.schoolName())){
+        if (schoolRepository.existsByName(request.schoolName())) {
             throw new AlreadyExistsException(ErrorCode.SCHOOL_NAME_ALREADY_EXIST);
         }
 
@@ -107,8 +104,6 @@ public class SchoolServiceImpl implements SchoolService {
 
         schoolRepository.save(school);
 
-        // 2- Create Principal
-
         Principal principal = new Principal();
 
         principal.setFirstName(request.firstName());
@@ -118,8 +113,6 @@ public class SchoolServiceImpl implements SchoolService {
         principal.setSchool(school);
 
         principalRepository.save(principal);
-
-        // 3- Create AuthUser
 
         AuthUser authUser = new AuthUser();
         authUser.setEmail(request.email());
@@ -132,13 +125,32 @@ public class SchoolServiceImpl implements SchoolService {
 
         authUserRepository.save(authUser);
 
+
+        SchoolRequest schoolRequest = new SchoolRequest();
+
+        schoolRequest.setSchool(school);
+        schoolRequest.setStatus(SchoolRequestStatus.PENDING);
+
+        schoolRequestRepository.save(schoolRequest);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public School findByCode(String code){
+    public SchoolDto findByUrl() {
+        Long schoolId = TenantContext.getSchoolId();
 
-        return schoolRepository.findByCode(code)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));
+        return SchoolMapper.toDto(
+                schoolRepository.findById(schoolId)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND)));
+    }
+
+    @Override
+    public Set<GradeLevel> availableGrades() {
+        Long schoolId = TenantContext.getSchoolId();
+
+        return GradeLevelUtil.getByStages(
+                schoolRepository.findById(schoolId)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND))
+                        .getEducationStages());
     }
 }

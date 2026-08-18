@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.entity.academic;
 
-import com.SchoolManagementSystem.system.entity.SchoolEntity;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import com.SchoolManagementSystem.system.entity.enumeration.ContinuousCategory;
 import com.SchoolManagementSystem.system.entity.user.Teacher;
 import jakarta.persistence.*;

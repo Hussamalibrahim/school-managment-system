@@ -1,7 +1,8 @@
-package com.SchoolManagementSystem.system.security.mapper;
+package com.SchoolManagementSystem.system.mapper.auth;
 
 import com.SchoolManagementSystem.system.dto.auth.AuthUserDto;
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.dto.auth.response.AuthResponse;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.school.School;
 
@@ -63,5 +64,12 @@ public final class AuthUserMapper {
         authUser.setSchool(school);
 
         return authUser;
+    }
+    public static AuthResponse toAuthResponse(String token, AuthUser authUser) {
+        return new AuthResponse(
+                token,
+                authUser.getEmail(),
+                authUser.getRefId(),
+                authUser.getSchool().getId());
     }
 }

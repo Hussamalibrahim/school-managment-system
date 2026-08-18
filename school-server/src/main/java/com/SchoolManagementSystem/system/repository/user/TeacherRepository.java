@@ -13,4 +13,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>
     Optional<Teacher> findByNationalId(String nationalId);
 
     boolean existsByNationalId(String nationalId);
+
+    long countBySchoolId(Long schoolId);
 }

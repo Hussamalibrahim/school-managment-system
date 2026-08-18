@@ -1,8 +1,10 @@
-package com.SchoolManagementSystem.system.security.service;
+package com.SchoolManagementSystem.system.service.auth.impl;
 
 import com.SchoolManagementSystem.system.dto.auth.AuthUserDto;
+import com.SchoolManagementSystem.system.dto.auth.request.AuthRequest;
 import com.SchoolManagementSystem.system.dto.auth.request.RegisterRequest;
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.dto.auth.response.AuthResponse;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.enumeration.UserType;
 import com.SchoolManagementSystem.system.entity.user.Principal;
@@ -16,9 +18,13 @@ import com.SchoolManagementSystem.system.mapper.user.PrincipalMapper;
 import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.school.SchoolRepository;
 import com.SchoolManagementSystem.system.repository.user.PrincipalRepository;
+import com.SchoolManagementSystem.system.security.auth.TenantAuthenticationToken;
+import com.SchoolManagementSystem.system.security.service.JwtService;
+import com.SchoolManagementSystem.system.service.auth.AuthUserService;
 import com.SchoolManagementSystem.system.tenant.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +39,8 @@ public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
     private final PrincipalRepository principalRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authManager;
     private final SchoolRepository schoolRepository;
 
     @Override
@@ -140,21 +148,13 @@ public class AuthUserServiceImpl implements AuthUserService {
         if (user.getEnabled() == enabled) {
 
             throw new BusinessRuleException(
-                    enabled
-                            ? ErrorCode.USER_ALREADY_ACTIVATED
-                            : ErrorCode.USER_ALREADY_DEACTIVATED
-            );
+                    enabled ? ErrorCode.USER_ALREADY_ACTIVATED
+                            : ErrorCode.USER_ALREADY_DEACTIVATED);
         }
 
         user.setEnabled(enabled);
 
         return authUserRepository.save(user);
-    }
-
-    private AuthUser findAuthUserByEmail(String email) {
-
-        return authUserRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private AuthUser findAuthUserByEmailAndSchoolId(String email) {
@@ -172,11 +172,29 @@ public class AuthUserServiceImpl implements AuthUserService {
             UserType type) {
 
         return authUserRepository
-                .findAuthUserByRefIdAndRole(
-                        refId,
-                        Role.valueOf(type.name())
-                )
+                .findAuthUserByRefIdAndRole(refId, Role.valueOf(type.name()))
                 .orElseThrow(() ->
                         new NotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Override
+    public AuthResponse login(String schoolCode, AuthRequest request) {
+        authManager.authenticate(
+                new TenantAuthenticationToken(
+                        request.email(),
+                        request.password(),
+                        schoolCode
+                )
+        );
+        Long schoolId = TenantContext.getSchoolId();
+        if (schoolId == null) {
+            throw new ValidationException(ErrorCode.SCHOOL_NOT_FOUND);
+        }
+        AuthUser user = authUserRepository.findByEmailAndSchoolId(request.email(), schoolId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        String token = jwtService.generateToken(user);
+
+        return AuthUserMapper.toAuthResponse(token,user);
     }
 }

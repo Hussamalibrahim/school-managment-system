@@ -4,4 +4,6 @@ import com.SchoolManagementSystem.system.dto.school.AcademicYearDto;
 import com.SchoolManagementSystem.system.service.CrudService;
 
 public interface AcademicYearService extends CrudService<AcademicYearDto, Long> {
+    void createAcademicYear(AcademicYearDto academicYearDto);
+    AcademicYearDto getCurrentAcademicYear();
 }

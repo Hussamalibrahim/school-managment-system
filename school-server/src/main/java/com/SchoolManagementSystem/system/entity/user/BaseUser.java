@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.entity.user;
 
-import com.SchoolManagementSystem.system.entity.SchoolEntity;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

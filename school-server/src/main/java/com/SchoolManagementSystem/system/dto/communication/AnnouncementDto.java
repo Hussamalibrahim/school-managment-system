@@ -1,31 +1,17 @@
 package com.SchoolManagementSystem.system.dto.communication;
 
-import com.SchoolManagementSystem.system.entity.communication.Announcement;
-import com.SchoolManagementSystem.system.entity.enumeration.AnnouncementStatus;
-import com.SchoolManagementSystem.system.entity.enumeration.UserType;
+import com.SchoolManagementSystem.system.entity.enumeration.AnnouncementTargetType;
+import com.SchoolManagementSystem.system.entity.enumeration.Role;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * DTO for {@link Announcement}
- */
 public record AnnouncementDto(
         Long id,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
-        LocalDateTime deletedAt,
-
         String title,
         String content,
-
-        UserType userType,
-
+        AnnouncementTargetType targetType,
+        Role targetRole,
         Long targetId,
-
-        LocalDate publishDate,
-
-        AnnouncementStatus status
-) implements Serializable {
+        LocalDateTime publishedAt,
+        Boolean active) {
 }

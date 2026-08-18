@@ -16,6 +16,7 @@ import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.academic.ExamMapper;
+import com.SchoolManagementSystem.system.mapper.academic.SemesterMapper;
 import com.SchoolManagementSystem.system.repository.academic.ExamRepository;
 import com.SchoolManagementSystem.system.repository.academic.SchoolClassRepository;
 import com.SchoolManagementSystem.system.repository.academic.SubjectRepository;
@@ -56,7 +57,7 @@ public class ExamServiceImpl implements ExamService {
         Subject subject = subjectRepository.findById(request.subjectId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND));
 
-        Semester semester = semesterService.getCurrentSemester();
+        Semester semester = SemesterMapper.toEntity(semesterService.getCurrentSemester());
 
         validateSubjectBelongsToClass(schoolClass, subject);
 
@@ -202,7 +203,7 @@ public class ExamServiceImpl implements ExamService {
         SchoolClass schoolClass = schoolClassRepository.findById(classId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_NOT_FOUND));
 
-        Semester semester = semesterService.getCurrentSemester();
+        Semester semester = SemesterMapper.toEntity(semesterService.getCurrentSemester());
 
         return examRepository
                 .findBySchoolClassIdAndSemesterId(
@@ -218,7 +219,7 @@ public class ExamServiceImpl implements ExamService {
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SUBJECT_NOT_FOUND));
 
-        Semester semester = semesterService.getCurrentSemester();
+        Semester semester = SemesterMapper.toEntity(semesterService.getCurrentSemester());
 
         return examRepository
                 .findBySubjectIdAndSemesterId(
@@ -249,7 +250,7 @@ public class ExamServiceImpl implements ExamService {
     @Transactional(readOnly = true)
     public List<ExamDto> getMyClassExams(UserPrincipal user) {
 
-        Semester semester = semesterService.getCurrentSemester();
+        Semester semester = SemesterMapper.toEntity(semesterService.getCurrentSemester());
 
         if (user.getRole() == Role.STUDENT) {
 

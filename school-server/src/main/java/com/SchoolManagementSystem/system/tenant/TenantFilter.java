@@ -34,11 +34,10 @@ public class TenantFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if(path.equals("/api/auth/register")) {
+        if(path.equals("/api/auth/register") || path.startsWith("/api/admin/")) {
             chain.doFilter(request, response);
             return;
         }
-
 
             String schoolCode = tenantResolver.resolveSchoolCode(request);
             if(schoolCode != null){

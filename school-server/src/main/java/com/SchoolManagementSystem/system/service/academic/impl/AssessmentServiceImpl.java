@@ -10,6 +10,7 @@ import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.academic.AssessmentMapper;
 import com.SchoolManagementSystem.system.entity.academic.Assessment;
+import com.SchoolManagementSystem.system.mapper.academic.SemesterMapper;
 import com.SchoolManagementSystem.system.repository.academic.AssessmentRepository;
 import com.SchoolManagementSystem.system.repository.academic.ClassScheduleRepository;
 import com.SchoolManagementSystem.system.repository.academic.SchoolClassRepository;
@@ -79,7 +80,7 @@ public class AssessmentServiceImpl implements AssessmentService {
             throw new NotFoundException(ErrorCode.TEACHER_NOT_FOUND);
         }
 
-        Semester semester = semesterService.getCurrentSemester();
+        Semester semester = SemesterMapper.toEntity(semesterService.getCurrentSemester());
 
         Assessment assessment = new Assessment();
 
@@ -137,7 +138,7 @@ public class AssessmentServiceImpl implements AssessmentService {
         ClassSchedule classSchedule = classScheduleRepository.findById(request.classScheduleId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CLASS_SCHEDULE_NOT_FOUND));
 
-        Semester semester = semesterService.getCurrentSemester();
+        Semester semester = SemesterMapper.toEntity(semesterService.getCurrentSemester());
 
         AssessmentMapper.fromCreateRequest(assessment, request);
 

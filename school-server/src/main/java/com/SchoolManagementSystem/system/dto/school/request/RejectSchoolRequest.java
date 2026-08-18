@@ -1,4 +1,6 @@
 package com.SchoolManagementSystem.system.dto.school.request;
 
-public class RejectSchoolRequest {
+import java.io.Serializable;
+
+public record RejectSchoolRequest (String reason) implements Serializable {
 }

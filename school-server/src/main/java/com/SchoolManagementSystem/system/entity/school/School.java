@@ -37,6 +37,9 @@ public class School extends BaseEntity {
     @Column(name = "logo_path")
     private String logoPath;
 
+    @Column(name = "enabled")
+    private Boolean enabled;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "school_education_stages",

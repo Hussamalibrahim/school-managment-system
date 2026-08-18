@@ -1,4 +1,8 @@
 package com.SchoolManagementSystem.system.dto.admin;
 
-public class RequestStatistics {
+public record RequestStatistics(
+        long pending,
+        long approved,
+        long rejected
+) {
 }

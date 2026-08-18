@@ -1,10 +1,10 @@
 package com.SchoolManagementSystem.system.mapper.student;
 
 import com.SchoolManagementSystem.system.dto.student.StudentDto;
+import com.SchoolManagementSystem.system.dto.student.request.AuthRequestStudent;
 import com.SchoolManagementSystem.system.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.system.entity.school.School;
 import com.SchoolManagementSystem.system.entity.student.Student;
-import com.SchoolManagementSystem.system.security.dto.AuthRequestStudent;
 
 public final class StudentMapper {
 

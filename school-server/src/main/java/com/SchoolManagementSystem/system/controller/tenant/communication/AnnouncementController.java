@@ -1,41 +1,60 @@
 package com.SchoolManagementSystem.system.controller.tenant.communication;
 
 import com.SchoolManagementSystem.system.dto.communication.AnnouncementDto;
+import com.SchoolManagementSystem.system.dto.communication.NotificationTopicsDto;
+import com.SchoolManagementSystem.system.dto.communication.request.AnnouncementRequest;
+import com.SchoolManagementSystem.system.security.UserPrincipal;
 import com.SchoolManagementSystem.system.service.communication.AnnouncementService;
+import com.SchoolManagementSystem.system.service.communication.NotificationTopicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/announcements")
 @RequiredArgsConstructor
 public class AnnouncementController {
 
-    private final AnnouncementService service;
+    private final AnnouncementService announcementService;
+    private final NotificationTopicService notificationTopicService;
+
 
     @PostMapping
-    public AnnouncementDto create(@RequestBody AnnouncementDto dto) {
-        return service.save(dto);
+    public ResponseEntity<AnnouncementDto> create(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AnnouncementRequest request) {
+
+        return ResponseEntity.ok(announcementService.create(userPrincipal, request));
     }
 
-    @PutMapping("/{id}")
-    public AnnouncementDto update(@PathVariable Long id, @RequestBody AnnouncementDto dto) {
-        return service.update(id, dto);
-    }
-
-    @GetMapping("/{id}")
-    public AnnouncementDto getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
 
     @GetMapping
-    public List<AnnouncementDto> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<AnnouncementDto>> getAll() {
+
+        return ResponseEntity.ok(announcementService.getAll());
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AnnouncementDto> getById(@PathVariable Long id) {
+
+        return ResponseEntity.ok(announcementService.getById(id));
+    }
+
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        announcementService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/me-topics")
+    public ResponseEntity<NotificationTopicsDto> getTopics(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        return ResponseEntity.ok(notificationTopicService.getTopics(userPrincipal));
     }
 }

@@ -1,13 +1,13 @@
 package com.SchoolManagementSystem.system.security.service;
 
 
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.school.School;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.school.SchoolRepository;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
 import com.SchoolManagementSystem.system.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final AuthUserRepository repo;
     private final SchoolRepository schoolRepository;
     private final AuthUserRepository authUserRepository;
 

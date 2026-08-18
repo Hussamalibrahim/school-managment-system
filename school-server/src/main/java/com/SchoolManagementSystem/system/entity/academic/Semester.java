@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.entity.academic;
 
-import com.SchoolManagementSystem.system.entity.SchoolEntity;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import com.SchoolManagementSystem.system.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.system.entity.school.AcademicYear;
 import jakarta.persistence.*;
@@ -12,13 +12,12 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "semesters")
+@Table(name = "semesters", uniqueConstraints = {@UniqueConstraint(columnNames = {"academic_year_id", "semester_name"})})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Semester extends SchoolEntity
-{
+public class Semester extends SchoolEntity {
     @ManyToOne
     @JoinColumn(name = "academic_year_id")
     private AcademicYear academicYear;

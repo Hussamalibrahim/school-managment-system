@@ -13,9 +13,9 @@ import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.student.StudentMapper;
 import com.SchoolManagementSystem.system.mapper.user.TeacherMapper;
 import com.SchoolManagementSystem.system.repository.academic.ClassScheduleRepository;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.repository.user.TeacherRepository;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
 import com.SchoolManagementSystem.system.service.NationalIdValidator;
 import com.SchoolManagementSystem.system.service.user.TeacherService;
 

@@ -6,5 +6,6 @@ public enum Role {
     LIBRARIAN,
     TEACHER,
     STUDENT,
-    GUARDIAN
+    GUARDIAN,
+    SUPER_ADMIN
 }

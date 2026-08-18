@@ -20,6 +20,7 @@ import com.SchoolManagementSystem.system.repository.student.AttendanceRepository
 import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.repository.user.GuardianRepository;
+import com.SchoolManagementSystem.system.service.communication.AttendanceNotificationService;
 import com.SchoolManagementSystem.system.service.student.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final StudentRepository studentRepository;
     private final GuardianRepository guardianRepository;
     private final StudentGuardianRepository studentGuardianRepository;
+    private final AttendanceNotificationService attendanceNotificationService;
 
     @Override
     public AttendanceDto save(AttendanceCreateRequest request) {
@@ -177,6 +179,11 @@ public class AttendanceServiceImpl implements AttendanceService {
             attendance.setAttendanceStatus(studentRequest.attendanceStatus());
 
             attendanceRepository.save(attendance);
+
+            if (studentRequest.attendanceStatus() == AttendanceStatus.ABSENT) {
+
+                attendanceNotificationService.sendAbsenceNotification(student);
+            }
         }
     }
     @Override

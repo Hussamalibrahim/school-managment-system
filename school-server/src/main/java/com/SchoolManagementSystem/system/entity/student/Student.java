@@ -1,6 +1,6 @@
 package com.SchoolManagementSystem.system.entity.student;
 
-import com.SchoolManagementSystem.system.entity.SchoolEntity;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import com.SchoolManagementSystem.system.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.system.entity.enumeration.Gender;
 import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
@@ -38,7 +38,7 @@ public class Student extends SchoolEntity
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "grade_level")
+    @Column(name = "grade_level", nullable = false)
     private GradeLevel gradeLevel;
 
     @Column(name = "date_of_birth")

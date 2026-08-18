@@ -1,4 +1,7 @@
 package com.SchoolManagementSystem.system.dto.academic.request;
 
-public class UpdateTwoSemesterRequest {
+public record UpdateTwoSemesterRequest(
+        SemesterUpdateRequest first,
+        SemesterUpdateRequest second
+) {
 }

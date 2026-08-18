@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/fees")
-public class FeeController {
+public class FeePaymentController {
 
     private final FeePaymentService feePaymentService;
 
@@ -55,8 +55,7 @@ public class FeeController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/guardian/me")
-    public ResponseEntity<GuardianFeesResponse> getMyFees(
-            @AuthenticationPrincipal UserPrincipal user) {
+    public ResponseEntity<GuardianFeesResponse> getMyFees(@AuthenticationPrincipal UserPrincipal user) {
 
         return ResponseEntity.ok(feePaymentService.getGuardianFees(user.getRefId()));
     }

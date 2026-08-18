@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.system.security;
 
 import com.SchoolManagementSystem.system.exception.security.JwtAuthenticationEntryPoint;
+import com.SchoolManagementSystem.system.security.jwt.AdminGatewayAuthenticationFilter;
 import com.SchoolManagementSystem.system.security.jwt.GatewayAuthenticationFilter;
 import com.SchoolManagementSystem.system.security.provider.TenantAuthenticationProvider;
 import com.SchoolManagementSystem.system.security.service.UserDetailsServiceImpl;
@@ -30,6 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final GatewayAuthenticationFilter gatewayAuthenticationFilter;
+    private final AdminGatewayAuthenticationFilter adminGatewayAuthenticationFilter;
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final TenantAuthenticationProvider tenantAuthenticationProvider;
@@ -43,6 +45,10 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+
+                                .requestMatchers("/api/admin/auth/login").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("SUPER_ADMIN")
+
                                 .requestMatchers("/api/*/auth/login").permitAll()
                                 .requestMatchers("/api/auth/register").permitAll()
                                 .requestMatchers("/api/*/auth/deactivate-account").hasRole("PRINCIPAL")
@@ -52,6 +58,7 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET, "/api/*/files/download/**").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/*/files/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/*/guardians/me-kids").hasRole("GUARDIAN")
 
                                 .requestMatchers(HttpMethod.POST, "/api/*/files/upload/student").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.POST, "/api/*/files/upload/guardian").hasRole("SECRETARY")
@@ -59,33 +66,33 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/api/*/files/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET, "/api/*/files/owner").hasRole("SECRETARY")
 
-                                .requestMatchers(HttpMethod.POST,"/api/*/schedules/extra/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.POST,"/api/*/schedules/class/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST, "/api/*/schedules/extra/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST, "/api/*/schedules/class/**").hasRole("PRINCIPAL")
 
-                                .requestMatchers(HttpMethod.POST,"/api/*/subjects/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.PUT,"/api/*/subjects/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.DELETE,"/api/*/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST, "/api/*/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.PUT, "/api/*/subjects/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/subjects/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.GET, "/api/*/subjects/search/**").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.GET, "/api/*/subjects/**").authenticated()
 
-                                .requestMatchers(HttpMethod.POST,"/api/*/teacher-subjects/assign/*/*").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST, "/api/*/teacher-subjects/assign/*/*").hasRole("PRINCIPAL")
 
 
                                 .requestMatchers(HttpMethod.GET, "/api/*/classes/student/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.GET, "/api/*/classes/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.POST,"/api/*/classes/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.POST, "/api/*/classes/**").hasRole("PRINCIPAL")
 
-                                .requestMatchers(HttpMethod.GET,"/api/*/students/me-attendance").hasRole("STUDENT")
-                                .requestMatchers(HttpMethod.GET,"/api/*/students/me-schedule").hasRole("STUDENT")
-                                .requestMatchers(HttpMethod.GET,"/api/*/students/attendance/guardian/**").hasRole("GUARDIAN")
-                                .requestMatchers(HttpMethod.GET,"/api/*/students/attendance/student/*/statistics").hasAnyRole("GUARDIAN","STUDENT")
-                                .requestMatchers(HttpMethod.GET,"/api/*/students/me").hasRole("STUDENT")
-                                .requestMatchers(HttpMethod.GET,"/api/*/students/me-subject").hasRole("STUDENT")
-                                .requestMatchers("/api/*/students/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/students/me-attendance").hasRole("STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/api/*/students/me-schedule").hasRole("STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/api/*/students/attendance/guardian/**").hasRole("GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/*/students/attendance/student/*/statistics").hasAnyRole("GUARDIAN", "STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/api/*/students/me").hasRole("STUDENT")
+                                .requestMatchers(HttpMethod.GET, "/api/*/students/me-subject").hasRole("STUDENT")
+                                .requestMatchers("/api/*/students/**").hasAnyRole("SECRETARY","PRINCIPAL")
 
-                                .requestMatchers(HttpMethod.PUT,"/api/*/schedules/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.GET,"/api/*/schedules/teacher/**").hasRole("PRINCIPAL")
-                                .requestMatchers(HttpMethod.GET,"/api/*/schedules/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.PUT, "/api/*/schedules/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/*/schedules/teacher/**").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/*/schedules/**").hasRole("PRINCIPAL")
 
                                 .requestMatchers(HttpMethod.GET, "/api/*/teacher").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/*/teacher/my-students").hasAnyRole("TEACHER", "SECRETARY")
@@ -96,26 +103,26 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/*/teacher/me").hasRole("TEACHER")
 
                                 .requestMatchers(HttpMethod.POST, "/api/*/student-guardian/connect/*/*").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.GET,"/api/*/student-guardian/student/**").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.GET,"/api/*/student-guardian/student/*/guardian/*").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.GET,"/api/*/student-guardian/students-without-guardians").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.GET,"/api/*/student-guardian/guardians-without-students").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.PUT,"/api/*/student-guardian/student/*/primary-guardian/*").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.GET,"/api/*/student-guardian/guardian/**").hasAnyRole("SECRETARY","GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/student/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/student/*/guardian/*").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/students-without-guardians").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/guardians-without-students").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.PUT, "/api/*/student-guardian/student/*/primary-guardian/*").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/guardian/**").hasAnyRole("SECRETARY", "GUARDIAN")
                                 //only guardian can see his/her sons
 
                                 .requestMatchers(HttpMethod.POST, "/api/*/guardians/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.PUT, "/api/*/guardians/**").hasRole("SECRETARY")
                                 .requestMatchers(HttpMethod.DELETE, "/api/*/guardians/**").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.GET,"/api/*/guardians/me").hasRole("GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/*/guardians/me").hasRole("GUARDIAN")
                                 .requestMatchers(HttpMethod.GET, "/api/*/guardians/**").hasRole("SECRETARY")
 
                                 .requestMatchers("/api/*/secretary/**").hasRole("SECRETARY")
 
-                                .requestMatchers(HttpMethod.GET,"/api/*/attendance/**").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.PUT,"/api/*/attendance/**").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.POST,"/api/*/attendance/**").hasRole("SECRETARY")
-                                .requestMatchers(HttpMethod.DELETE,"/api/*/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.PUT, "/api/*/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.POST, "/api/*/attendance/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/attendance/**").hasRole("SECRETARY")
 
                                 .requestMatchers(HttpMethod.POST, "/api/*/assessments/**")
                                 .hasAnyRole("PRINCIPAL", "TEACHER")
@@ -182,9 +189,55 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/*/warnings/*").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.DELETE, "/api/*/warnings/*").hasRole("PRINCIPAL")
 
+                                .requestMatchers(HttpMethod.POST, "/api/*/announcements").hasRole("PRINCIPAL")
+                                .requestMatchers(HttpMethod.GET, "/api/*/announcements/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/announcements/**").hasRole("PRINCIPAL")
 
-                                .requestMatchers(HttpMethod.GET, "/api/*/student-guardian/guardian/me")
+
+                                .requestMatchers(HttpMethod.POST, "/api/*/donation-campaigns"
+                                ).hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.PUT, "/api/*/donation-campaigns/**"
+                                ).hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/donation-campaigns/**"
+                                ).hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/donation-campaigns/**"
+                                ).hasAnyRole("PRINCIPAL", "SECRETARY", "GUARDIAN")
+
+                                .requestMatchers(HttpMethod.POST, "/api/*/donations/campaign/**").hasRole("GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/*/donations/me").hasRole("GUARDIAN")
+                                .requestMatchers(HttpMethod.GET, "/api/*/donations/{id}")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/donation-campaigns/*/donation")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+
+
+                                .requestMatchers(HttpMethod.POST, "/api/*/fees/*/discount")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/fees/*/discount")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/fees/*/discount")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY", "GUARDIAN")
+                                .requestMatchers(HttpMethod.POST, "/api/*/fee-structures")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.PUT, "/api/*/fee-structures/**")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.DELETE, "/api/*/fee-structures/**")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/fee-structures/**")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY", "GUARDIAN")
+
+
+                                .requestMatchers(HttpMethod.POST, "/api/*/fee/**").hasRole("SECRETARY")
+                                .requestMatchers(HttpMethod.GET, "/api/*/fee/**")
+                                .hasAnyRole("PRINCIPAL", "SECRETARY")
+
+                                .requestMatchers(HttpMethod.GET, "/api/*/fee/guardian/me")
                                 .hasRole("GUARDIAN")
+
+                                .requestMatchers("/api/*/academic-year/**")
+                                .hasRole("PRINCIPAL")
+
+                                .requestMatchers(HttpMethod.GET, "/api/*/school/statistics").hasRole("PRINCIPAL")
                                 .requestMatchers(HttpMethod.GET, "/api/*/school/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/*/school/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/api/*/school/**").hasRole("PRINCIPAL")
@@ -197,6 +250,7 @@ public class SecurityConfig {
                         ex.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
                 .addFilterBefore(tenantFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(adminGatewayAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(gatewayAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider())
                 .build();

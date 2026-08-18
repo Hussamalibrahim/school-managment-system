@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.system.security.dto;
+package com.SchoolManagementSystem.system.dto.auth;
 
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 

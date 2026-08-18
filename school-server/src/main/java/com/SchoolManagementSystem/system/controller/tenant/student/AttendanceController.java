@@ -106,13 +106,7 @@ public class AttendanceController {
             @AuthenticationPrincipal UserPrincipal user,
             @PathVariable Long studentId) {
 
-
-        return ResponseEntity.ok(
-                attendanceService.getGuardianStudentAttendance(
-                        user.getRefId(),
-                        studentId
-                )
-        );
+        return ResponseEntity.ok(attendanceService.getGuardianStudentAttendance(user.getRefId(), studentId));
     }
 
 }

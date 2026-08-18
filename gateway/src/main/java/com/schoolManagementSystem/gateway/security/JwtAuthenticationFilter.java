@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter implements GlobalFilter {
                         .getHeaders()
                         .getFirst(HttpHeaders.AUTHORIZATION);
         log.info("GatewayHeaderFilter EXECUTED");
-
         log.info("========== GATEWAY REQUEST ==========");
         log.info("PATH: {}", exchange.getRequest().getURI());
 
@@ -50,9 +49,18 @@ public class JwtAuthenticationFilter implements GlobalFilter {
         }
         String token = header.substring(7);
         try {
-            Long userId = jwtService.getRefId(token);
             String role = jwtService.getRole(token);
+
+            if (jwtService.isAdminToken(token)) {
+                ServerWebExchange modified = exchange.mutate()
+                        .request(request -> request.headers(headers -> {
+                                    headers.set("X-ADMIN", "true");
+                                    headers.set("X-ROLE", role);
+                                    headers.set("X-GATEWAY", gatewayKey);})).build();
+                return chain.filter(modified);
+            }
             Long schoolId = jwtService.getSchoolId(token);
+            Long userId = jwtService.getRefId(token);
 
             ServerWebExchange modified = exchange.mutate()
                     .request(request ->

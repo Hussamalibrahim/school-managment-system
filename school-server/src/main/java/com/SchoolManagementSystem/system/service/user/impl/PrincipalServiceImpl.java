@@ -3,16 +3,16 @@ package com.SchoolManagementSystem.system.service.user.impl;
 
 import com.SchoolManagementSystem.system.dto.request.CreateUserRequest;
 import com.SchoolManagementSystem.system.dto.user.PrincipalDto;
-import com.SchoolManagementSystem.system.entity.AuthUser;
+import com.SchoolManagementSystem.system.entity.Auth.AuthUser;
 import com.SchoolManagementSystem.system.entity.user.*;
 import com.SchoolManagementSystem.system.exception.business.AlreadyExistsException;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
+import com.SchoolManagementSystem.system.mapper.auth.AuthUserMapper;
 import com.SchoolManagementSystem.system.mapper.user.PrincipalMapper;
+import com.SchoolManagementSystem.system.repository.auth.AuthUserRepository;
 import com.SchoolManagementSystem.system.repository.user.*;
-import com.SchoolManagementSystem.system.security.AuthUserRepository;
-import com.SchoolManagementSystem.system.security.mapper.AuthUserMapper;
 import com.SchoolManagementSystem.system.service.NationalIdValidator;
 import com.SchoolManagementSystem.system.service.user.PrincipalService;
 
@@ -151,9 +151,7 @@ public class PrincipalServiceImpl implements PrincipalService {
     }
 
 
-    private void fillBaseUser(
-            BaseUser baseUser,
-            CreateUserRequest request) {
+    private void fillBaseUser(BaseUser baseUser, CreateUserRequest request) {
 
         baseUser.setNationalId(request.nationalId());
         baseUser.setFirstName(request.firstName());
