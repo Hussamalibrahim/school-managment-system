@@ -1,4 +1,4 @@
 package com.SchoolManagementSystem.system.mapper.finance;
 
-public class DiscountMapper {
+public class DonationMapper {
 }

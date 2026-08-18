@@ -1,4 +1,4 @@
 package com.SchoolManagementSystem.system.controller.tenant.finance;
 
-public class DiscountController {
+public class DonationController {
 }

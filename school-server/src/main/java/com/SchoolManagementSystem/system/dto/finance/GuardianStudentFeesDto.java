@@ -1,4 +1,4 @@
 package com.SchoolManagementSystem.system.dto.finance;
 
-public record DiscountDto() {
+public class GuardianStudentFeesDto {
 }

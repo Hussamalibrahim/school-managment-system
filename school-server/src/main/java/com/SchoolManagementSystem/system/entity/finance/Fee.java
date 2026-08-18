@@ -1,4 +1,4 @@
 package com.SchoolManagementSystem.system.entity.finance;
 
-public class Discount {
+public class Fee {
 }

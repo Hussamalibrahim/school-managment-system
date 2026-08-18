@@ -1,4 +1,4 @@
 package com.SchoolManagementSystem.system.service.finance;
 
-public interface DiscountService {
+public interface FeePaymentService {
 }
