@@ -1,17 +1,15 @@
 package com.SchoolManagementSystem.system.dto.academic;
 
-import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
-
-public record EducationRecordDto(
-        Long id,
-        Long studentId,
+public record StudentEducationHistoryDto(
+        Long recordId,
         Long academicYearId,
+        String academicYearName,
         Long schoolClassId,
+        String gradeLevel,
+        String section,
         Double finalAverage,
-        GradeLevel gradeLevel,
         Integer absenceDays,
         Boolean passed,
-        Boolean registeredNextYear,
         String notes
 ) {
 }

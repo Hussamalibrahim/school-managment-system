@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.system.dto.academic.respones;
+package com.SchoolManagementSystem.system.dto.academic.response;
 
 public record AssessmentResultRepones(Long id,
 

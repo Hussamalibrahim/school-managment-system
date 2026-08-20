@@ -5,6 +5,7 @@ import com.SchoolManagementSystem.system.entity.student.Attendance;
 import com.SchoolManagementSystem.system.entity.student.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -35,10 +36,16 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
             """)
     List<Student> findStudentsExceeded(AttendanceStatus status, long limit);
 
-    long countByStudentIdAndAttendanceStatusAndAttendanceDateBetween(
-            Long studentId,
-            AttendanceStatus attendanceStatus,
-            LocalDate startDate,
-            LocalDate endDate
+    @Query("""
+            SELECT COUNT(a)
+            FROM Attendance a
+            WHERE a.student.id = :studentId
+              AND a.attendanceDate BETWEEN :startDate AND :endDate
+              AND a.attendanceStatus = com.SchoolManagementSystem.system.entity.enumeration.AttendanceStatus.ABSENT
+            """)
+    long countAbsentDays(
+            @Param("studentId") Long studentId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
     );
 }

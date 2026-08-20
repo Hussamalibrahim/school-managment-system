@@ -1,7 +1,10 @@
 package com.SchoolManagementSystem.system.repository.academic;
 
 import com.SchoolManagementSystem.system.entity.academic.Assessment;
+import com.SchoolManagementSystem.system.entity.academic.Subject;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +23,12 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
     List<Assessment> findByClassScheduleTeacherId(Long teacherId);
 
     List<Assessment> findBySemesterId(Long semesterId);
+    @Query("""
+    SELECT DISTINCT a.classSchedule.subject
+    FROM Assessment a
+    WHERE a.semester.academicYear.id = :academicYearId
+""")
+    List<Subject> findSubjectsByAcademicYearId(
+            @Param("academicYearId") Long academicYearId
+    );
 }

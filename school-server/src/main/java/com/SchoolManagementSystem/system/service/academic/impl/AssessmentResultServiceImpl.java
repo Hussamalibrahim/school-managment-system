@@ -7,6 +7,7 @@ import com.SchoolManagementSystem.system.entity.academic.Assessment;
 import com.SchoolManagementSystem.system.entity.academic.AssessmentResult;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.student.Student;
+import com.SchoolManagementSystem.system.entity.student.StudentGuardian;
 import com.SchoolManagementSystem.system.exception.business.AlreadyExistsException;
 import com.SchoolManagementSystem.system.exception.business.AuthenticationException;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
@@ -16,6 +17,7 @@ import com.SchoolManagementSystem.system.mapper.academic.AssessmentResultMapper;
 import com.SchoolManagementSystem.system.repository.academic.AssessmentRepository;
 import com.SchoolManagementSystem.system.repository.academic.AssessmentResultRepository;
 import com.SchoolManagementSystem.system.repository.academic.TeacherSubjectRepository;
+import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.security.UserPrincipal;
 import com.SchoolManagementSystem.system.service.academic.AssessmentResultService;
@@ -34,6 +36,7 @@ public class AssessmentResultServiceImpl
         implements AssessmentResultService {
 
     private final AssessmentRepository assessmentRepository;
+    private final StudentGuardianRepository studentGuardianRepository;
     private final AssessmentResultRepository assessmentResultRepository;
     private final StudentRepository studentRepository;
     private final TeacherSubjectRepository teacherSubjectRepository;
@@ -259,5 +262,23 @@ public class AssessmentResultServiceImpl
                 .equals(user.getRefId())) {
             throw new AuthenticationException(ErrorCode.UNAUTHORIZED);
         }
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<AssessmentResultDto> getGuardianChildrenResults(
+            Long guardianId
+    ) {
+
+        return studentGuardianRepository
+                .findByGuardianId(guardianId)
+                .stream()
+                .map(StudentGuardian::getStudent)
+                .flatMap(student ->
+                        assessmentResultRepository
+                                .findByStudentId(student.getId())
+                                .stream()
+                )
+                .map(AssessmentResultMapper::toDto)
+                .toList();
     }
 }

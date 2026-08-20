@@ -17,4 +17,8 @@ public interface ExamResultService {
     void delete(Long id, UserPrincipal user);
 
     List<ExamResultDto> getAll();
+
+    List<ExamResultDto> getByStudent(Long refId);
+
+    List<ExamResultDto> getGuardianChildrenResults(Long refId);
 }

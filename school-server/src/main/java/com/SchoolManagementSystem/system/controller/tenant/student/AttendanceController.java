@@ -80,7 +80,7 @@ public class AttendanceController {
         if (user.getRole().equals(Role.STUDENT) && !(user.getRefId().equals(studentId))) {
             throw new ValidationException(ErrorCode.ACCESS_DENIED);
         }
-        if (user.getRole().equals(Role.GUARDIAN) && !studentGuardianService.isStudentBelongsToGuardian(studentId,user.getRefId())) {
+        if (user.getRole().equals(Role.GUARDIAN) && studentGuardianService.isStudentBelongsToGuardian(studentId, user.getRefId())) {
             throw new ValidationException(ErrorCode.ACCESS_DENIED);
         }
 

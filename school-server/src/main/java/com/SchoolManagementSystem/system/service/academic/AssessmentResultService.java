@@ -19,4 +19,6 @@ public interface AssessmentResultService {
     List<AssessmentResultDto> getStudentResults(Long studentId);
 
     void delete(Long id);
+
+    List<AssessmentResultDto> getGuardianChildrenResults(Long refId);
 }

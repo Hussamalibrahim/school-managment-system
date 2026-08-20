@@ -144,7 +144,11 @@ public class StudentGuardianServiceImpl implements StudentGuardianService {
 
         findGuardian(guardianId);
 
-        return studentGuardianRepository.findByGuardianId(guardianId).stream().map(StudentGuardian::getStudent).map(StudentMapper::toDto).toList();
+        return studentGuardianRepository.findByGuardianId(guardianId)
+                .stream()
+                .map(StudentGuardian::getStudent)
+                .map(StudentMapper::toDto)
+                .toList();
     }
 
 
@@ -207,6 +211,6 @@ public class StudentGuardianServiceImpl implements StudentGuardianService {
 
     @Override
     public boolean isStudentBelongsToGuardian(Long studentId, Long guardianId) {
-        return studentGuardianRepository.existsByStudentIdAndGuardianId(studentId,guardianId);
+        return !studentGuardianRepository.existsByStudentIdAndGuardianId(studentId, guardianId);
     }
 }

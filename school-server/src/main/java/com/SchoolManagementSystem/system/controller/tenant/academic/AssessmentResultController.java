@@ -7,6 +7,7 @@ import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.service.academic.AssessmentResultService;
 import com.SchoolManagementSystem.system.service.student.StudentGuardianService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,17 +94,22 @@ public class AssessmentResultController {
             @PathVariable Long studentId,
             @AuthenticationPrincipal UserPrincipal user) {
 
-        if (!studentGuardianService.isStudentBelongsToGuardian(studentId, user.getRefId())) {
+        if (studentGuardianService.isStudentBelongsToGuardian(studentId, user.getRefId())) {
             throw new ValidationException(ErrorCode.UNAUTHENTICATED);
         }
 
         return ResponseEntity.ok(assessmentResultService.getStudentResults(studentId));
     }
-    @GetMapping("/guardian/me")
-    public ResponseEntity<List<StudentDto>> getMyStudents(
-            @AuthenticationPrincipal UserPrincipal user) {
+    @GetMapping("/my-children")
+    @PreAuthorize("hasRole('GUARDIAN')")
+    public ResponseEntity<List<AssessmentResultDto>> getMyChildrenResults(
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
 
-        return ResponseEntity.ok(studentGuardianService.getGuardianStudents(user.getRefId()));
+        return ResponseEntity.ok(
+                assessmentResultService.getGuardianChildrenResults(
+                        user.getRefId()
+                )
+        );
     }
-    //TODO School class student
 }

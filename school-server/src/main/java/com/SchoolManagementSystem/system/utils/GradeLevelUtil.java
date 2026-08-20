@@ -20,4 +20,24 @@ public final class GradeLevelUtil {
                 )
                 .collect(Collectors.toSet());
     }
+    public static GradeLevel next(GradeLevel current) {
+
+        return switch (current) {
+            case GRADE_1 -> GradeLevel.GRADE_2;
+            case GRADE_2 -> GradeLevel.GRADE_3;
+            case GRADE_3 -> GradeLevel.GRADE_4;
+            case GRADE_4 -> GradeLevel.GRADE_5;
+            case GRADE_5 -> GradeLevel.GRADE_6;
+            case GRADE_6 -> GradeLevel.GRADE_7;
+            case GRADE_7 -> GradeLevel.GRADE_8;
+            case GRADE_8 -> GradeLevel.GRADE_9;
+            case GRADE_9 -> GradeLevel.GRADE_10;
+            case GRADE_10 -> GradeLevel.GRADE_11;
+            case GRADE_11 -> GradeLevel.GRADE_12;
+            case GRADE_12 -> GradeLevel.GRADUATE;
+
+
+            default -> null;
+        };
+    }
 }

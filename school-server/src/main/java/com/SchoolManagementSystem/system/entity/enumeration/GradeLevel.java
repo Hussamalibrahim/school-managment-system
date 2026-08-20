@@ -16,7 +16,8 @@ public enum GradeLevel {
     GRADE_9(9),
     GRADE_10(10),
     GRADE_11(11),
-    GRADE_12(12);
+    GRADE_12(12),
+    GRADUATE(0);
 
     private final int level;
 

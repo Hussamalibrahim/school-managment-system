@@ -14,4 +14,6 @@ public interface SemesterResultService {
     List<SemesterResultDto> getBySemester(Long semesterId);
 
     SemesterResultDto getById(Long id);
+
+    List<SemesterResultDto> getGuardianChildrenResults(Long refId, Long semesterId);
 }

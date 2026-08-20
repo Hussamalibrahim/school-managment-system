@@ -68,4 +68,28 @@ public class ExamResultController {
                 examResultService.getAll()
         );
     }
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<List<ExamResultDto>> getMyResults(
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
+
+        return ResponseEntity.ok(
+                examResultService.getByStudent(
+                        user.getRefId()
+                )
+        );
+    }
+    @GetMapping("/my-children")
+    @PreAuthorize("hasRole('GUARDIAN')")
+    public ResponseEntity<List<ExamResultDto>> getMyChildrenResults(
+            @AuthenticationPrincipal UserPrincipal user
+    ) {
+
+        return ResponseEntity.ok(
+                examResultService.getGuardianChildrenResults(
+                        user.getRefId()
+                )
+        );
+    }
 }

@@ -1,4 +1,4 @@
-package com.SchoolManagementSystem.system.dto.academic.respones;
+package com.SchoolManagementSystem.system.dto.academic.response;
 
 import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.system.entity.enumeration.PeriodNumber;

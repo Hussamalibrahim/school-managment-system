@@ -6,12 +6,14 @@ import com.SchoolManagementSystem.system.entity.enumeration.ExamCategory;
 import com.SchoolManagementSystem.system.entity.enumeration.SemesterName;
 import com.SchoolManagementSystem.system.entity.school.AcademicYear;
 import com.SchoolManagementSystem.system.entity.student.Student;
+import com.SchoolManagementSystem.system.entity.student.StudentGuardian;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.academic.SemesterResultMapper;
 import com.SchoolManagementSystem.system.repository.academic.*;
 import com.SchoolManagementSystem.system.repository.school.AcademicYearRepository;
+import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.service.academic.SemesterResultService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class SemesterResultServiceImpl implements SemesterResultService {
     private static final double EXAM_WEIGHT = 0.60;
 
     private final SemesterRepository semesterRepository;
+    private final StudentGuardianRepository studentGuardianRepository;
     private final AssessmentRepository assessmentRepository;
     private final AssessmentResultRepository assessmentResultRepository;
     private final ExamRepository examRepository;
@@ -269,5 +272,27 @@ public class SemesterResultServiceImpl implements SemesterResultService {
     }
 
     private record ResultKey(Long studentId, Long subjectId) {
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<SemesterResultDto> getGuardianChildrenResults(
+            Long guardianId,
+            Long semesterId
+    ) {
+
+        return studentGuardianRepository
+                .findByGuardianId(guardianId)
+                .stream()
+                .map(StudentGuardian::getStudent)
+                .flatMap(student ->
+                        semesterResultRepository
+                                .findByStudentIdAndSemesterId(
+                                        student.getId(),
+                                        semesterId
+                                )
+                                .stream()
+                )
+                .map(SemesterResultMapper::toDto)
+                .toList();
     }
 }

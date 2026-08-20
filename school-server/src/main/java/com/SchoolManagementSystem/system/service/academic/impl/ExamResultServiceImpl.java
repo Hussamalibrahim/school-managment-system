@@ -8,12 +8,14 @@ import com.SchoolManagementSystem.system.entity.academic.ExamResult;
 import com.SchoolManagementSystem.system.entity.academic.SchoolClass;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.student.Student;
+import com.SchoolManagementSystem.system.entity.student.StudentGuardian;
 import com.SchoolManagementSystem.system.exception.business.NotFoundException;
 import com.SchoolManagementSystem.system.exception.business.ValidationException;
 import com.SchoolManagementSystem.system.exception.model.ErrorCode;
 import com.SchoolManagementSystem.system.mapper.academic.ExamResultMapper;
 import com.SchoolManagementSystem.system.repository.academic.ExamRepository;
 import com.SchoolManagementSystem.system.repository.academic.ExamResultRepository;
+import com.SchoolManagementSystem.system.repository.student.StudentGuardianRepository;
 import com.SchoolManagementSystem.system.repository.student.StudentRepository;
 import com.SchoolManagementSystem.system.security.UserPrincipal;
 import com.SchoolManagementSystem.system.service.academic.ExamResultService;
@@ -34,6 +36,7 @@ public class ExamResultServiceImpl implements ExamResultService {
     private final ExamRepository examRepository;
     private final ExamResultRepository examResultRepository;
     private final StudentRepository studentRepository;
+    private final StudentGuardianRepository studentGuardianRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -190,6 +193,42 @@ public class ExamResultServiceImpl implements ExamResultService {
 
         return examResultRepository.findAll()
                 .stream()
+                .map(ExamResultMapper::toDto)
+                .toList();
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<ExamResultDto> getByStudent(
+            Long studentId
+    ) {
+
+        if (!studentRepository.existsById(studentId)) {
+            throw new NotFoundException(
+                    ErrorCode.STUDENT_NOT_FOUND
+            );
+        }
+
+        return examResultRepository
+                .findByStudentId(studentId)
+                .stream()
+                .map(ExamResultMapper::toDto)
+                .toList();
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<ExamResultDto> getGuardianChildrenResults(
+            Long guardianId
+    ) {
+
+        return studentGuardianRepository
+                .findByGuardianId(guardianId)
+                .stream()
+                .map(StudentGuardian::getStudent)
+                .flatMap(student ->
+                        examResultRepository
+                                .findByStudentId(student.getId())
+                                .stream()
+                )
                 .map(ExamResultMapper::toDto)
                 .toList();
     }
