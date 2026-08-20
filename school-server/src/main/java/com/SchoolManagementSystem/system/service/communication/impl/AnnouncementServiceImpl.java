@@ -169,8 +169,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
                 }
             }
 
-            case EDUCATION_STAGE,
-                 GRADE_LEVEL,
+            case GRADE_LEVEL,
                  SCHOOL_CLASS,
                  STUDENT,
                  USER -> {
