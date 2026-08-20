@@ -34,4 +34,11 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
             HAVING COUNT(a) >= :limit
             """)
     List<Student> findStudentsExceeded(AttendanceStatus status, long limit);
+
+    long countByStudentIdAndAttendanceStatusAndAttendanceDateBetween(
+            Long studentId,
+            AttendanceStatus attendanceStatus,
+            LocalDate startDate,
+            LocalDate endDate
+    );
 }

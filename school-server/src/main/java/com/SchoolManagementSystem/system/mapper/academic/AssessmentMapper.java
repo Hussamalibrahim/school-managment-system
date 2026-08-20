@@ -28,8 +28,6 @@ public final class AssessmentMapper {
 
                   assessment.getName(),
                   assessment.getCategory(),
-                  assessment.getMaxScore(),
-                  assessment.getWeight(),
                   assessment.getAssessmentDate()
           );
      }
@@ -54,8 +52,6 @@ public final class AssessmentMapper {
           }
           assessment.setName(dto.name());
           assessment.setCategory(dto.category());
-          assessment.setMaxScore(dto.maxScore());
-          assessment.setWeight(dto.weight());
           assessment.setAssessmentDate(dto.assessmentDate());
 
           return assessment;
@@ -74,8 +70,6 @@ public final class AssessmentMapper {
 
           assessment.setName(dto.name());
           assessment.setCategory(dto.category());
-          assessment.setMaxScore(dto.maxScore());
-          assessment.setWeight(dto.weight());
           assessment.setAssessmentDate(dto.assessmentDate());
      }
 
@@ -85,8 +79,6 @@ public final class AssessmentMapper {
 
           assessment.setName(request.name());
           assessment.setCategory(request.category());
-          assessment.setMaxScore(request.maxScore());
-          assessment.setWeight(request.weight());
           assessment.setAssessmentDate(request.assessmentDate());
      }
 }

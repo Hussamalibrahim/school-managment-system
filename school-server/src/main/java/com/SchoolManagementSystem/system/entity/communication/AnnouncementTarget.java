@@ -22,7 +22,7 @@ public class AnnouncementTarget extends SchoolEntity {
     private Announcement announcement;
 
     @Enumerated(EnumType.STRING)
-    @Column(name ="feeType")
+    @Column(name ="target_type", nullable = false)
     private AnnouncementTargetType type;
 
     @Enumerated(EnumType.STRING)

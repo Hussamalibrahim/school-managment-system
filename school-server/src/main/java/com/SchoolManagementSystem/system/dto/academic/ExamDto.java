@@ -11,8 +11,6 @@ public record ExamDto(
         Long subjectId,
         SemesterName semesterName,
         ExamCategory category,
-        Double maxScore,
-        Double weight,
         LocalDateTime examDateTime,
         Integer durationMinutes
 ) {

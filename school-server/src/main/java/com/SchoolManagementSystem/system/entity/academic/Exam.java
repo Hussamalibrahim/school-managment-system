@@ -34,12 +34,6 @@ public class Exam extends SchoolEntity {
     @Column(nullable = false, name = "category")
     private ExamCategory category;
 
-    @Column(nullable = false, name = "max_score")
-    private Double maxScore;
-
-    @Column(nullable = false, name = "weight")
-    private Double weight;
-
     @Column(nullable = false, name = "exam_datetime")
     private LocalDateTime examDateTime;
 

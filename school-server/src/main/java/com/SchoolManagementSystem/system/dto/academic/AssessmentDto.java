@@ -18,8 +18,6 @@ public record AssessmentDto(
         Long teacherId,
         String name,
         ContinuousCategory category,
-        Double maxScore,
-        Double weight,
         LocalDate assessmentDate
 ) {
 }

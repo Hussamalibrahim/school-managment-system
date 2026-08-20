@@ -23,4 +23,6 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     boolean existsByIdAndSubjectTeacherSubjectsTeacherId(Long examId, Long teacherId);
 
     boolean existsByIdAndSchoolClassIdAndSubjectTeacherSubjectsTeacherId(Long id, Long id1, Long refId);
+
+    List<Exam> findBySemesterId(Long semesterId);
 }

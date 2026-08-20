@@ -13,18 +13,10 @@ public final class ExamMapper {
     public static ExamDto toDto(Exam exam) {
         return new ExamDto(
                 exam.getId(),
-
                 exam.getSchoolClass().getId(),
-
                 exam.getSubject().getId(),
-
                 exam.getSemester() != null ? exam.getSemester().getSemesterName() : null,
-
                 exam.getCategory(),
-
-                exam.getMaxScore(),
-                exam.getWeight(),
-
                 exam.getExamDateTime(),
                 exam.getDurationMinutes()
         );
@@ -33,8 +25,6 @@ public final class ExamMapper {
     public static void fromCreateRequest(Exam exam, ExamCreateRequest request) {
 
         exam.setCategory(request.category());
-        exam.setMaxScore(request.maxScore());
-        exam.setWeight(request.weight());
         exam.setExamDateTime(request.examDateTime());
         exam.setDurationMinutes(request.durationMinutes());
     }
@@ -42,8 +32,6 @@ public final class ExamMapper {
     public static void fromUpdateRequest(Exam exam, ExamUpdateRequest request) {
 
         exam.setCategory(request.category());
-        exam.setMaxScore(request.maxScore());
-        exam.setWeight(request.weight());
         exam.setExamDateTime(request.examDateTime());
         exam.setDurationMinutes(request.durationMinutes());
     }

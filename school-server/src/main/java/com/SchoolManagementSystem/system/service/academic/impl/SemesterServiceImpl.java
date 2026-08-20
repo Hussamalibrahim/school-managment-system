@@ -56,6 +56,20 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     @Transactional(readOnly = true)
+    public SemesterDto getByName(SemesterName semesterName) {
+
+        AcademicYear academicYear = academicYearRepository.findByCurrentYearTrue()
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.ACADEMIC_YEAR_NOT_FOUNT));
+
+        Semester semester = semesterRepository
+                .findByAcademicYearIdAndSemesterName(academicYear.getId(), semesterName)
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.SEMESTER_NOT_FOUND));
+
+        return SemesterMapper.toDto(semester);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<SemesterDto> getAll() {
         return semesterRepository.findAll()
                 .stream()

@@ -223,11 +223,6 @@ public class AssessmentResultServiceImpl
             if (dto.score() == null) {
                 throw new ValidationException(ErrorCode.SCORE_CANT_BE_NULL);
             }
-
-            if (dto.score() > assessment.getMaxScore()
-                    || dto.score() < 0) {
-                throw new ValidationException(ErrorCode.SCORE_OUT_OF_RANGE);
-            }
         }
     }
     private void validateStudentsBelongToClass(

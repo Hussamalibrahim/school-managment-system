@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.system.controller.tenant.academic;
 
+import com.SchoolManagementSystem.system.dto.academic.SemesterDto;
 import com.SchoolManagementSystem.system.dto.academic.request.SemesterUpdateRequest;
 import com.SchoolManagementSystem.system.dto.academic.request.UpdateTwoSemesterRequest;
 import com.SchoolManagementSystem.system.dto.finance.response.FeeStructureDto;
@@ -26,5 +27,15 @@ public class SemesterController {
     @PutMapping("/academic-year/{academicYearId}/semesters")
     public void updateSemester(@PathVariable Long academicYearId, @RequestBody UpdateTwoSemesterRequest updateTwoSemesterRequest) {
         semesterService.updateTwoSemester(academicYearId, updateTwoSemesterRequest);
+    }
+    @GetMapping("/name/{semesterName}")
+    public ResponseEntity<SemesterDto> getByName(@PathVariable SemesterName semesterName) {
+
+        return ResponseEntity.ok(semesterService.getByName(semesterName));
+    }
+    @GetMapping("/current")
+    public ResponseEntity<SemesterDto> getCurrentSemester() {
+
+        return ResponseEntity.ok(semesterService.getCurrentSemester());
     }
 }

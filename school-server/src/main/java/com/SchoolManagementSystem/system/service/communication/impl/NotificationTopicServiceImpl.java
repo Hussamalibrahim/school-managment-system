@@ -18,11 +18,13 @@ import com.SchoolManagementSystem.system.service.communication.NotificationTopic
 import com.SchoolManagementSystem.system.tenant.TenantContext;
 import com.SchoolManagementSystem.system.utils.NotificationTopicUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationTopicServiceImpl implements NotificationTopicService {
@@ -39,7 +41,8 @@ public class NotificationTopicServiceImpl implements NotificationTopicService {
         Long schoolId = TenantContext.getSchoolId();
 
         School school = schoolRepository.findById(schoolId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));
+                .orElseThrow(() ->
+                        new NotFoundException(ErrorCode.SCHOOL_NOT_FOUND));
 
         String schoolCode = school.getCode();
 
@@ -47,52 +50,94 @@ public class NotificationTopicServiceImpl implements NotificationTopicService {
 
         List<String> topicNames = new ArrayList<>();
 
-        topicNames.add(NotificationTopicUtil.all(schoolCode));
-        topicNames.add(NotificationTopicUtil.role(schoolCode, role));
+        // جميع المستخدمين
+        topicNames.add(
+                NotificationTopicUtil.all(schoolCode)
+        );
 
+        // Role المستخدم
+        topicNames.add(
+                NotificationTopicUtil.role(schoolCode, role)
+        );
+
+        // ولي الأمر + أولاده
         if (role == Role.GUARDIAN) {
 
-            List<StudentGuardian> relations = studentGuardianRepository.findByGuardianId(userPrincipal.getRefId());
+            List<StudentGuardian> relations =
+                    studentGuardianRepository
+                            .findByGuardianId(userPrincipal.getRefId());
+
             relations.forEach(relation ->
-                    topicNames.add(NotificationTopicUtil.student(schoolCode, relation.getStudent().getId())));
+                    topicNames.add(
+                            NotificationTopicUtil.student(
+                                    schoolCode,
+                                    relation.getStudent().getId()
+                            )
+                    )
+            );
         }
 
-        List<Announcement> announcements = announcementRepository
-                .findBySchoolIdAndActiveTrueOrderByCreatedAtDesc(schoolId);
+        List<Announcement> announcements =
+                announcementRepository
+                        .findBySchoolIdAndActiveTrueOrderByCreatedAtDesc(
+                                schoolId
+                        );
 
         List<NotificationTopicDto> result = new ArrayList<>();
 
         for (Announcement announcement : announcements) {
-            AnnouncementTarget target = announcementTargetRepository
-                    .findByAnnouncementId(announcement.getId())
+
+            AnnouncementTarget target =
+                    announcementTargetRepository
+                            .findByAnnouncementId(announcement.getId())
                             .orElse(null);
 
-            String topic = buildTopic(schoolCode, target);
+            String topic =
+                    buildTopic(schoolCode, target);
 
             if (topic != null && topicNames.contains(topic)) {
-                result.add(new NotificationTopicDto(
+
+                result.add(
+                        new NotificationTopicDto(
+                                topic,
                                 announcement.getId(),
                                 announcement.getTitle(),
                                 announcement.getContent(),
-                                announcement.getCreatedAt()));
+                                announcement.getCreatedAt()
+                        )
+                );
             }
         }
 
         return new NotificationTopicsDto(result);
     }
 
-    private String buildTopic(String schoolCode, AnnouncementTarget target) {
+    private String buildTopic(
+            String schoolCode,
+            AnnouncementTarget target
+    ) {
 
-        if (target == null) {
+        if (target == null || target.getType() == null) {
             return null;
         }
 
         return switch (target.getType()) {
-            case ALL -> NotificationTopicUtil.all(schoolCode);
-            case ROLE -> NotificationTopicUtil.role(schoolCode, target.getTargetRole());
-            case STUDENT -> NotificationTopicUtil.student(schoolCode, target.getTargetId());
 
-            default -> null;
+            case ALL ->
+                    NotificationTopicUtil.all(schoolCode);
+
+            case ROLE ->
+                    NotificationTopicUtil.role(
+                            schoolCode,
+                            target.getTargetRole()
+                    );
+
+            case STUDENT ->
+                    NotificationTopicUtil.student(
+                            schoolCode,
+                            target.getTargetId()
+                    );
+            default -> throw new IllegalStateException("Unexpected value: " + target.getType());
         };
     }
 }

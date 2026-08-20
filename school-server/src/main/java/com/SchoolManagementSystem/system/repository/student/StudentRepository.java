@@ -22,8 +22,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByStudentSchoolClass_IdIn(Set<Long> classIds);
 
-    void deleteById(Student student);
-
     boolean existsByRegistrationNumberAndIdNot(String s, Long id);
 
     @Query("""
@@ -51,4 +49,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     long countBySchoolId(Long schoolId);
 
     List<Student> findByGradeLevel(GradeLevel gradeLevel);
+
 }

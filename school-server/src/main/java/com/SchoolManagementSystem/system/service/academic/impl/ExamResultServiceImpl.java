@@ -112,8 +112,6 @@ public class ExamResultServiceImpl implements ExamResultService {
 
             validateStudentBelongsToClass(student, exam.getSchoolClass());
 
-            validateScore(scoreRequest.score(), exam.getMaxScore());
-
             ExamResult examResult = resultMap.get(student.getId());
 
             if (examResult == null) {

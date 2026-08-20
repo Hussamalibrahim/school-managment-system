@@ -18,4 +18,6 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
     List<Assessment> findByClassScheduleSubjectId(Long subjectId);
 
     List<Assessment> findByClassScheduleTeacherId(Long teacherId);
+
+    List<Assessment> findBySemesterId(Long semesterId);
 }

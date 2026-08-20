@@ -40,11 +40,6 @@ public class Assessment extends SchoolEntity
     @Column(name = "category")
     private ContinuousCategory category;
 
-    @Column(name = "max_score")
-    private Double maxScore;
-
-    @Column(name = "weight")
-    private Double weight;
 
     @Column(name = "assessment_date")
     private LocalDate assessmentDate;
