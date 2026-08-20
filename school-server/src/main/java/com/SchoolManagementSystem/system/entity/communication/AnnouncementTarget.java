@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.system.entity.communication;
 
 import com.SchoolManagementSystem.system.entity.enumeration.AnnouncementTargetType;
+import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import jakarta.persistence.*;
@@ -24,6 +25,10 @@ public class AnnouncementTarget extends SchoolEntity {
     @Enumerated(EnumType.STRING)
     @Column(name ="target_type", nullable = false)
     private AnnouncementTargetType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "target_grade_level")
+    private GradeLevel targetGradeLevel;
 
     @Enumerated(EnumType.STRING)
     @Column(name ="target_role")

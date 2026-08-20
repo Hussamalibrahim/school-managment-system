@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.system.utils;
 
+import com.SchoolManagementSystem.system.entity.enumeration.GradeLevel;
 import com.SchoolManagementSystem.system.entity.enumeration.Role;
 
 
@@ -18,14 +19,9 @@ public final class NotificationTopicUtil {
         return normalize(schoolCode) + "_" + role.name();
     }
 
-    public static String educationStage(String schoolCode, Long stageId) {
+    public static String gradeLevel(String schoolCode, GradeLevel gradeId) {
 
-        return normalize(schoolCode) + "_STAGE_" + stageId;
-    }
-
-    public static String gradeLevel(String schoolCode, Long gradeId) {
-
-        return normalize(schoolCode) + "_GRADE_" + gradeId;
+        return normalize(schoolCode) + "_GRADE_" + gradeId.name();
     }
 
     public static String schoolClass(String schoolCode, Long classId) {

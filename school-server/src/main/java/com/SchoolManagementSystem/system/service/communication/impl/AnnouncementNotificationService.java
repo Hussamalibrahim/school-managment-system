@@ -36,9 +36,7 @@ public class AnnouncementNotificationService {
 
             case ROLE -> NotificationTopicUtil.role(schoolCode, target.getTargetRole());
 
-            case EDUCATION_STAGE -> NotificationTopicUtil.educationStage(schoolCode, target.getTargetId());
-
-            case GRADE_LEVEL -> NotificationTopicUtil.gradeLevel(schoolCode, target.getTargetId());
+            case GRADE_LEVEL -> NotificationTopicUtil.gradeLevel(schoolCode, target.getTargetGradeLevel());
 
             case SCHOOL_CLASS -> NotificationTopicUtil.schoolClass(schoolCode, target.getTargetId());
 
