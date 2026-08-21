@@ -91,8 +91,8 @@ public class AcademicYearServiceImpl implements AcademicYearService {
 
         second.setAcademicYear(saved);
         second.setSemesterName(SemesterName.SECOND);
-        first.setStartDate(LocalDate.from(LocalDateTime.of(academicYear.startDate().getYear() + 1, 2, 1, 0, 0)));
-        first.setEndDate(LocalDate.from(LocalDateTime.of(academicYear.startDate().getYear() + 1, 6, 21, 0, 0)));
+        second.setStartDate(LocalDate.from(LocalDateTime.of(academicYear.startDate().getYear() + 1, 2, 1, 0, 0)));
+        second.setEndDate(LocalDate.from(LocalDateTime.of(academicYear.startDate().getYear() + 1, 6, 21, 0, 0)));
 
         semesterRepository.saveAll(List.of(first, second));
     }

@@ -3219,7 +3219,7 @@
               "response": []
             },
             {
-              "name": "result-for-one-sudent-guardian",
+              "name": "assessment-result-for-one-student-guardian",
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -3249,12 +3249,37 @@
               "response": []
             },
             {
-              "name": "New Request",
+              "name": "me assessment for student",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": ""
+                  "raw": "{{test-school}}/assessment-results/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "me children assessments for guardian",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/assessment-results/my-children",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "assessment-results",
+                    "my-children"
+                  ]
                 }
               },
               "response": []
@@ -3278,7 +3303,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"classScheduleId\": 1,\r\n  \"name\": \"Quiz 1\",\r\n  \"category\": \"QUIZ\",\r\n  \"maxScore\": 20,\r\n  \"weight\": 10,\r\n  \"assessmentDate\": \"2026-01-19\"\r\n}",
+              "raw": "{\r\n  \"classScheduleId\": 1,\r\n  \"name\": \"Quiz 1\",\r\n  \"category\": \"QUIZ\",\r\n  \"assessmentDate\": \"2026-01-19\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3602,7 +3627,7 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "edit two ad once",
           "request": {
             "auth": {
               "type": "bearer",
@@ -3804,6 +3829,42 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "me exam for student",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/exam-results/me",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results",
+                    "me"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "exam-result-for-one-student-guardian",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{test-school}}/exam-results/my-children",
+                  "host": [
+                    "{{test-school}}"
+                  ],
+                  "path": [
+                    "exam-results",
+                    "my-children"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -3824,7 +3885,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"schoolClassId\": 1,\r\n  \"subjectId\": 4,\r\n  \"category\": \"FINAL\",\r\n  \"maxScore\": 40,\r\n  \"weight\": 40,\r\n  \"examDateTime\": \"2026-07-30T05:00:00\",\r\n  \"durationMinutes\": 90\r\n}",
+              "raw": "{\r\n  \"schoolClassId\": 1,\r\n  \"subjectId\": 4,\r\n  \"category\": \"FINAL\",\r\n  \"examDateTime\": \"2026-07-30T05:00:00\",\r\n  \"durationMinutes\": 90\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -4601,6 +4662,16 @@
         {
           "name": "create-topic-on-student",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_1b16}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -5510,6 +5581,448 @@
           ]
         }
       ]
+    },
+    {
+      "name": "semester-results",
+      "item": [
+        {
+          "name": "me semesters result",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/semester-results/me?semesterId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "semester-results",
+                "me"
+              ],
+              "query": [
+                {
+                  "key": "semesterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "me children semesters result",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/semester-results/my-children?semesterId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "semester-results",
+                "my-children"
+              ],
+              "query": [
+                {
+                  "key": "semesterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get student mark for staff",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/semester-results/student/1?semesterId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "semester-results",
+                "student",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "semesterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Finalize Semester",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/semester-results/finalize/FIRST",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "semester-results",
+                "finalize",
+                "FIRST"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "education record",
+      "item": [
+        {
+          "name": "get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "student record",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/student/10/records",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "student",
+                "10",
+                "records"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "student history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/student/1/history",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "student",
+                "1",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "student see his history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/me/history",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "me",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "guardian see children education history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/my-children/history",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "my-children",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "passed student",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/1/passed",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "passed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "failed student",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/1/failed",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "failed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics of academic year",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/1/statistics",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "statistics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "average of academic year",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "/education-records/academic-year/1/average",
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "average"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "top student",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/1/top-students?limit=7",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "top-students"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "7"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics student",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/student/1/statistics?academicYearId=1",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "student",
+                "1",
+                "statistics"
+              ],
+              "query": [
+                {
+                  "key": "academicYearId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "statistics subject",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/1/subjects/statistics",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "subjects",
+                "statistics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "year-statistics student",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/student/10/year-statistics?academicYearId=3",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "student",
+                "10",
+                "year-statistics"
+              ],
+              "query": [
+                {
+                  "key": "academicYearId",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "generate records",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/1/generate",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "1",
+                "generate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "promote",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{test-school}}/education-records/academic-year/3/promote",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "academic-year",
+                "3",
+                "promote"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "register student in next year",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"targetClassId\": 25\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{test-school}}/education-records/15/register-next-year",
+              "host": [
+                "{{test-school}}"
+              ],
+              "path": [
+                "education-records",
+                "15",
+                "register-next-year"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "event": [
@@ -5575,6 +6088,9 @@
     },
     {
       "key": "supabase_service_role_api_key_10aw"
+    },
+    {
+      "key": "auth_secret_1b16"
     }
   ]
 }

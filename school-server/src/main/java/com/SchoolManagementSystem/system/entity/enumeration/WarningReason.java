@@ -9,5 +9,5 @@ public enum WarningReason {
     HOMEWORK,
     ACADEMIC_PERFORMANCE,
     UNIFORM,
-    OTHER
+    ACADEMIC, OTHER
 }

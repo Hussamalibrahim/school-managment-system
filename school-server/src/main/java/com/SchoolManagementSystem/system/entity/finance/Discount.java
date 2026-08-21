@@ -2,6 +2,7 @@ package com.SchoolManagementSystem.system.entity.finance;
 
 import com.SchoolManagementSystem.system.entity.BaseEntity;
 import com.SchoolManagementSystem.system.entity.enumeration.DiscountType;
+import com.SchoolManagementSystem.system.entity.school.SchoolEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Discount extends BaseEntity {
+public class Discount extends SchoolEntity {
 
     @Column(name = "name", nullable = false)
     private String name;

@@ -24,9 +24,7 @@ public class EducationRecordController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
-    public ResponseEntity<EducationRecordDto> getById(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<EducationRecordDto> getById(@PathVariable Long id) {
 
         return ResponseEntity.ok(
                 educationRecordService.getById(id)
@@ -39,14 +37,9 @@ public class EducationRecordController {
      */
     @GetMapping("/student/{studentId}/records")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
-    public ResponseEntity<List<EducationRecordDto>> getStudentRecords(
-            @PathVariable Long studentId
-    ) {
+    public ResponseEntity<List<EducationRecordDto>> getStudentRecords(@PathVariable Long studentId) {
 
-        return ResponseEntity.ok(
-                educationRecordService
-                        .getStudentRecords(studentId)
-        );
+        return ResponseEntity.ok(educationRecordService.getStudentRecords(studentId));
     }
 
 
@@ -55,9 +48,7 @@ public class EducationRecordController {
      */
     @GetMapping("/student/{studentId}/history")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
-    public ResponseEntity<List<StudentEducationHistoryDto>> getStudentHistory(
-            @PathVariable Long studentId
-    ) {
+    public ResponseEntity<List<StudentEducationHistoryDto>> getStudentHistory(@PathVariable Long studentId) {
 
         return ResponseEntity.ok(
                 educationRecordService
@@ -99,9 +90,7 @@ public class EducationRecordController {
     @GetMapping("/academic-year/{academicYearId}/statistics")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
     public ResponseEntity<AcademicYearStatisticsDto>
-    getAcademicYearStatistics(
-            @PathVariable Long academicYearId
-    ) {
+    getAcademicYearStatistics(@PathVariable Long academicYearId) {
 
         return ResponseEntity.ok(
                 educationRecordService
@@ -115,8 +104,7 @@ public class EducationRecordController {
     @GetMapping("/academic-year/{academicYearId}/average")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
     public ResponseEntity<Double> getAcademicYearAverage(
-            @PathVariable Long academicYearId
-    ) {
+            @PathVariable Long academicYearId) {
 
         return ResponseEntity.ok(
                 educationRecordService
@@ -134,22 +122,17 @@ public class EducationRecordController {
             @RequestParam(defaultValue = "7") int limit
     ) {
 
-        return ResponseEntity.ok(
-                educationRecordService.getTopStudents(
+        return ResponseEntity.ok(educationRecordService.getTopStudents(
                         academicYearId,
-                        limit
-                )
-        );
+                        limit));
     }
 
 
     @GetMapping("/student/{studentId}/statistics")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
     public ResponseEntity<StudentAcademicStatisticsDto>
-    getStudentStatistics(
-            @PathVariable Long studentId,
-            @RequestParam Long academicYearId
-    ) {
+    getStudentStatistics(@PathVariable Long studentId,
+            @RequestParam Long academicYearId) {
 
         return ResponseEntity.ok(
                 educationRecordService.getStudentStatistics(
@@ -163,9 +146,7 @@ public class EducationRecordController {
     @GetMapping("/academic-year/{academicYearId}/subjects/statistics")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY')")
     public ResponseEntity<List<SubjectStatisticsDto>>
-    getSubjectStatistics(
-            @PathVariable Long academicYearId
-    ) {
+    getSubjectStatistics(@PathVariable Long academicYearId) {
 
         return ResponseEntity.ok(
                 educationRecordService.getSubjectStatistics(

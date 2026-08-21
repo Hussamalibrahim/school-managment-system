@@ -9,5 +9,5 @@ public enum ContinuousCategory {
     QUIZ,
     ORAL_TEST,
     ACTIVITY,
-    PROJECT;
+    PROJECT, PARTICIPATION;
 }

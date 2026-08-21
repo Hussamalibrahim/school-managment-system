@@ -23,7 +23,8 @@ public class SemesterResultController {
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('PRINCIPAL','SECRETARY','TEACHER')")
     public ResponseEntity<List<SemesterResultDto>> getByStudent(
-            @PathVariable Long studentId, @RequestParam Long semesterId) {
+            @PathVariable Long studentId,
+            @RequestParam Long semesterId) {
 
         return ResponseEntity.ok(semesterResultService.getByStudent(studentId, semesterId));
     }
@@ -47,27 +48,18 @@ public class SemesterResultController {
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<List<SemesterResultDto>> getMyResults(
             @AuthenticationPrincipal UserPrincipal user,
-            @RequestParam Long semesterId
-    ) {
+            @RequestParam Long semesterId) {
 
-        return ResponseEntity.ok(
-                semesterResultService.getByStudent(
-                        user.getRefId(),
-                        semesterId
-                )
-        );
-    }@GetMapping("/my-children")
+        return ResponseEntity.ok(semesterResultService
+                        .getByStudent(user.getRefId(), semesterId));
+    }
+    @GetMapping("/my-children")
     @PreAuthorize("hasRole('GUARDIAN')")
     public ResponseEntity<List<SemesterResultDto>> getMyChildrenResults(
             @AuthenticationPrincipal UserPrincipal user,
-            @RequestParam Long semesterId
-    ) {
+            @RequestParam Long semesterId) {
 
-        return ResponseEntity.ok(
-                semesterResultService.getGuardianChildrenResults(
-                        user.getRefId(),
-                        semesterId
-                )
-        );
+        return ResponseEntity.ok(semesterResultService
+                .getGuardianChildrenResults(user.getRefId(), semesterId));
     }
 }
